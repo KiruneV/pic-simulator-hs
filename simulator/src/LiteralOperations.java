@@ -4,11 +4,11 @@
  *
  */
 public class LiteralOperations { // operations that start with 11
-	int bitmask = 0xFF; // 00 0000 1111 1111
-	int k, w;
+	static int bitmask = 0xFF; // 00 0000 1111 1111
+	static int k, w;
 
 	// add literal and w
-	public void ADDLW(int hexInt) {
+	public static void ADDLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		w = getW();
 		// check digit carry
@@ -33,7 +33,7 @@ public class LiteralOperations { // operations that start with 11
 	}
 
 	// and literal with w
-	public void ANDLW(int hexInt) {
+	public static void ANDLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		w = getW();
 		// and'ing k with w
@@ -44,7 +44,7 @@ public class LiteralOperations { // operations that start with 11
 	}
 
 	// inclusive or literal and w
-	public void IORLW(int hexInt) {
+	public static void IORLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		w = getW();
 		// or'ing k with w
@@ -55,14 +55,14 @@ public class LiteralOperations { // operations that start with 11
 	}
 
 	// move literal to w
-	public void MOVLW(int hexInt) {
+	public static void MOVLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		// load k into w register
 		setW(k);
 	}
 
 	// return with literal in w
-	public void RETLW(int hexInt) {
+	public static void RETLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		// load k into w register
 		setW(k);
@@ -70,7 +70,7 @@ public class LiteralOperations { // operations that start with 11
 	}
 
 	// subtract w from literal
-	public void SUBLW(int hexInt) {
+	public static void SUBLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		w = getW();
 		// check digit carry
@@ -95,7 +95,7 @@ public class LiteralOperations { // operations that start with 11
 	}
 
 	// exclusive or literal with w
-	public void XORLW(int hexInt) {
+	public static void XORLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		w = getW();
 		// xor'ing k with w
@@ -106,19 +106,19 @@ public class LiteralOperations { // operations that start with 11
 	}
 
 	// deleting
-	public void RETURN() {
+	public static void RETURN() {
 		// TODO Auto-generated method stub
 
 	}
 
 	// set zero flag
-	public void setZ(int i) {
+	public static void setZ(int i) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// check zero flag
-	public void checkZ(int i) {
+	public static void checkZ(int i) {
 		if (i == 0) {
 			setZ(1);
 		}
@@ -126,30 +126,30 @@ public class LiteralOperations { // operations that start with 11
 	}
 
 	// set carry bit
-	public void setC(int i) {
+	public static void setC(int i) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// get carry bit
-	public int getC() {
+	public static int getC() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	// set digit carry
-	public void setDC(int i) {
+	public static void setDC(int i) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// set w register
-	public void setW(int w) {
+	public static void setW(int w) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public int getW() {
+	public static int getW() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

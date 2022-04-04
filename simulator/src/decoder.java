@@ -56,16 +56,16 @@ public class decoder {
 		final int SLEEP=0b01100011;
 		switch (inputInt) {
 		case CLRWDT:
-			CLRWDT();
+			ByteOrientedOperations.CLRWDT();
 			break;
 		case RETFIE:
-			RETFIE();
+			ByteOrientedOperations.RETFIE();
 			break;
 		case RETURN:
-			RETURN();
+			ByteOrientedOperations.RETURN();
 			break;
 		case SLEEP:
-			SLEEP();
+			ByteOrientedOperations.SLEEP();
 			break;
 
 		default:
@@ -91,69 +91,68 @@ public class decoder {
 
 			switch (inputInt&maske00) {
 			case ADDWF:
-				ADDWF(inputInt);
+				ByteOrientedOperations.ADDWF(inputInt);
 				break;
 			case ANDWF:
-				ANDWF(inputInt);
+				ByteOrientedOperations.ANDWF(inputInt);
 				break;
 			case CLRF_CLRW:
 				if((inputInt&_distinction)==_distinction) {
 					//1 CLRF
-					CLRF(inputInt);
+					ByteOrientedOperations.CLRF(inputInt);
 				}else {
 					//0 CLRW
-					CLRW(inputInt);
+					ByteOrientedOperations.CLRW();
 				}
 				break;
 			case COMF:
-				COMF(inputInt);
+				ByteOrientedOperations.COMF(inputInt);
 				break;
 			case DECF:
-				DECF(inputInt);
+				ByteOrientedOperations.DECF(inputInt);
 				break;
 			case DECFSZ:
-				DECFSZ(inputInt);
+				ByteOrientedOperations.DECFSZ(inputInt);
 				break;
 			case INCF:
-				INCF(inputInt);
+				ByteOrientedOperations.INCF(inputInt);
 				break;
 			case INCFSZ:
-				INCFSZ(inputInt);
+				ByteOrientedOperations.INCFSZ(inputInt);
 				break;
 			case IORWF:
-				IORWF(inputInt);
+				ByteOrientedOperations.IORWF(inputInt);
 				break;
 			case MOVF:
-				MOVF(inputInt);
+				ByteOrientedOperations.MOVF(inputInt);
 				break;
 			case MOVWF_NOP:
 				if((inputInt&_distinction)==_distinction) {
 					//1 MOVWF
-					MOVWF(inputInt);
+					ByteOrientedOperations.MOVWF(inputInt);
 				}else {
 					//0 NOP
-					NOP(inputInt);
+					ByteOrientedOperations.NOP();
 				}
 				break;
 			case RLF:
-				RLF(inputInt);
+				ByteOrientedOperations.RLF(inputInt);
 				break;
 			case RRF:
-				RRF(inputInt);
+				ByteOrientedOperations.RRF(inputInt);
 				break;
 			case SUBWF:
-				SUBWF(inputInt);
+				ByteOrientedOperations.SUBWF(inputInt);
 				break;
 			case SWAPF:
-				SWWAPF(inputInt);
+				ByteOrientedOperations.SWAPF(inputInt);
 				break;
 			case XORWF:
-				XORWF(inputInt);
+				ByteOrientedOperations.XORWF(inputInt);
 				break;
 			default:
 				//System.out.println("ERROR no valid code");
 				throw new Error("ERROR no valid code");
-				break;
 			}
 			break;
 		}
@@ -168,21 +167,20 @@ public class decoder {
 		final int BTFSS=maske01;
 		switch (inputInt&maske01) {
 		case BCF:
-			BCF(inputInt);
+			BitOrientedOperations.BCF(inputInt);
 			break;
 		case BSF:
-			BSF(inputInt);
+			BitOrientedOperations.BSF(inputInt);
 			break;
 		case BTFSC:
-			BTFSC(inputInt);
+			BitOrientedOperations.BTFSC(inputInt);
 			break;
 		case BTFSS:
-			BTFSS(inputInt);
+			BitOrientedOperations.BTFSS(inputInt);
 			break;
 		default:
 			//System.out.println("ERROR no valid code");
 			throw new Error("ERROR no valid code");
-			break;
 		}
 
 	}
@@ -191,15 +189,14 @@ public class decoder {
 		final int maske10=0x800;
 		switch (maske10&inputInt) {
 		case maske10:
-			GOTO(inputInt);
+			ControlOperations.GOTO(inputInt);
 			break;
 		case 0x0:
-			CALL(inputInt);
+			ControlOperations.CALL(inputInt);
 			break;
 		default:
 			//System.out.println("ERROR no valid code");
 			throw new Error("ERROR no valid code");
-			break;
 		}
 
 	}
@@ -218,33 +215,32 @@ public class decoder {
 		switch (inputInt&maske11) {
 		case 0xF00:
 		case 0xE00:
-			ADDLW(inputInt);
+			LiteralOperations.ADDLW(inputInt);
 			break;
 		case 0x900:
-			ANDLW(inputInt);
+			LiteralOperations.ANDLW(inputInt);
 			break;
 		case 0x800:
-			IORLW(inputInt);
+			LiteralOperations.IORLW(inputInt);
 			break;
 		case 0xA00:
-			XORLW(inputInt);
+			LiteralOperations.XORLW(inputInt);
 			break;
 		case 0xD00:
 		case 0xC00:
-			SUBLW(inputInt);
+			LiteralOperations.SUBLW(inputInt);
 			break;
 		default:
 			switch (inputInt&0x400) {
 			case 0x400:
-				RETLW(inputInt);
+				LiteralOperations.RETLW(inputInt);
 				break;
 			case 0x0:
-				MOVLW(inputInt);
+				LiteralOperations.MOVLW(inputInt);
 				break;
 			default:
 				//System.out.println("ERROR no valid code");
 				throw new Error("ERROR no valid code");
-				break;
 			}
 			break;
 		}

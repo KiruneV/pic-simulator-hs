@@ -4,11 +4,12 @@
  *
  */
 public class BitOrientedOperations { // operations that start with 01
-	int[] bitmask = { 0x7F, 0x380 };
-	int f, b;
+	static int[] bitmask = { 0x7F, 0x380 };
+	static int f;
+	static int b;
 
 	// bit clear f
-	public void BCF(int hexInt) {
+	public static void BCF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
 		int mask = 0b01 << b;
@@ -18,7 +19,7 @@ public class BitOrientedOperations { // operations that start with 01
 	}
 
 	// bit set f
-	public void BSF(int hexInt) {
+	public static void BSF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
 		int mask = 0b01 << b;
@@ -28,7 +29,7 @@ public class BitOrientedOperations { // operations that start with 01
 	}
 
 	// bit test, skip if clear
-	public void BTFSC(int hexInt) {
+	public static void BTFSC(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
 		int mask = 0b01 << b;
@@ -41,7 +42,7 @@ public class BitOrientedOperations { // operations that start with 01
 	}
 
 	// bit test f, skip if set
-	public void BTFSS(int hexInt) {
+	public static void BTFSS(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
 		int mask = 0b01 << b;
@@ -53,7 +54,7 @@ public class BitOrientedOperations { // operations that start with 01
 		}
 	}
 
-	public void setRegister(int d, int w) {
+	public static void setRegister(int d, int w) {
 		if (d == 0) {
 			setW(w);
 		} else {
@@ -64,13 +65,13 @@ public class BitOrientedOperations { // operations that start with 01
 	}
 
 	// set zero flag
-	public void setZ(int i) {
+	public static void setZ(int i) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// check zero flag
-	public void checkZ(int i) {
+	public static void checkZ(int i) {
 		if (i == 0) {
 			setZ(1);
 		}
@@ -78,40 +79,40 @@ public class BitOrientedOperations { // operations that start with 01
 	}
 
 	// set carry bit
-	public void setC(int i) {
+	public static void setC(int i) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// get carry bit
-	public int getC() {
+	public static int getC() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	// set digit carry
-	public void setDC(int i) {
+	public static void setDC(int i) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// set w register
-	public void setW(int w) {
+	public static void setW(int w) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public int getW() {
+	public static int getW() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public void setF(int f) {
+	public static void setF(int f) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public void NOP() {
+	public static void NOP() {
 		// TODO Auto-generated method stub
 
 	}

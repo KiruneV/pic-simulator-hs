@@ -4,11 +4,11 @@
  *
  */
 public class ByteOrientedOperations { // operations that start with 00
-	int[] bitmask = { 0x7F, 0x40 };
-	int f, d, w, rotated;
+	static int[] bitmask = { 0x7F, 0x40 };
+	static int f, d, w, rotated;
 
 	// add w and f
-	public void ADDWF(int hexInt) {
+	public static void ADDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		w = getW();
@@ -35,7 +35,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// and w with f
-	public void ANDWF(int hexInt) {
+	public static void ANDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		w = getW();
@@ -48,19 +48,19 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// clear f
-	public void CLRF(int hexInt) {
+	public static void CLRF(int hexInt) {
 		setZ(1);
 		setF(0);
 	}
 
 	// clear w
-	public void CLRW() {
+	public static void CLRW() {
 		setZ(1);
 		setW(0);
 	}
 
 	// complement f
-	public void COMF(int hexInt) {
+	public static void COMF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		// complement f
@@ -72,7 +72,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// decrement f
-	public void DECF(int hexInt) {
+	public static void DECF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		// decrement f
@@ -83,7 +83,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// decrement f, skip if 0
-	public void DECFSZ(int hexInt) {
+	public static void DECFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		// decrement f
@@ -99,7 +99,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// increment f
-	public void INCF(int hexInt) {
+	public static void INCF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		// increment f
@@ -110,7 +110,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// increment f, skip if 0
-	public void INCFSZ(int hexInt) {
+	public static void INCFSZ(int hexInt) {
 		f = hexInt & bitmask[0];
 		d = hexInt & bitmask[1];
 		// increment f
@@ -124,7 +124,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// inclusive or w with f
-	public void IORWF(int hexInt) {
+	public static void IORWF(int hexInt) {
 		f = hexInt & bitmask[0];
 		d = hexInt & bitmask[1];
 		w = getW();
@@ -136,7 +136,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// move f
-	public void MOVF(int hexInt) {
+	public static void MOVF(int hexInt) {
 		f = hexInt & bitmask[0];
 		d = hexInt & bitmask[1];
 		// set zero flag when f == 0
@@ -146,18 +146,18 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// move w to f
-	public void MOVWF(int hexInt) {
+	public static void MOVWF(int hexInt) {
 		w = getW();
 		setF(w);
 	}
 
 	// no operation
-	public void NOP() {
+	public static void NOP() {
 		// nothing
 	}
 
 	// TODO rotate left f through carry
-	public void RLF(int hexInt) {
+	public static void RLF(int hexInt) {
 		f = hexInt & bitmask[0];
 		d = hexInt & bitmask[1];
 		rotated = f << 1;
@@ -170,7 +170,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// TODO rotate right f through carry
-	public void RRF(int hexInt) {
+	public static void RRF(int hexInt) {
 		f = hexInt & bitmask[0];
 		d = hexInt & bitmask[1];
 		rotated = f >>> 1;
@@ -183,7 +183,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// subtract w from literal
-	public void SUBWF(int hexInt) {
+	public static void SUBWF(int hexInt) {
 		f = hexInt & bitmask[0];
 		d = hexInt & bitmask[1];
 		w = getW();
@@ -209,7 +209,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// swap nibbles in f
-	public void SWAPF(int hexInt) {
+	public static void SWAPF(int hexInt) {
 		f = hexInt & bitmask[0];
 		d = hexInt & bitmask[1];
 		int bit1 = (f & 0x0F) << 3; // bit 3 ... 0 bits in f
@@ -219,7 +219,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// exclusive or w with f
-	public void XORWF(int hexInt) {
+	public static void XORWF(int hexInt) {
 		f = hexInt & bitmask[0];
 		d = hexInt & bitmask[1];
 		w = getW();
@@ -231,23 +231,23 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// clear watchdog timer
-	public void CLRWDT() {
+	public static void CLRWDT() {
 		// TODO ????????????????
 	}
 
-	public void RETFIE() {
+	public static void RETFIE() {
 		// TODO
 	}
 
-	public void RETURN() {
+	public static void RETURN() {
 		// TODO
 	}
 
-	public void SLEEP() {
+	public static void SLEEP() {
 		// TODO
 	}
 
-	public void setRegister(int d, int w) {
+	public static void setRegister(int d, int w) {
 		if (d == 0) {
 			setW(w);
 		} else {
@@ -258,13 +258,13 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// set zero flag
-	public void setZ(int i) {
+	public static void setZ(int i) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// check zero flag
-	public void checkZ(int i) {
+	public static void checkZ(int i) {
 		if (i == 0) {
 			setZ(1);
 		}
@@ -272,35 +272,35 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// set carry bit
-	public void setC(int i) {
+	public static void setC(int i) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// get carry bit
-	public int getC() {
+	public static int getC() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	// set digit carry
-	public void setDC(int i) {
+	public static void setDC(int i) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// set w register
-	public void setW(int w) {
+	public static void setW(int w) {
 		// TODO Auto-generated method stub
 
 	}
 
-	public int getW() {
+	public static int getW() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	private void setF(int f) {
+	private static void setF(int f) {
 		// TODO Auto-generated method stub
 
 	}
