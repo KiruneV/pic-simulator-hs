@@ -11,12 +11,14 @@ public class ControlOperations { // operations that start with 10
 	public static void CALL(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		// TODO lege address k in stack
+		// setAddress(k);
 	}
 
 	// unconditional branch
 	public static void GOTO(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		// TODO jump to address k
+		// setAddress(k);
 	}
 
 	public static void setRegister(int d, int w) {
