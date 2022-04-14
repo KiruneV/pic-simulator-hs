@@ -5,23 +5,22 @@
  */
 public class LiteralOperations { // operations that start with 11
 	static int bitmask = 0xFF; // 00 0000 1111 1111
-	static int k, w;
+	static int k;
 
-	// add literal and w
+	// add literal and w 
 	public static void ADDLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		w = getW();
+		int wContent = getW();
 		// check digit carry
 		int dK = (0x08 & k) >>> 3;
-		int dW = (0x08 & w) >>> 3;
-		// check digit carry
+		int dW = (0x08 & wContent) >>> 3;
 		if ((dK & dW) != 0) {
 			setDC(1);
 		} else {
 			setDC(0);
 		}
-		// adding literal and w
-		k += w;
+		// adding literal and wContent
+		k += wContent;
 		// check carry bit
 		if ((k & 0xF00) != 0) {
 			setC(1);
@@ -35,9 +34,9 @@ public class LiteralOperations { // operations that start with 11
 	// and literal with w
 	public static void ANDLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		w = getW();
+		int wContent = getW();
 		// and'ing k with w
-		k = k & w;
+		k = k & wContent;
 		// set zero flag when k == 0
 		checkZ(k);
 		setW(k);
@@ -46,9 +45,9 @@ public class LiteralOperations { // operations that start with 11
 	// inclusive or literal and w
 	public static void IORLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		w = getW();
-		// or'ing k with w
-		k = k | w;
+		int wContent = getW();
+		// or'ing k with wContent
+		k = k | wContent;
 		// set zero flag when k == 0
 		checkZ(k);
 		setW(k);
@@ -63,26 +62,24 @@ public class LiteralOperations { // operations that start with 11
 
 	// return with literal in w
 	public static void RETLW(int hexInt) {
-		k = hexInt & bitmask; // select k out of the hexInt
-		// load k into w register
-		setW(k);
+		MOVLW(hexInt); // RETLW = MOVLW + RETURN
 		RETURN(); // jump out of subprogram
 	}
 
 	// subtract w from literal
 	public static void SUBLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		w = getW();
+		int wContent = getW();
 		// check digit carry
 		int dK = (0x08 & k) >>> 3;
-		int dW = (0x08 & w) >>> 3;
+		int dW = (0x08 & wContent) >>> 3;
 		if ((dK & dW) != 0) {
 			setDC(1);
 		} else {
 			setDC(0);
 		}
 		// subtracting k with w
-		k -= w;
+		k -= wContent;
 		// check if k is negative
 		if ((k & 0x80) != 0) {
 			setC(0); // when k is negative
@@ -97,9 +94,9 @@ public class LiteralOperations { // operations that start with 11
 	// exclusive or literal with w
 	public static void XORLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		w = getW();
-		// xor'ing k with w
-		k = k ^ w;
+		int wContent = getW();
+		// xor'ing k with wwContent
+		k = k ^ wContent;
 		// set zero flag when k == 0
 		checkZ(k);
 		setW(k);
@@ -107,8 +104,6 @@ public class LiteralOperations { // operations that start with 11
 
 	// deleting
 	public static void RETURN() {
-		// TODO Auto-generated method stub
-
 	}
 
 	// set zero flag

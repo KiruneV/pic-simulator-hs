@@ -5,15 +5,16 @@
  */
 public class ByteOrientedOperations { // operations that start with 00
 	static int[] bitmask = { 0x7F, 0x40 };
-	static int f, d, w, rotated;
+	static int f, d, rotated;
 
 	// add w and f
 	public static void ADDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		w = getW();
+		int fContent = getRegisterContent(f);
+		int w = getW();
 		// check digit carry
-		int dF = (0x08 & f) >>> 3;
+		int dF = (0x08 & fContent) >>> 3;
 		int dW = (0x08 & w) >>> 3;
 		// check digit carry
 		if ((dF & dW) != 0) {
@@ -21,36 +22,38 @@ public class ByteOrientedOperations { // operations that start with 00
 		} else {
 			setDC(0);
 		}
-		// adding f and w
-		f += w;
+		// adding fContent and w
+		fContent += w;
 		// check carry bit
-		if ((f & 0xF00) != 0) {
+		if ((fContent & 0xF00) != 0) {
 			setC(1);
-			f = f & 0xFF; // so f is not > 0xFF
+			fContent = fContent & 0xFF; // so fContent is not > 0xFF
 		}
 		// set zero flag when f == 0
-		checkZ(f);
-		// store f in register w (when d==0) or in f (when d==1)
-		setRegister(d, f);
+		checkZ(fContent);
+		// store fContent in register w (when d==0) or in fContent (when d==1)
+		setRegister(d, fContent, f);
 	}
 
 	// and w with f
 	public static void ANDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		w = getW();
+		int fContent = getRegisterContent(f);
+		int w = getW();
 		// and'ing w and f
-		f = f & w;
+		fContent = fContent & w;
 		// set zero flag when f == 0
-		checkZ(f);
-		// store f in register w (when d==0) or in f (when d==1)
-		setRegister(d, f);
+		checkZ(fContent);
+		// store fContent in register w (when d==0) or in fContent (when d==1)
+		setRegister(d, fContent, f);
 	}
 
 	// clear f
 	public static void CLRF(int hexInt) {
+		f = hexInt & bitmask[0]; // select f out of the hexInt
 		setZ(1);
-		setF(0);
+		setRegisterContent(0, f);
 	}
 
 	// clear w
@@ -63,34 +66,35 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void COMF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
 		// complement f
-		f = ~f;
+		fContent = ~fContent;
 		// set zero flag when f == 0
-		checkZ(f);
+		checkZ(fContent);
 		// store f in register w (when d==0) or in f (when d==1)
-		setRegister(d, f);
+		setRegister(d, fContent, f);
 	}
 
 	// decrement f
 	public static void DECF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
 		// decrement f
-		f -= f;
+		fContent -= fContent;
 		// set zero flag when f == 0
-		checkZ(f);
-		setRegister(d, f);
+		checkZ(fContent);
+		setRegister(d, fContent, f);
 	}
 
 	// decrement f, skip if 0
 	public static void DECFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
 		// decrement f
-		f -= 1;
-		// set zero flag when f == 0
-		checkZ(f);
-		setRegister(d, f);
+		fContent--;
+		setRegister(d, fContent, f);
 		if (f == 0) {
 			NOP();
 		} else {
@@ -102,20 +106,22 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void INCF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
 		// increment f
-		f += 1;
+		fContent++;
 		// set zero flag when f == 0
 		checkZ(f);
-		setRegister(d, f);
+		setRegister(d, fContent, f);
 	}
 
 	// increment f, skip if 0
 	public static void INCFSZ(int hexInt) {
-		f = hexInt & bitmask[0];
-		d = hexInt & bitmask[1];
+		f = hexInt & bitmask[0]; // select f out of the hexInt
+		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
 		// increment f
-		f += 1;
-		setRegister(d, f);
+		fContent += 1;
+		setRegister(d, fContent, f);
 		if (f == 0) {
 			NOP();
 		} else {
@@ -125,30 +131,33 @@ public class ByteOrientedOperations { // operations that start with 00
 
 	// inclusive or w with f
 	public static void IORWF(int hexInt) {
-		f = hexInt & bitmask[0];
-		d = hexInt & bitmask[1];
-		w = getW();
+		f = hexInt & bitmask[0]; // select f out of the hexInt
+		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
+		int w = getW();
 		// or'ing w with f
-		w = w | f;
+		w = w | fContent;
 		// set zero flag when f == 0
-		checkZ(f);
-		setRegister(d, f);
+		checkZ(fContent);
+		setRegister(d, fContent, f);
 	}
 
 	// move f
 	public static void MOVF(int hexInt) {
-		f = hexInt & bitmask[0];
-		d = hexInt & bitmask[1];
+		f = hexInt & bitmask[0]; // select f out of the hexInt
+		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
 		// set zero flag when f == 0
-		checkZ(f);
-		setF(f);
+		checkZ(fContent);
+		setRegisterContent(fContent, f);
 		// d = 1 is useful to test a file register since status flag z is affected
 	}
 
 	// move w to f
 	public static void MOVWF(int hexInt) {
-		w = getW();
-		setF(w);
+		f = hexInt & bitmask[0]; // select f out of the hexInt
+		int w = getW();
+		setRegisterContent(w, f);
 	}
 
 	// no operation
@@ -156,103 +165,128 @@ public class ByteOrientedOperations { // operations that start with 00
 		// nothing
 	}
 
-	// TODO rotate left f through carry
+	// rotate left f through carry
 	public static void RLF(int hexInt) {
-		f = hexInt & bitmask[0];
-		d = hexInt & bitmask[1];
-		rotated = f << 1;
+		f = hexInt & bitmask[0]; // select f out of the hexInt
+		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
+		int temp = fContent & 0b100000000;
+		rotated = fContent << 1;
 		if (getC() == 1) {
-			// TODO
-		} else {
-			// TODO
+			rotated++;
+			setC(0);
 		}
-		setRegister(d, f);
+		if (temp != 0) {
+			setC(1);
+			rotated = rotated & 0b11111111;
+		}
+		fContent = rotated;
+		setRegister(d, fContent, f);
 	}
 
-	// TODO rotate right f through carry
+	// rotate right f through carry
 	public static void RRF(int hexInt) {
-		f = hexInt & bitmask[0];
-		d = hexInt & bitmask[1];
+		f = hexInt & bitmask[0]; // select f out of the hexInt
+		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
+		int temp = fContent & 0b1;
 		rotated = f >>> 1;
 		if (getC() == 1) {
-			// TODO
-		} else {
-			// TODO
+			rotated = rotated | 0b10000000;
+			setC(0);
 		}
-		setRegister(d, f);
+		if (temp != 0) {
+			setC(1);
+		}
+		fContent = rotated;
+		setRegister(d, fContent, f);
 	}
 
 	// subtract w from literal
 	public static void SUBWF(int hexInt) {
-		f = hexInt & bitmask[0];
-		d = hexInt & bitmask[1];
-		w = getW();
+		f = hexInt & bitmask[0]; // select f out of the hexInt
+		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
+		int w = getW();
 		// check digit carry
-		int dF = (0x08 & f) >>> 3;
+		int dF = (0x08 & fContent) >>> 3;
 		int dW = (0x08 & w) >>> 3;
 		if ((dF & dW) != 0) {
 			setDC(1);
 		} else {
 			setDC(0);
 		}
-		// subtracting f with w
-		f -= w;
+		// subtracting fContent with w
+		fContent -= w;
 		// check if k is negative
-		if ((f & 0x40) != 0) {
-			setC(0); // when f is negative
+		if ((fContent & 0x40) != 0) {
+			setC(0); // when fContent is negative
 		} else {
-			setC(1); // when f is positive
+			setC(1); // when fContent is positive
 		}
-		// set zero flag when w == 0
-		checkZ(w);
-		setRegister(d, w);
+		// set zero flag when fContent == 0
+		checkZ(fContent);
+		setRegister(d, w, f);
 	}
 
 	// swap nibbles in f
 	public static void SWAPF(int hexInt) {
-		f = hexInt & bitmask[0];
-		d = hexInt & bitmask[1];
-		int bit1 = (f & 0x0F) << 3; // bit 3 ... 0 bits in f
-		int bit2 = (f & 0x70) >>> 4; // bit 6 ... 4 in f
-		f = bit1 | bit2;
-		setRegister(d, f);
+		f = hexInt & bitmask[0]; // select f out of the hexInt
+		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
+		int bit1 = (f & 0x0F) << 3; // bit 3 ... 0 bits in fContent
+		int bit2 = (f & 0x70) >>> 4; // bit 6 ... 4 in fContent
+		fContent = bit1 | bit2;
+		setRegister(d, fContent, f);
 	}
 
 	// exclusive or w with f
 	public static void XORWF(int hexInt) {
-		f = hexInt & bitmask[0];
-		d = hexInt & bitmask[1];
-		w = getW();
-		// xor'ing f with w
-		f = f ^ w;
-		// set zero flag when f == 0
-		checkZ(f);
-		setRegister(d, f);
+		f = hexInt & bitmask[0]; // select f out of the hexInt
+		d = hexInt & bitmask[1]; // select d out of the hexInt
+		int fContent = getRegisterContent(f);
+		int wContent = getW();
+		// xor'ing fContent with w
+		fContent = fContent ^ wContent;
+		// set zero flag when fContent == 0
+		checkZ(fContent);
+		setRegister(d, fContent, f);
 	}
 
-	// clear watchdog timer
+	// TODO clear watchdog timer
 	public static void CLRWDT() {
-		// TODO ????????????????
+		// WDT (watchdog timer) = 00h
+		// WDT prescaler = 0
+		// !TO = 1
+		// !PD = 1
 	}
 
+	// TODO return from interrupt
 	public static void RETFIE() {
-		// TODO
+		// return from interrupt
+		// PC (programm counter) = TOS (top of the stack)
+		// GIE (global interrupt enable bit) = 1
+
 	}
 
+	// return from subroutine
 	public static void RETURN() {
-		// TODO
+		// PC (programm counter) = TOS (top of the stack)
 	}
 
 	public static void SLEEP() {
-		// TODO
+		// WDT (watchdog timer) = 00h
+		// WDT prescaler = 0
+		// !TO = 1
+		// !PD = 0
 	}
 
-	public static void setRegister(int d, int w) {
+	public static void setRegister(int d, int content, int f) {
 		if (d == 0) {
-			setW(w);
+			setW(content);
 		} else {
-			// store f back in register f
-			setF(w);
+			// store content in register f
+			setRegisterContent(content, f);
 		}
 
 	}
@@ -300,7 +334,12 @@ public class ByteOrientedOperations { // operations that start with 00
 		return 0;
 	}
 
-	private static void setF(int f) {
+	public static int getRegisterContent(int f) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private static void setRegisterContent(int fContent, int f) {
 		// TODO Auto-generated method stub
 
 	}
