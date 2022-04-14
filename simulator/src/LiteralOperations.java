@@ -7,7 +7,7 @@ public class LiteralOperations { // operations that start with 11
 	static int bitmask = 0xFF; // 00 0000 1111 1111
 	static int k;
 
-	// add literal and w
+	// add literal and w 
 	public static void ADDLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		int wContent = getW();
