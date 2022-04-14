@@ -21,6 +21,7 @@ public class fileReader {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
+			@SuppressWarnings("rawtypes")
 			ArrayList[] temp=readFileLines("C:\\Users\\johan\\Documents\\SS2022\\Rechnerarchitektur\\TestProg_PicSim_20210420\\TPicSim1.LST");
 			System.out.println(temp[0]);
 			System.out.println(temp[1]);
@@ -41,6 +42,7 @@ public class fileReader {
 	 * @param filepath
 	 * @return {lines,lineswithcode,code,codeString} of file as ArrayList[]
 	 */
+	@SuppressWarnings("rawtypes")
 	public static ArrayList[] readFileLines(String filepath) throws FileNotFoundException, IOException{
 		
 		File fp = new File(filepath);
