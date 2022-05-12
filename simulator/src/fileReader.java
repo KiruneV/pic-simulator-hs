@@ -15,26 +15,35 @@ import java.util.ArrayList;
  */
 public class fileReader {
 
+	public static ArrayList[] linesCodeLineswithcodeCodestring;
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		try {
-			@SuppressWarnings("rawtypes")
-			ArrayList[] temp=readFileLines("C:\\Users\\johan\\Documents\\SS2022\\Rechnerarchitektur\\TestProg_PicSim_20210420\\TPicSim1.LST");
-			System.out.println(temp[0]);
-			System.out.println(temp[1]);
-			System.out.println(temp[2]);
-			System.out.println(temp[3]);
+		
+			ArrayList[] temp;
 			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+				fileReader reader=new fileReader();
+				try {
+					temp = reader.readFileLines("C:\\Users\\johan\\Documents\\SS2022\\Rechnerarchitektur\\TestProg_PicSim_20210420\\TPicSim1.LST");
+					System.out.println(temp[0]);
+					System.out.println(temp[1]);
+					System.out.println(temp[2]);
+					System.out.println(temp[3]);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				
+			
+			
+			
+		
 	}
 
 	/**
@@ -43,15 +52,15 @@ public class fileReader {
 	 * @return {lines,lineswithcode,code,codeString} of file as ArrayList[]
 	 */
 	@SuppressWarnings("rawtypes")
-	public static ArrayList[] readFileLines(String filepath) throws FileNotFoundException, IOException{
+	public ArrayList[] readFileLines(String filepath) throws FileNotFoundException, IOException{
 		
 		File fp = new File(filepath);
 		FileReader fr = new FileReader(fp);
 		BufferedReader br = new BufferedReader(fr);
 
 		ArrayList<String> lines = new ArrayList<>();
-		ArrayList<Integer> code = new ArrayList<>();
 		ArrayList<Integer> lineswithcode = new ArrayList<>();
+		ArrayList<Integer> code = new ArrayList<>();
 		ArrayList<String> codeString = new ArrayList<>();
 		ArrayList[] x = new ArrayList[]{lines,lineswithcode,code,codeString};
 		String line;
@@ -68,6 +77,7 @@ public class fileReader {
 		}
 
 		fr.close();
+		linesCodeLineswithcodeCodestring=x;
 		return x;
 	}
 

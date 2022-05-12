@@ -17,13 +17,32 @@ import javax.swing.JFileChooser;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.Action;
+import java.awt.Insets;
+import javax.swing.JTextField;
+import javax.swing.JSlider;
+import javax.swing.JScrollBar;
+import javax.swing.JLabel;
+import javax.swing.JToggleButton;
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.border.MatteBorder;
+import java.awt.Color;
+import javax.swing.JPanel;
+import java.awt.Font;
 
 public class ApplicationGui {
 
 	private JFrame frame;
 	private final Action action = new SwingAction();
+	private JTable table;
+	private JTable table_1;
+	public fileReader fileread;
+	public DefaultTableModel tableModel;
 
 	/**
 	 * Launch the application.
@@ -52,8 +71,9 @@ public class ApplicationGui {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 759, 559);
+		frame.setBounds(100, 100, 986, 728);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -66,35 +86,163 @@ public class ApplicationGui {
 		mntmNewMenuItem.setAction(action);
 		mnNewMenu.add(mntmNewMenuItem);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[]{0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
+		
+		JLabel lblNewLabel = new JLabel("RAM");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 2;
+		frame.getContentPane().add(lblNewLabel, gbc_lblNewLabel);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
+		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane_1.gridx = 0;
+		gbc_scrollPane_1.gridy = 3;
+		frame.getContentPane().add(scrollPane_1, gbc_scrollPane_1);
+		
+		table = new JTable();
+		table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		table.setToolTipText("RAM");
+		scrollPane_1.setViewportView(table);
+		table.setBorder(null);
+		table.setFillsViewportHeight(true);
+		table.setCellSelectionEnabled(true);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{"08", null, null, null, null, null, null, null, null},
+				{"10", null, null, null, null, null, null, null, null},
+				{"18", null, null, null, null, null, null, null, null},
+				{"20", null, null, null, null, null, null, null, null},
+				{"28", null, null, null, null, null, null, null, null},
+				{"30", null, null, null, null, null, null, null, null},
+				{"38", null, null, null, null, null, null, null, null},
+				{"40", null, null, null, null, null, null, null, null},
+				{"48", null, null, null, null, null, null, null, null},
+				{"50", null, null, null, null, null, null, null, null},
+				{"58", null, null, null, null, null, null, null, null},
+				{"60", null, null, null, null, null, null, null, null},
+				{"68", null, null, null, null, null, null, null, null},
+				{"70", null, null, null, null, null, null, null, null},
+				{"78", null, null, null, null, null, null, null, null},
+				{"80", null, null, null, null, null, null, null, null},
+				{"88", null, null, null, null, null, null, null, null},
+				{"90", null, null, null, null, null, null, null, null},
+				{"98", null, null, null, null, null, null, null, null},
+				{"A0", null, null, null, null, null, null, null, null},
+				{"A8", null, null, null, null, null, null, null, null},
+				{"B0", null, null, null, null, null, null, null, null},
+				{"B8", null, null, null, null, null, null, null, null},
+				{"C0", null, null, null, null, null, null, null, null},
+				{"C8", null, null, null, null, null, null, null, null},
+				{"D0", null, null, null, null, null, null, null, null},
+				{"D8", null, null, null, null, null, null, null, null},
+				{"E0", null, null, null, null, null, null, null, null},
+				{"E8", null, null, null, null, null, null, null, null},
+				{"F0", null, null, null, null, null, null, null, null},
+				{"F8", null, null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"0x", "00", "01", "02", "03", "04", "05", "06", "07"
+			}
+		));
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		table.getColumnModel().getColumn(0).setMaxWidth(40);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(1).setPreferredWidth(30);
+		table.getColumnModel().getColumn(1).setMaxWidth(30);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(2).setPreferredWidth(30);
+		table.getColumnModel().getColumn(2).setMaxWidth(40);
+		table.getColumnModel().getColumn(3).setResizable(false);
+		table.getColumnModel().getColumn(3).setPreferredWidth(30);
+		table.getColumnModel().getColumn(3).setMaxWidth(40);
+		table.getColumnModel().getColumn(4).setResizable(false);
+		table.getColumnModel().getColumn(4).setPreferredWidth(30);
+		table.getColumnModel().getColumn(4).setMaxWidth(40);
+		table.getColumnModel().getColumn(5).setResizable(false);
+		table.getColumnModel().getColumn(5).setPreferredWidth(30);
+		table.getColumnModel().getColumn(5).setMaxWidth(40);
+		table.getColumnModel().getColumn(6).setResizable(false);
+		table.getColumnModel().getColumn(6).setPreferredWidth(30);
+		table.getColumnModel().getColumn(6).setMaxWidth(40);
+		table.getColumnModel().getColumn(7).setResizable(false);
+		table.getColumnModel().getColumn(7).setPreferredWidth(30);
+		table.getColumnModel().getColumn(7).setMaxWidth(40);
+		table.getColumnModel().getColumn(8).setResizable(false);
+		table.getColumnModel().getColumn(8).setPreferredWidth(30);
+		table.getColumnModel().getColumn(8).setMaxWidth(40);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 7;
-		gbc_scrollPane.gridy = 1;
+		gbc_scrollPane.gridx = 1;
+		gbc_scrollPane.gridy = 3;
 		frame.getContentPane().add(scrollPane, gbc_scrollPane);
 		
-		JTextPane textPane = new JTextPane();
-		scrollPane.setViewportView(textPane);
+		JScrollBar scrollBar = new JScrollBar();
+		scrollPane.setRowHeaderView(scrollBar);
+		
+		tableModel = new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"Breakpoint", "Zeile"
+				});
+		table_1 = new JTable(tableModel);
+		
+		
+		scrollPane.setViewportView(table_1);
+		
+		JLabel lblNewLabel_1 = new JLabel("Datei");
+		scrollPane.setColumnHeaderView(lblNewLabel_1);
 		
 	}
 	
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
-			putValue(NAME, "SwingAction");
+			putValue(NAME, "Load File");
 			putValue(SHORT_DESCRIPTION, "Some short description");
 		}
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser fileChooser = new JFileChooser();
 			int result = fileChooser.showOpenDialog(frame);
+			
 			if (result == JFileChooser.APPROVE_OPTION) {
+				for (int i = tableModel.getRowCount()-1; i >=0 ; i--) {
+					tableModel.removeRow(i);
+				}
+				
 			    File selectedFile = fileChooser.getSelectedFile();
 			    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+			    try {
+					fileread.readFileLines(selectedFile.getAbsolutePath());
+					
+					for (int i = 0; i < fileread.linesCodeLineswithcodeCodestring[0].size(); i++) {
+						//System.out.println(fileread.linesCodeLineswithcodeCodestring[0].get(i));
+						Object breaker=null;
+						Object[]data= {breaker,fileread.linesCodeLineswithcodeCodestring[0].get(i)};
+						tableModel.addRow(data);
+					}
+					
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			    
+			    
+			    
 			}
 		}
 	}
