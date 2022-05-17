@@ -34,6 +34,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import javax.swing.JPanel;
 import java.awt.Font;
+import javax.swing.JCheckBox;
 
 public class ApplicationGui {
 
@@ -192,18 +193,28 @@ public class ApplicationGui {
 		scrollPane.setRowHeaderView(scrollBar);
 		
 		tableModel = new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"Breakpoint", "Zeile"
-				});
-		table_1 = new JTable(tableModel);
+				new Object[][] {},new String[] {"Breakpoint", "Zeile"
+				}) 
+				{@Override public Class<?> getColumnClass(int column) {
+	        return getValueAt(0, column).getClass();
+	      }
+			}
+	;
 		
+		table_1 = new JTable(tableModel);
+		table_1.getColumnModel().getColumn(0).setMaxWidth(75);
 		
 		scrollPane.setViewportView(table_1);
 		
 		JLabel lblNewLabel_1 = new JLabel("Datei");
 		scrollPane.setColumnHeaderView(lblNewLabel_1);
+		
+//		JCheckBox chckbxNewCheckBox = new JCheckBox("New check box");
+//		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
+//		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 5);
+//		gbc_chckbxNewCheckBox.gridx = 0;
+//		gbc_chckbxNewCheckBox.gridy = 4;
+//		frame.getContentPane().add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
 		
 	}
 	
@@ -214,6 +225,7 @@ public class ApplicationGui {
 		}
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser fileChooser = new JFileChooser();
+			fileread=new fileReader();
 			int result = fileChooser.showOpenDialog(frame);
 			
 			if (result == JFileChooser.APPROVE_OPTION) {
@@ -226,11 +238,17 @@ public class ApplicationGui {
 			    try {
 					fileread.readFileLines(selectedFile.getAbsolutePath());
 					
-					for (int i = 0; i < fileread.linesCodeLineswithcodeCodestring[0].size(); i++) {
+					for (int i = 0; i < fileread.linesCodeLineswithcodeCodestring[4].size(); i++) {
 						//System.out.println(fileread.linesCodeLineswithcodeCodestring[0].get(i));
-						Object breaker=null;
-						Object[]data= {breaker,fileread.linesCodeLineswithcodeCodestring[0].get(i)};
+						//Object breaker=new JCheckBox();
+						Object[]data= {false,fileread.linesCodeLineswithcodeCodestring[4].get(i)};
 						tableModel.addRow(data);
+						//table_1.getModel().getValueAt(i, 0);
+						//JCheckBox chckbxNewCheckBox = new JCheckBox();
+						//table_1.getColumn("Breakpoint").setCellEditor(new Button);
+//						table.getColumn("Button").setCellRenderer(new ButtonRenderer());
+//					    table.getColumn("Button").setCellEditor(
+//					        new ButtonEditor(new JCheckBox()));
 					}
 					
 				} catch (FileNotFoundException e1) {

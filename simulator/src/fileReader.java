@@ -62,7 +62,8 @@ public class fileReader {
 		ArrayList<Integer> lineswithcode = new ArrayList<>();
 		ArrayList<Integer> code = new ArrayList<>();
 		ArrayList<String> codeString = new ArrayList<>();
-		ArrayList[] x = new ArrayList[]{lines,lineswithcode,code,codeString};
+
+		ArrayList<String> codeStringZeile = new ArrayList<>();
 		String line;
 		int counter =0;
 		while((line = br.readLine()) != null) { 
@@ -71,11 +72,13 @@ public class fileReader {
 				code.add(Integer.decode("0x"+line.substring(5, 9)));
 				codeString.add("0x"+line.substring(5, 9));
 				lineswithcode.add(counter);
+				codeStringZeile.add(line);
 			}
 			
 			counter++;
 		}
 
+		ArrayList[] x = new ArrayList[]{lines,code,lineswithcode,codeString,codeStringZeile};
 		fr.close();
 		linesCodeLineswithcodeCodestring=x;
 		return x;
