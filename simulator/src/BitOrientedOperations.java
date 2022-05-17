@@ -11,29 +11,29 @@ public class BitOrientedOperations { // operations that start with 01
 	public static void BCF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
-		int fContent = getRegisterContent(f);
+		int fContent = RAM.getRegisterContent(f);
 		int mask = 0b01 << b;
 		// clear bit b in f
 		fContent = fContent & ~mask;
-		setRegisterContent(fContent, f);
+		RAM.setRegisterContent(fContent, f);
 	}
 
 	// bit set f
 	public static void BSF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
-		int fContent = getRegisterContent(f);
+		int fContent = RAM.getRegisterContent(f);
 		int mask = 0b01 << b;
 		// set bit b in f
 		fContent = fContent | mask;
-		setRegisterContent(fContent, f);
+		RAM.setRegisterContent(fContent, f);
 	}
 
 	// bit test, skip if clear
 	public static void BTFSC(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
-		int fContent = getRegisterContent(f);
+		int fContent = RAM.getRegisterContent(f);
 		int mask = 0b01 << b;
 		// check if bit b in f is null
 		if ((fContent & mask) == 0) {
@@ -47,76 +47,13 @@ public class BitOrientedOperations { // operations that start with 01
 	public static void BTFSS(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
-		int fContent = getRegisterContent(f);
+		int fContent = RAM.getRegisterContent(f);
 		int mask = 0b01 << b;
 		// check if bit b in f is not null
 		if ((fContent & mask) != 0) {
 			NOP();
 			// dont do the next operation
 		}
-	}
-
-	public static void setRegister(int d, int content, int f) {
-		if (d == 0) {
-			setW(content);
-		} else {
-			// store content in register f
-			setRegisterContent(content, f);
-		}
-
-	}
-
-	// set zero flag
-	public static void setZ(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
-	// check zero flag
-	public static void checkZ(int i) {
-		if (i == 0) {
-			setZ(1);
-		}
-		setZ(0);
-	}
-
-	// set carry bit
-	public static void setC(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
-	// get carry bit
-	public static int getC() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	// set digit carry
-	public static void setDC(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
-	// set w register
-	public static void setW(int w) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public static int getW() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public static void setRegisterContent(int fContent, int f) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public static int getRegisterContent(int f) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	public static void NOP() {
