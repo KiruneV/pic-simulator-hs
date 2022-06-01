@@ -1,31 +1,19 @@
-import java.awt.EventQueue;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import java.awt.Insets;
-import javax.swing.*;
-import javax.swing.JScrollBar;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JPanel;
 import java.awt.Font;
 
-import org.apache.commons.lang3.*;
 import org.apache.commons.lang3.time.StopWatch;
 import javax.swing.border.LineBorder;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -222,24 +210,23 @@ public class ApplicationGui {
 										.addGroup(groupLayout.createSequentialGroup()
 											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 												.addGroup(groupLayout.createSequentialGroup()
-													.addContainerGap()
-													.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)
-													.addPreferredGap(ComponentPlacement.RELATED)
-													.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 644, GroupLayout.PREFERRED_SIZE))
-												.addGroup(groupLayout.createSequentialGroup()
-													.addContainerGap()
-													.addComponent(lblNewLabel)
-													.addGap(186)
-													.addComponent(lblNewLabel_1))
-												.addGroup(groupLayout.createSequentialGroup()
 													.addGap(7)
 													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 														.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 															.addGap(4)
-															.addComponent(btnNewButton)))))
-											.addContainerGap(308, Short.MAX_VALUE))
+															.addComponent(btnNewButton))))
+												.addGroup(groupLayout.createSequentialGroup()
+													.addContainerGap()
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+														.addComponent(lblNewLabel)
+														.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE))
+													.addPreferredGap(ComponentPlacement.RELATED)
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+														.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 644, GroupLayout.PREFERRED_SIZE)
+														.addComponent(lblNewLabel_1))))
+											.addContainerGap(860, Short.MAX_VALUE))
 								);
 								groupLayout.setVerticalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
@@ -252,15 +239,15 @@ public class ApplicationGui {
 													.addComponent(btnNewButton)))
 											.addGap(4)
 											.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
-											.addGap(60)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 												.addComponent(lblNewLabel)
 												.addComponent(lblNewLabel_1))
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
-												.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
-												.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE))
-											.addContainerGap())
+											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+												.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
+												.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE))
+											.addGap(242))
 								);
 								frame.getContentPane().setLayout(groupLayout);
 
