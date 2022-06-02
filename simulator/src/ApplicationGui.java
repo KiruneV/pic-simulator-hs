@@ -1,5 +1,6 @@
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -17,15 +18,18 @@ import javax.swing.border.LineBorder;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+
 public class ApplicationGui {
 	public static StopWatch watch;
+	public static Stack8<Integer> stack8=new Stack8<Integer>(8);
 	private JFrame frame;
 	private final Action action = new SwingAction();
 	private static JTable table;
 	private static JTable table_1;
 	public fileReader fileread;
 	private final Action action_1 = new SwingAction_1();
-	private JTable table_2;
+	private static JTable table_2;
+	
 
 	/**
 	 * Launch the application.
@@ -53,6 +57,7 @@ public class ApplicationGui {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("serial")
 	private void initialize() {
 		watch=StopWatch.create();
 		
@@ -89,22 +94,24 @@ public class ApplicationGui {
 						table_2 = new JTable();
 						table_2.setModel(new DefaultTableModel(
 							new Object[][] {
-								{new Integer(0), null},
-								{new Integer(1), null},
-								{new Integer(2), null},
-								{new Integer(3), null},
-								{new Integer(4), null},
-								{new Integer(5), null},
-								{new Integer(6), null},
-								{new Integer(7), null},
+								{0, null},
+								{1, null},
+								{2, null},
+								{3, null},
+								{4, null},
+								{5, null},
+								{6, null},
+								{7, null},
 							},
 							new String[] {
 								"Nr", "Ringbuffer"
 							}
 						) {
+							@SuppressWarnings("rawtypes")
 							Class[] columnTypes = new Class[] {
 								Integer.class, Object.class
 							};
+							@SuppressWarnings({ "unchecked", "rawtypes" })
 							public Class getColumnClass(int columnIndex) {
 								return columnTypes[columnIndex];
 							}
@@ -251,7 +258,16 @@ public class ApplicationGui {
 								);
 								frame.getContentPane().setLayout(groupLayout);
 
-
+								refresh();
+	}
+	
+	public static void refresh() {
+		for (int i = 0; i < ((DefaultTableModel) table_2.getModel()).getRowCount(); i++) {
+			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
+		}
+		for (int i = 0; i <stack8.size(); i++) {
+			((DefaultTableModel) table_2.getModel()).setValueAt(stack8.elementAt(i), i, 1);
+		}
 	}
 
 	public static void changeselectedRow(int row) {
@@ -265,6 +281,7 @@ public class ApplicationGui {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "Load File");
@@ -285,18 +302,9 @@ public class ApplicationGui {
 				try {
 					fileread.readFileLines(selectedFile.getAbsolutePath());
 
-					for (int i = 0; i < fileread.linesCodeLineswithcodeCodestring[4].size(); i++) {
-						//System.out.println(fileread.linesCodeLineswithcodeCodestring[0].get(i));
-						//Object breaker=new JCheckBox();
-						Object[]data= {false,false,fileread.linesCodeLineswithcodeCodestring[4].get(i)};
+					for (int i = 0; i < fileReader.linesCodeLineswithcodeCodestring[4].size(); i++) {
+						Object[]data= {false,false,fileReader.linesCodeLineswithcodeCodestring[4].get(i)};
 						((DefaultTableModel) table_1.getModel()).addRow(data);
-
-						//table_1.getModel().getValueAt(i, 0);
-						//JCheckBox chckbxNewCheckBox = new JCheckBox();
-						//table_1.getColumn("Breakpoint").setCellEditor(new Button);
-						//						table.getColumn("Button").setCellRenderer(new ButtonRenderer());
-						//					    table.getColumn("Button").setCellEditor(
-						//					        new ButtonEditor(new JCheckBox()));
 					}
 
 				} catch (FileNotFoundException e1) {
@@ -310,6 +318,7 @@ public class ApplicationGui {
 			}
 		}
 	}
+	@SuppressWarnings("serial")
 	private class SwingAction_1 extends AbstractAction {
 		int i=0;
 		public SwingAction_1() {
@@ -318,7 +327,9 @@ public class ApplicationGui {
 		}
 		public void actionPerformed(ActionEvent e) {
 			changeselectedRow(i++);
-			System.out.println("hewwo");
+			//stack8.push(i);
+			refresh();
+			System.out.println("hewwo"+stack8.capacity());
 		}
 	}
 }
