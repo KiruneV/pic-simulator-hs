@@ -262,9 +262,9 @@ public class ApplicationGui {
 	}
 	
 	public static void refresh() {
-		for (int i = 0; i < ((DefaultTableModel) table_2.getModel()).getRowCount(); i++) {
-			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
-		}
+//		for (int i = 0; i < stack8.size(); i++) {
+//			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
+//		}
 		for (int i = 0; i <stack8.size(); i++) {
 			((DefaultTableModel) table_2.getModel()).setValueAt(stack8.elementAt(i), i, 1);
 		}
@@ -327,9 +327,9 @@ public class ApplicationGui {
 		}
 		public void actionPerformed(ActionEvent e) {
 			changeselectedRow(i++);
-			//stack8.push(i);
+			stack8.push(i);
 			refresh();
-			System.out.println("hewwo"+stack8.capacity());
+			System.out.println("hewwo"+stack8.size());
 		}
 	}
 }
