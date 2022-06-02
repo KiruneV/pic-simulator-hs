@@ -7,8 +7,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="ini4j-0.5.4/ini4j-0.5.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/johan/git/pic-simulator-hs/simulator/commons-lang3-3.12.0/commons-lang3-3.12.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/johan/git/pic-simulator-hs/simulator/ini4j-0.5.4/jgoodies-common-1.8.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/johan/git/pic-simulator-hs/simulator/ini4j-0.5.4/miglayout15-swing.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="commons-lang3-3.12.0/commons-lang3-3.12.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -9,6 +9,7 @@ public class RAM {
 			EEADR = 0x09, PCLATH = 0x0A, INTCON = 0x0B, OPTION = 0x81, TRISA = 0x85, TRISB = 0x86, EECON1 = 0x88,
 			EECON2 = 0x89;
 	static int bank[] = new int[0xFF];
+	static int w;
 
 	public RAM() {
 		// bank 0 (00h - 7Fh)
@@ -681,14 +682,13 @@ public class RAM {
 	}
 
 	// set w register
-	public static void setW(int w) {
-		// TODO Auto-generated method stub
-
+	public static void setW(int oW) {
+		w = oW;
 	}
 
 	public static int getW() {
 		// TODO Auto-generated method stub
-		return 0;
+		return w;
 	}
 
 	public static int getRegisterContent(int f) {
@@ -703,11 +703,17 @@ public class RAM {
 			// store content in register f
 			setRegisterContent(content, f);
 		}
-
 	}
 
 	public static void setRegisterContent(int fContent, int f) {
-		bank[f] = fContent;
+		if (f <= 0x7F) {
+			if (getIRP() == 1) { // access bank 1
+				f += 0x80;
+			}
+			bank[f] = fContent;
+		} else {
+			System.out.println("setRegisterContent falsch");
+		}
 	}
 
 }
