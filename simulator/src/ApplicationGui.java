@@ -17,11 +17,13 @@ import org.apache.commons.lang3.time.StopWatch;
 import javax.swing.border.LineBorder;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 
 public class ApplicationGui {
-	public static StopWatch watch;
-	public static Stack8<Integer> stack8=new Stack8<Integer>(8);
 	private JFrame frame;
 	private final Action action = new SwingAction();
 	private static JTable table;
@@ -29,6 +31,7 @@ public class ApplicationGui {
 	public fileReader fileread;
 	private final Action action_1 = new SwingAction_1();
 	private static JTable table_2;
+	private JTable table_3;
 	
 
 	/**
@@ -59,7 +62,7 @@ public class ApplicationGui {
 	 */
 	@SuppressWarnings("serial")
 	private void initialize() {
-		watch=StopWatch.create();
+		globalthings.stopwatch=StopWatch.create();
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1207, 1070);
@@ -94,35 +97,28 @@ public class ApplicationGui {
 						table_2 = new JTable();
 						table_2.setModel(new DefaultTableModel(
 							new Object[][] {
-								{0, null},
-								{1, null},
-								{2, null},
-								{3, null},
-								{4, null},
-								{5, null},
-								{6, null},
-								{7, null},
+								{new Integer(0), null},
+								{new Integer(1), null},
+								{new Integer(2), null},
+								{new Integer(3), null},
+								{new Integer(4), null},
+								{new Integer(5), null},
+								{new Integer(6), null},
+								{new Integer(7), null},
 							},
 							new String[] {
-								"Nr", "Ringbuffer"
+								"Nr", "Stack"
 							}
 						) {
-							@SuppressWarnings("rawtypes")
 							Class[] columnTypes = new Class[] {
 								Integer.class, Object.class
 							};
-							@SuppressWarnings({ "unchecked", "rawtypes" })
 							public Class getColumnClass(int columnIndex) {
 								return columnTypes[columnIndex];
 							}
-							boolean[] columnEditables = new boolean[] {
-								false, false
-							};
-							public boolean isCellEditable(int row, int column) {
-								return columnEditables[column];
-							}
 						});
 						table_2.getColumnModel().getColumn(0).setResizable(false);
+						table_2.getColumnModel().getColumn(0).setPreferredWidth(65);
 						table_2.getColumnModel().getColumn(0).setMaxWidth(65);
 						table_2.getColumnModel().getColumn(1).setResizable(false);
 						table_2.getColumnModel().getColumn(1).setMaxWidth(120);
@@ -211,21 +207,58 @@ public class ApplicationGui {
 						table_1.getColumnModel().getColumn(1).setMaxWidth(60);
 						
 								scrollPane.setViewportView(table_1);
+								
+								JScrollPane scrollPane_3 = new JScrollPane();
+								
+								JPanel panel_1 = new JPanel();
+								
+								JLabel lblNewLabel_2 = new JLabel("Pin Port A");
+								
+								JLabel lblNewLabel_2_1 = new JLabel("Pin Port A");
+								
+								JPanel panel_1_1 = new JPanel();
+								
+								JCheckBox chckbxNewCheckBox_2_1 = new JCheckBox("0");
+								panel_1_1.add(chckbxNewCheckBox_2_1);
+								
+								JCheckBox chckbxNewCheckBox_5 = new JCheckBox("1");
+								panel_1_1.add(chckbxNewCheckBox_5);
+								
+								JCheckBox chckbxNewCheckBox_1_1 = new JCheckBox("2");
+								panel_1_1.add(chckbxNewCheckBox_1_1);
+								
+								JCheckBox chckbxNewCheckBox_3_1 = new JCheckBox("3");
+								panel_1_1.add(chckbxNewCheckBox_3_1);
+								
+								JCheckBox chckbxNewCheckBox_4_1 = new JCheckBox("4");
+								panel_1_1.add(chckbxNewCheckBox_4_1);
 								GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 								groupLayout.setHorizontalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
 										.addGroup(groupLayout.createSequentialGroup()
-											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+											.addGap(10)
+											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 												.addGroup(groupLayout.createSequentialGroup()
 													.addGap(7)
-													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-														.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+														.addGroup(groupLayout.createSequentialGroup()
+															.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+															.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+															.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
+															.addGap(18)
+															.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+																.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+																.addComponent(lblNewLabel_2_1, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+																.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+															.addGap(61))
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 															.addGap(4)
-															.addComponent(btnNewButton))))
+															.addComponent(btnNewButton)))
+													.addGap(248))
 												.addGroup(groupLayout.createSequentialGroup()
-													.addContainerGap()
+													.addPreferredGap(ComponentPlacement.RELATED)
 													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 														.addComponent(lblNewLabel)
 														.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE))
@@ -233,7 +266,7 @@ public class ApplicationGui {
 													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 														.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 644, GroupLayout.PREFERRED_SIZE)
 														.addComponent(lblNewLabel_1))))
-											.addContainerGap(860, Short.MAX_VALUE))
+											.addGap(289))
 								);
 								groupLayout.setVerticalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
@@ -245,7 +278,18 @@ public class ApplicationGui {
 													.addGap(5)
 													.addComponent(btnNewButton)))
 											.addGap(4)
-											.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
+											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+												.addGroup(groupLayout.createSequentialGroup()
+													.addComponent(lblNewLabel_2)
+													.addGap(3)
+													.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+													.addGap(4)
+													.addComponent(lblNewLabel_2_1)
+													.addPreferredGap(ComponentPlacement.RELATED)
+													.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
+												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+													.addComponent(scrollPane_3, 0, 0, Short.MAX_VALUE)
+													.addComponent(scrollPane_2, GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)))
 											.addPreferredGap(ComponentPlacement.UNRELATED)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 												.addComponent(lblNewLabel)
@@ -256,6 +300,61 @@ public class ApplicationGui {
 												.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE))
 											.addGap(242))
 								);
+								
+								JCheckBox chckbxNewCheckBox_6 = new JCheckBox("5");
+								panel_1_1.add(chckbxNewCheckBox_6);
+								
+								JCheckBox chckbxNewCheckBox_7 = new JCheckBox("6");
+								panel_1_1.add(chckbxNewCheckBox_7);
+								
+								JCheckBox chckbxNewCheckBox_8 = new JCheckBox("7");
+								panel_1_1.add(chckbxNewCheckBox_8);
+								
+								JCheckBox chckbxNewCheckBox_0 = new JCheckBox("0");
+								chckbxNewCheckBox_0.addChangeListener(new ChangeListener() {
+									public void stateChanged(ChangeEvent e) {
+										
+										refresh();
+									}
+								});
+								panel_1.add(chckbxNewCheckBox_0);
+								
+								JCheckBox chckbxNewCheckBox = new JCheckBox("1");
+								panel_1.add(chckbxNewCheckBox);
+								
+								JCheckBox chckbxNewCheckBox_1 = new JCheckBox("2");
+								panel_1.add(chckbxNewCheckBox_1);
+								
+								JCheckBox chckbxNewCheckBox_3 = new JCheckBox("3");
+								panel_1.add(chckbxNewCheckBox_3);
+								
+								JCheckBox chckbxNewCheckBox_4 = new JCheckBox("4");
+								panel_1.add(chckbxNewCheckBox_4);
+								
+								table_3 = new JTable();
+								table_3.setModel(new DefaultTableModel(
+									new Object[][] {
+										{"W-Rerister", null},
+										{"PCL", null},
+										{"PCLATH", null},
+										{"PC-Intern", null},
+										{"STATUS", null},
+										{"FSR", null},
+									},
+									new String[] {
+										"SFR+W", ""
+									}
+								) {
+									boolean[] columnEditables = new boolean[] {
+										false, false
+									};
+									public boolean isCellEditable(int row, int column) {
+										return columnEditables[column];
+									}
+								});
+								table_3.getColumnModel().getColumn(0).setResizable(false);
+								table_3.getColumnModel().getColumn(1).setResizable(false);
+								scrollPane_3.setViewportView(table_3);
 								frame.getContentPane().setLayout(groupLayout);
 
 								refresh();
@@ -265,9 +364,13 @@ public class ApplicationGui {
 //		for (int i = 0; i < stack8.size(); i++) {
 //			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
 //		}
-		for (int i = 0; i <stack8.size(); i++) {
-			((DefaultTableModel) table_2.getModel()).setValueAt(stack8.elementAt(i), i, 1);
+		for (int i = 0; i <globalthings.stack8.size(); i++) {
+			((DefaultTableModel) table_2.getModel()).setValueAt(globalthings.stack8.elementAt(i), i, 1);
 		}
+	}
+	
+	public static void sendDATA() {
+		
 	}
 
 	public static void changeselectedRow(int row) {
@@ -327,9 +430,11 @@ public class ApplicationGui {
 		}
 		public void actionPerformed(ActionEvent e) {
 			changeselectedRow(i++);
-			stack8.push(i);
+			globalthings.stack8.push(i);
 			refresh();
-			System.out.println("hewwo"+stack8.size());
+			System.out.println("hewwo"+globalthings.stack8.size());
 		}
 	}
+	
+	
 }
