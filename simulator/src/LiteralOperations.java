@@ -25,6 +25,8 @@ public class LiteralOperations { // operations that start with 11
 		if ((k & 0xF00) != 0) {
 			RAM.setC(1);
 			k = k & 0xFF; // so k is not > 0xFF
+		} else {
+			RAM.setC(0);
 		}
 		// set zero flag when k == 0
 		RAM.checkZ(k);
@@ -104,6 +106,7 @@ public class LiteralOperations { // operations that start with 11
 
 	// deleting
 	public static void RETURN() {
+		// ruft goto auf die oberste adresse vom stack auf (pop)
 	}
 
 }

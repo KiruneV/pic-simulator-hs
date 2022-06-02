@@ -173,9 +173,12 @@ public class RAM {
 	}
 
 	public static void setZ(int z) {
-		z = z | 0b11111011;
 		int newSTATUS = getSTATUS();
-		newSTATUS = newSTATUS & z;
+		if(z == 0) {
+			newSTATUS = newSTATUS & 0b11111011;
+		} else {
+			newSTATUS = newSTATUS | (z << 2);			
+		}
 		setSTATUS(newSTATUS);
 	}
 
@@ -183,8 +186,9 @@ public class RAM {
 	public static void checkZ(int i) {
 		if (i == 0) {
 			setZ(1);
+		} else {
+			setZ(0);
 		}
-		setZ(0);
 	}
 
 	public static int getDC() {
@@ -192,20 +196,27 @@ public class RAM {
 	}
 
 	public static void setDC(int dC) {
-		dC = dC | 0b11111101;
 		int newSTATUS = getSTATUS();
-		newSTATUS = newSTATUS & dC;
+		if(dC == 0) {
+			newSTATUS = newSTATUS & 0b11111101;
+		} else {
+			newSTATUS = newSTATUS | (dC << 1);			
+		}
 		setSTATUS(newSTATUS);
 	}
 
 	public static int getC() {
-		return getSTATUS() & 0b00000010;
+		return getSTATUS() & 0b00000001;
 	}
 
 	public static void setC(int c) {
-		c = c | 0b11111110;
 		int newSTATUS = getSTATUS();
-		newSTATUS = newSTATUS & c;
+		if(c == 0) {
+			c = c | 0b11111110;
+			newSTATUS = newSTATUS & c;
+		} else {
+			newSTATUS = newSTATUS | c;			
+		}
 		setSTATUS(newSTATUS);
 	}
 
@@ -693,7 +704,7 @@ public class RAM {
 
 	public static int getRegisterContent(int f) {
 		// TODO Auto-generated method stub
-		return 0;
+		return bank[f];
 	}
 
 	public static void setRegister(int d, int content, int f) {

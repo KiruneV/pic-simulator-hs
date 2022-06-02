@@ -4,7 +4,7 @@
  *
  */
 public class ByteOrientedOperations { // operations that start with 00
-	static int[] bitmask = { 0x7F, 0x40 };
+	static int[] bitmask = { 0x7F, 0x80 };
 	static int f, d, rotated;
 
 	// add w and f
@@ -68,7 +68,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		int fContent = RAM.getRegisterContent(f);
 		// complement f
-		fContent = ~fContent;
+		fContent = ~fContent & 0xFF;
 		// set zero flag when f == 0
 		RAM.checkZ(fContent);
 		// store f in register w (when d==0) or in f (when d==1)
