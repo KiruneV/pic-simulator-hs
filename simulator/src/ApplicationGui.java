@@ -21,6 +21,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 
 public class ApplicationGui {
@@ -32,6 +34,21 @@ public class ApplicationGui {
 	private final Action action_1 = new SwingAction_1();
 	private static JTable table_2;
 	private JTable table_3;
+	private JRadioButton DEBUGradio;
+	private JCheckBox chckbxNewCheckBox_B0;
+	private JCheckBox chckbxNewCheckBox_B1;
+	private JCheckBox chckbxNewCheckBox_B2;
+	private JCheckBox chckbxNewCheckBox_B3;
+	private JCheckBox chckbxNewCheckBox_B4;
+	private JCheckBox chckbxNewCheckBox_B5;
+	private JCheckBox chckbxNewCheckBox_B6;
+	private JCheckBox chckbxNewCheckBox_B7;
+	private JCheckBox chckbxNewCheckBox_A0;
+	private JCheckBox chckbxNewCheckBox_A1;
+	private JCheckBox chckbxNewCheckBox_A2;
+	private JCheckBox chckbxNewCheckBox_A3;
+	private JCheckBox chckbxNewCheckBox_A4;
+	
 	
 
 	/**
@@ -81,12 +98,30 @@ public class ApplicationGui {
 				JPanel panel = new JPanel();
 				
 				JButton btnNewButton_1 = new JButton("Start");
+				btnNewButton_1.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						startbutton();
+					}
+				});
 				panel.add(btnNewButton_1);
 				
 				JButton btnNewButton_2 = new JButton("Pause");
+				btnNewButton_2.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						pausebutton();
+					}
+				});
 				panel.add(btnNewButton_2);
 				
 				JButton btnNewButton_3 = new JButton("Reset Pic");
+				btnNewButton_3.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						resetbutton();
+					}
+				});
 				panel.add(btnNewButton_3);
 						
 								JButton btnNewButton = new JButton("select row test");
@@ -218,20 +253,63 @@ public class ApplicationGui {
 								
 								JPanel panel_1_1 = new JPanel();
 								
-								JCheckBox chckbxNewCheckBox_2_1 = new JCheckBox("0");
-								panel_1_1.add(chckbxNewCheckBox_2_1);
+								chckbxNewCheckBox_B0 = new JCheckBox("0");
+								chckbxNewCheckBox_B0.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1_1.add(chckbxNewCheckBox_B0);
 								
-								JCheckBox chckbxNewCheckBox_5 = new JCheckBox("1");
-								panel_1_1.add(chckbxNewCheckBox_5);
+								chckbxNewCheckBox_B1 = new JCheckBox("1");
+								chckbxNewCheckBox_B1.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1_1.add(chckbxNewCheckBox_B1);
 								
-								JCheckBox chckbxNewCheckBox_1_1 = new JCheckBox("2");
-								panel_1_1.add(chckbxNewCheckBox_1_1);
+								chckbxNewCheckBox_B2 = new JCheckBox("2");
+								chckbxNewCheckBox_B2.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1_1.add(chckbxNewCheckBox_B2);
 								
-								JCheckBox chckbxNewCheckBox_3_1 = new JCheckBox("3");
-								panel_1_1.add(chckbxNewCheckBox_3_1);
+								chckbxNewCheckBox_B3 = new JCheckBox("3");
+								chckbxNewCheckBox_B3.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1_1.add(chckbxNewCheckBox_B3);
 								
-								JCheckBox chckbxNewCheckBox_4_1 = new JCheckBox("4");
-								panel_1_1.add(chckbxNewCheckBox_4_1);
+								chckbxNewCheckBox_B4 = new JCheckBox("4");
+								chckbxNewCheckBox_B4.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1_1.add(chckbxNewCheckBox_B4);
+								
+								DEBUGradio = new JRadioButton("Debug");
+								DEBUGradio.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										debugRadio();
+									}
+								});
 								GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 								groupLayout.setHorizontalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
@@ -255,8 +333,9 @@ public class ApplicationGui {
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 															.addGap(4)
-															.addComponent(btnNewButton)))
-													.addGap(248))
+															.addComponent(btnNewButton)
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(DEBUGradio, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))))
 												.addGroup(groupLayout.createSequentialGroup()
 													.addPreferredGap(ComponentPlacement.RELATED)
 													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
@@ -276,7 +355,9 @@ public class ApplicationGui {
 												.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 												.addGroup(groupLayout.createSequentialGroup()
 													.addGap(5)
-													.addComponent(btnNewButton)))
+													.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+														.addComponent(btnNewButton)
+														.addComponent(DEBUGradio))))
 											.addGap(4)
 											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 												.addGroup(groupLayout.createSequentialGroup()
@@ -301,35 +382,85 @@ public class ApplicationGui {
 											.addGap(242))
 								);
 								
-								JCheckBox chckbxNewCheckBox_6 = new JCheckBox("5");
-								panel_1_1.add(chckbxNewCheckBox_6);
+								chckbxNewCheckBox_B5 = new JCheckBox("5");
+								chckbxNewCheckBox_B5.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+									}
+								});
+								panel_1_1.add(chckbxNewCheckBox_B5);
 								
-								JCheckBox chckbxNewCheckBox_7 = new JCheckBox("6");
-								panel_1_1.add(chckbxNewCheckBox_7);
-								
-								JCheckBox chckbxNewCheckBox_8 = new JCheckBox("7");
-								panel_1_1.add(chckbxNewCheckBox_8);
-								
-								JCheckBox chckbxNewCheckBox_0 = new JCheckBox("0");
-								chckbxNewCheckBox_0.addChangeListener(new ChangeListener() {
-									public void stateChanged(ChangeEvent e) {
-										
+								chckbxNewCheckBox_B6 = new JCheckBox("6");
+								chckbxNewCheckBox_B6.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
 										refresh();
 									}
 								});
-								panel_1.add(chckbxNewCheckBox_0);
+								panel_1_1.add(chckbxNewCheckBox_B6);
 								
-								JCheckBox chckbxNewCheckBox = new JCheckBox("1");
-								panel_1.add(chckbxNewCheckBox);
+								chckbxNewCheckBox_B7 = new JCheckBox("7");
+								chckbxNewCheckBox_B7.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1_1.add(chckbxNewCheckBox_B7);
 								
-								JCheckBox chckbxNewCheckBox_1 = new JCheckBox("2");
-								panel_1.add(chckbxNewCheckBox_1);
+								chckbxNewCheckBox_A0 = new JCheckBox("0");
+								chckbxNewCheckBox_A0.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1.add(chckbxNewCheckBox_A0);
 								
-								JCheckBox chckbxNewCheckBox_3 = new JCheckBox("3");
-								panel_1.add(chckbxNewCheckBox_3);
+								chckbxNewCheckBox_A1 = new JCheckBox("1");
+								chckbxNewCheckBox_A1.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1.add(chckbxNewCheckBox_A1);
 								
-								JCheckBox chckbxNewCheckBox_4 = new JCheckBox("4");
-								panel_1.add(chckbxNewCheckBox_4);
+								chckbxNewCheckBox_A2 = new JCheckBox("2");
+								chckbxNewCheckBox_A2.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1.add(chckbxNewCheckBox_A2);
+								
+								chckbxNewCheckBox_A3 = new JCheckBox("3");
+								chckbxNewCheckBox_A3.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1.add(chckbxNewCheckBox_A3);
+								
+								chckbxNewCheckBox_A4 = new JCheckBox("4");
+								chckbxNewCheckBox_A4.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1.add(chckbxNewCheckBox_A4);
 								
 								table_3 = new JTable();
 								table_3.setModel(new DefaultTableModel(
@@ -360,6 +491,25 @@ public class ApplicationGui {
 								refresh();
 	}
 	
+	public void debugRadio() {
+		System.out.println(globalthings.debugMode=DEBUGradio.isSelected());
+		
+	}
+	
+	public static void startbutton() {
+		
+	}
+	
+	public static void pausebutton() {
+		
+	}
+	
+	public static void resetbutton() {
+		
+	}
+	
+	
+	
 	public static void refresh() {
 //		for (int i = 0; i < stack8.size(); i++) {
 //			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
@@ -370,7 +520,7 @@ public class ApplicationGui {
 	}
 	
 	public static void sendDATA() {
-		
+		System.out.println("sendDATA");
 	}
 
 	public static void changeselectedRow(int row) {
@@ -435,6 +585,4 @@ public class ApplicationGui {
 			System.out.println("hewwo"+globalthings.stack8.size());
 		}
 	}
-	
-	
 }
