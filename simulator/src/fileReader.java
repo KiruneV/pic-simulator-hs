@@ -15,10 +15,12 @@ import java.util.ArrayList;
  */
 public class fileReader {
 
+	@SuppressWarnings("rawtypes")
 	public static ArrayList[] linesCodeLineswithcodeCodestring;
 	/**
 	 * @param args
 	 */
+	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		

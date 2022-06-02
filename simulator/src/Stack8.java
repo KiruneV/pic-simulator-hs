@@ -5,6 +5,7 @@ import java.util.Stack;
  *
  * @param <T>
  */
+@SuppressWarnings("serial")
 public class Stack8<T> extends Stack<T> {
 	private int maxSize;
 
