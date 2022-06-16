@@ -33,7 +33,7 @@ public class ApplicationGui {
 	public fileReader fileread;
 	private final Action action_1 = new SwingAction_1();
 	private static JTable table_2;
-	private JTable table_3;
+	private static JTable table_3;
 	private JRadioButton DEBUGradio;
 	private static JCheckBox chckbxNewCheckBox_B0;
 	private static JCheckBox chckbxNewCheckBox_B1;
@@ -48,6 +48,10 @@ public class ApplicationGui {
 	private static JCheckBox chckbxNewCheckBox_A2;
 	private static JCheckBox chckbxNewCheckBox_A3;
 	private static JCheckBox chckbxNewCheckBox_A4;
+	private static JTextField textField;
+	private static JTextField textField_1;
+	private static JComboBox frequen;
+	
 	
 	
 
@@ -304,32 +308,45 @@ public class ApplicationGui {
 								panel_1_1.add(chckbxNewCheckBox_B4);
 								
 								DEBUGradio = new JRadioButton("Debug");
+								DEBUGradio.setSelected(true);
 								DEBUGradio.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
 										debugRadio();
 									}
 								});
+								
+								JPanel panel_2 = new JPanel();
+								
+								JPanel panel_3 = new JPanel();
 								GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 								groupLayout.setHorizontalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
 										.addGroup(groupLayout.createSequentialGroup()
-											.addGap(10)
-											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 												.addGroup(groupLayout.createSequentialGroup()
-													.addGap(7)
-													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+													.addGap(17)
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
-															.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-															.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
-															.addGap(18)
+															.addGap(8)
+															.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)
+															.addPreferredGap(ComponentPlacement.RELATED)
 															.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-																.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-																.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-																.addComponent(lblNewLabel_2_1, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-																.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-															.addGap(61))
+																.addGroup(groupLayout.createSequentialGroup()
+																	.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																	.addPreferredGap(ComponentPlacement.RELATED)
+																	.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
+																.addGroup(groupLayout.createSequentialGroup()
+																	.addComponent(lblNewLabel_2_1, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+																	.addGap(553))
+																.addGroup(groupLayout.createSequentialGroup()
+																	.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																	.addPreferredGap(ComponentPlacement.UNRELATED)
+																	.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))
+																.addGroup(groupLayout.createSequentialGroup()
+																	.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+																	.addGap(553))))
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 															.addGap(4)
@@ -337,15 +354,15 @@ public class ApplicationGui {
 															.addPreferredGap(ComponentPlacement.RELATED)
 															.addComponent(DEBUGradio, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))))
 												.addGroup(groupLayout.createSequentialGroup()
+													.addContainerGap()
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+														.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)
+														.addComponent(lblNewLabel))
 													.addPreferredGap(ComponentPlacement.RELATED)
 													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-														.addComponent(lblNewLabel)
-														.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE))
-													.addPreferredGap(ComponentPlacement.RELATED)
-													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-														.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 644, GroupLayout.PREFERRED_SIZE)
-														.addComponent(lblNewLabel_1))))
-											.addGap(289))
+														.addComponent(lblNewLabel_1)
+														.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 644, GroupLayout.PREFERRED_SIZE))))
+											.addGap(256))
 								);
 								groupLayout.setVerticalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
@@ -359,19 +376,23 @@ public class ApplicationGui {
 														.addComponent(btnNewButton)
 														.addComponent(DEBUGradio))))
 											.addGap(4)
-											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(scrollPane_3, 0, 0, Short.MAX_VALUE)
 												.addGroup(groupLayout.createSequentialGroup()
 													.addComponent(lblNewLabel_2)
 													.addGap(3)
-													.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-													.addGap(4)
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+														.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+													.addPreferredGap(ComponentPlacement.UNRELATED)
 													.addComponent(lblNewLabel_2_1)
 													.addPreferredGap(ComponentPlacement.RELATED)
-													.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
-												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-													.addComponent(scrollPane_3, 0, 0, Short.MAX_VALUE)
-													.addComponent(scrollPane_2, GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)))
-											.addPreferredGap(ComponentPlacement.UNRELATED)
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+														.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
+													.addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE))
+												.addComponent(scrollPane_2, GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
+											.addPreferredGap(ComponentPlacement.RELATED)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 												.addComponent(lblNewLabel)
 												.addComponent(lblNewLabel_1))
@@ -379,13 +400,51 @@ public class ApplicationGui {
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 												.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
 												.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE))
-											.addGap(242))
+											.addContainerGap(302, Short.MAX_VALUE))
 								);
+								
+								frequen = new JComboBox();
+								frequen.setModel(new DefaultComboBoxModel(new String[] {"32 khz", "100 khz", "500 khz", "1 Mhz", "2  Mhz", "4 Mhz", "8 Mhz", "12 Mhz", "16 Mhz", "20 Mhz"}));
+								panel_3.add(frequen);
+								
+								JButton freqbutton = new JButton("Apply freq");
+								freqbutton.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										setfreq();
+									}
+								});
+								panel_3.add(freqbutton);
+								
+								JLabel lblNewLabel_3 = new JLabel("RamPos:");
+								panel_2.add(lblNewLabel_3);
+								
+								textField_1 = new JTextField();
+								panel_2.add(textField_1);
+								textField_1.setColumns(5);
+								
+								JLabel lblNewLabel_4 = new JLabel("NewHexVal:");
+								panel_2.add(lblNewLabel_4);
+								
+								textField = new JTextField();
+								panel_2.add(textField);
+								textField.setColumns(8);
+								
+								JButton btnNewButton_4 = new JButton("Send to RAM");
+								btnNewButton_4.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										overwriteRAM();
+									}
+								});
+								panel_2.add(btnNewButton_4);
 								
 								chckbxNewCheckBox_B5 = new JCheckBox("5");
 								chckbxNewCheckBox_B5.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
+										sendDATA();
+										refresh();
 									}
 								});
 								panel_1_1.add(chckbxNewCheckBox_B5);
@@ -487,14 +546,74 @@ public class ApplicationGui {
 								table_3.getColumnModel().getColumn(1).setResizable(false);
 								scrollPane_3.setViewportView(table_3);
 								frame.getContentPane().setLayout(groupLayout);
-
-								RAM ramgui=new RAM();
+								RAM.resetRAM();
+								//RAM ramgui=new RAM();
+								setfreq();
+								debugRadio();
 								refresh();
 	}
 	
 	public void debugRadio() {
-		System.out.println(globalthings.debugMode=DEBUGradio.isSelected());
+		globalthings.debugMode=DEBUGradio.isSelected();
+		System.out.println(globalthings.debugMode);
 		
+	}
+
+	public static void setfreq() {
+		switch (frequen.getSelectedIndex()) {
+		case 0:
+			globalthings.freqInt=32*1000;
+			break;
+		case 1:
+			globalthings.freqInt=100*1000;
+			break;
+		case 2:
+			globalthings.freqInt=500*1000;
+			break;
+		case 3:
+			globalthings.freqInt=1*1000000;
+			break;
+		case 4:
+			globalthings.freqInt=2*1000000;
+			break;
+		case 5:
+			globalthings.freqInt=4*1000000;
+			break;
+		case 6:
+			globalthings.freqInt=8*1000000;
+			break;
+		case 7:
+			globalthings.freqInt=12*1000000;
+			break;
+		case 8:
+			globalthings.freqInt=16*1000000;
+			break;
+		case 9:
+			globalthings.freqInt=20*1000000;
+			break;
+		}
+		if(globalthings.debugMode) {
+			//System.out.println(frequen.getSelectedIndex());
+			System.out.println(globalthings.freqInt);
+		}
+	}
+	public static void overwriteRAM() {
+		if (!textField_1.getText().equals("")&&!textField.getText().equals("")){
+			String rampos="0x"+textField_1.getText();
+			int ramposI=Integer.decode(rampos);
+			String ramval="0x"+textField.getText();
+			int ramvalI=Integer.decode(ramval);
+			if(ramvalI>255||ramposI>255||ramvalI<0||ramposI<0) {
+				if(globalthings.debugMode) {
+					System.out.println("Wrong input for ram");
+				}
+			}else {
+				RAM.bank[ramposI]=ramvalI;
+				textField_1.setText("");
+				textField.setText("");
+				refresh();
+			}
+		}
 	}
 	
 	public static void startbutton() {
@@ -518,8 +637,26 @@ public class ApplicationGui {
 		//stackanzeige
 		for (int i = 0; i <globalthings.stack8.size(); i++) {
 			((DefaultTableModel) table_2.getModel()).setValueAt(Integer.toHexString(globalthings.stack8.elementAt(i)), i, 1);
-			
 		}
+		//RAManzeige
+		int pos=0;
+		for (int i = 0; i < 31; i++) {
+			for (int j = 1; j < 9; j++) {
+				String temp=Integer.toHexString(RAM.bank[pos]);
+				table.getModel().setValueAt(temp, i, j);
+				pos++;
+			}
+		}
+		//w + sfr
+		{
+			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.w), 0, 1);
+			table_3.getModel().setValueAt("0x"+String.format("%4s", Integer.toHexString(RAM.bank[RAM.PCL])).replace(' ', '0'), 1, 1);
+			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.bank[RAM.PCLATH]), 2, 1);
+			//table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.bank[RAM.PCintern], 3, 1);
+			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.bank[RAM.STATUS])).replace(' ', '0'), 4, 1);
+			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.bank[RAM.FSR]), 5, 1);
+		}
+		
 	}
 	
 	public static void sendDATA() {
@@ -579,14 +716,14 @@ public class ApplicationGui {
 	private class SwingAction_1 extends AbstractAction {
 		int i=0;
 		public SwingAction_1() {
-			putValue(NAME, "SwingAction_1");
+			putValue(NAME, "Refresh/testing");
 			putValue(SHORT_DESCRIPTION, "Some short description");
 		}
 		public void actionPerformed(ActionEvent e) {
-			changeselectedRow(i++);
-			globalthings.stack8.push(i);
+			//changeselectedRow(i++);
+			//globalthings.stack8.push(i);
 			refresh();
-			System.out.println("hewwo"+globalthings.stack8.size());
+			//System.out.println("hewwo"+globalthings.stack8.size());
 		}
 	}
 }
