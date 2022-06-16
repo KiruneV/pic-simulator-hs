@@ -35,19 +35,19 @@ public class ApplicationGui {
 	private static JTable table_2;
 	private JTable table_3;
 	private JRadioButton DEBUGradio;
-	private JCheckBox chckbxNewCheckBox_B0;
-	private JCheckBox chckbxNewCheckBox_B1;
-	private JCheckBox chckbxNewCheckBox_B2;
-	private JCheckBox chckbxNewCheckBox_B3;
-	private JCheckBox chckbxNewCheckBox_B4;
-	private JCheckBox chckbxNewCheckBox_B5;
-	private JCheckBox chckbxNewCheckBox_B6;
-	private JCheckBox chckbxNewCheckBox_B7;
-	private JCheckBox chckbxNewCheckBox_A0;
-	private JCheckBox chckbxNewCheckBox_A1;
-	private JCheckBox chckbxNewCheckBox_A2;
-	private JCheckBox chckbxNewCheckBox_A3;
-	private JCheckBox chckbxNewCheckBox_A4;
+	private static JCheckBox chckbxNewCheckBox_B0;
+	private static JCheckBox chckbxNewCheckBox_B1;
+	private static JCheckBox chckbxNewCheckBox_B2;
+	private static JCheckBox chckbxNewCheckBox_B3;
+	private static JCheckBox chckbxNewCheckBox_B4;
+	private static JCheckBox chckbxNewCheckBox_B5;
+	private static JCheckBox chckbxNewCheckBox_B6;
+	private static JCheckBox chckbxNewCheckBox_B7;
+	private static JCheckBox chckbxNewCheckBox_A0;
+	private static JCheckBox chckbxNewCheckBox_A1;
+	private static JCheckBox chckbxNewCheckBox_A2;
+	private static JCheckBox chckbxNewCheckBox_A3;
+	private static JCheckBox chckbxNewCheckBox_A4;
 	
 	
 
@@ -488,6 +488,7 @@ public class ApplicationGui {
 								scrollPane_3.setViewportView(table_3);
 								frame.getContentPane().setLayout(groupLayout);
 
+								RAM ramgui=new RAM();
 								refresh();
 	}
 	
@@ -514,13 +515,16 @@ public class ApplicationGui {
 //		for (int i = 0; i < stack8.size(); i++) {
 //			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
 //		}
+		//stackanzeige
 		for (int i = 0; i <globalthings.stack8.size(); i++) {
-			((DefaultTableModel) table_2.getModel()).setValueAt(globalthings.stack8.elementAt(i), i, 1);
+			((DefaultTableModel) table_2.getModel()).setValueAt(Integer.toHexString(globalthings.stack8.elementAt(i)), i, 1);
+			
 		}
 	}
 	
 	public static void sendDATA() {
 		System.out.println("sendDATA");
+		//chckbxNewCheckBox_A0-A4	B0-B7
 	}
 
 	public static void changeselectedRow(int row) {

@@ -32,26 +32,26 @@ public class RAM {
 
 	}
 // brauchen wir nicht
-//	public void resetRAM() {
+	public static void resetRAM() {
 //		// bank 0 (00h - 7Fh)
-//		// bank[TMR0] unchanged
-//		bank[PCL] = 0b00000000;
-//		bank[STATUS] = bank[STATUS] & 0b000qq11;
-//		// bank[FSR] unchanged
-//		// bank[PORTA] unchanged
-//		// bank[PORTB] unchanged
-//		// bank[EEDATA] unchanged
-//		// bank[EEADR] unchanged
-//		bank[PCLATH] = 0b00000000;
-//		bank[INTCON] = bank[INTCON] & 0b00000001;
-//		// bank 1 (80h - FFh)
-//		bank[OPTION] = 0b11111111;
-//		bank[TRISA] = 0b00011111;
-//		bank[TRISB] = 0b11111111;
-//		bank[EECON1] = 0b0000q000;
-//		bank[EECON2] = 0b00000000;
-//		 
-//	}
+	bank[TMR0] = 0b00000000;
+	bank[PCL] = 0b00000000;
+	bank[STATUS] = 0b00011000;
+	bank[FSR] = 0b00000000;
+	bank[PORTA] = 0b00000000;
+	bank[PORTB] = 0b00000000;
+	bank[EEDATA] = 0b00000000;
+	bank[EEADR] = 0b00000000;
+	bank[PCLATH] = 0b00000000;
+	bank[INTCON] = 0b00000000;
+	// bank 1 (80h - FFh)
+	bank[OPTION] = 0b11111111;
+	bank[TRISA] = 0b00011111;
+	bank[TRISB] = 0b11111111;
+	bank[EECON1] = 0b00000000;
+	bank[EECON2] = 0b00000000;
+		 
+	}
 
 	public static int getContent(int address) {
 		if (address == 0x01) {
