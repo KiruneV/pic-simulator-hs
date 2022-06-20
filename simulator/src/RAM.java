@@ -245,6 +245,7 @@ public class RAM {
 	}
 
 	public static void setRA4(int rA4) {
+		rA4 = rA4 << 4; 
 		rA4 = rA4 | 0b11101111;
 		int newPORTA = getPORTA();
 		newPORTA = newPORTA & rA4;
@@ -256,6 +257,7 @@ public class RAM {
 	}
 
 	public static void setRA3(int rA3) {
+		rA3 = rA3 << 3; 
 		rA3 = rA3 | 0b11110111;
 		int newPORTA = getPORTA();
 		newPORTA = newPORTA & rA3;
@@ -267,6 +269,7 @@ public class RAM {
 	}
 
 	public static void setRA2(int rA2) {
+		rA2 = rA2 << 2; 
 		rA2 = rA2 | 0b11111011;
 		int newPORTA = getPORTA();
 		newPORTA = newPORTA & rA2;
@@ -278,6 +281,7 @@ public class RAM {
 	}
 
 	public static void setRA1(int rA1) {
+		rA1 = rA1 << 1; 
 		rA1 = rA1 | 0b11111101;
 		int newPORTA = getPORTA();
 		newPORTA = newPORTA & rA1;
@@ -289,6 +293,7 @@ public class RAM {
 	}
 
 	public static void setRA0(int rA0) {
+		rA0 = rA0 << 0; 
 		rA0 = rA0 | 0b11111110;
 		int newPORTA = getPORTA();
 		newPORTA = newPORTA & rA0;
@@ -308,6 +313,7 @@ public class RAM {
 	}
 
 	public static void setRB7(int rB7) {
+		rB7 = rB7 << 7; 
 		rB7 = rB7 | 0b01111111;
 		int newPORTB = getPORTB();
 		newPORTB = newPORTB & rB7;
@@ -319,6 +325,7 @@ public class RAM {
 	}
 
 	public static void setRB6(int rB6) {
+		rB6 = rB6 << 6; 
 		rB6 = rB6 | 0b10111111;
 		int newPORTB = getPORTB();
 		newPORTB = newPORTB & rB6;
@@ -330,6 +337,7 @@ public class RAM {
 	}
 
 	public static void setRB5(int rB5) {
+		rB5 = rB5 << 5; 
 		rB5 = rB5 | 0b11011111;
 		int newPORTB = getPORTB();
 		newPORTB = newPORTB & rB5;
@@ -341,6 +349,7 @@ public class RAM {
 	}
 
 	public static void setRB4(int rB4) {
+		rB4 = rB4 << 4; 
 		rB4 = rB4 | 0b11101111;
 		int newPORTB = getPORTB();
 		newPORTB = newPORTB & rB4;
@@ -352,6 +361,7 @@ public class RAM {
 	}
 
 	public static void setRB3(int rB3) {
+		rB3 = rB3 << 3; 
 		rB3 = rB3 | 0b11110111;
 		int newPORTB = getPORTB();
 		newPORTB = newPORTB & rB3;
@@ -363,6 +373,7 @@ public class RAM {
 	}
 
 	public static void setRB2(int rB2) {
+		rB2 = rB2 << 2; 
 		rB2 = rB2 | 0b11111011;
 		int newPORTB = getPORTB();
 		newPORTB = newPORTB & rB2;
@@ -374,6 +385,7 @@ public class RAM {
 	}
 
 	public static void setRB1(int rB1) {
+		rB1 = rB1 << 1; 
 		rB1 = rB1 | 0b11111101;
 		int newPORTB = getPORTB();
 		newPORTB = newPORTB & rB1;
@@ -386,6 +398,7 @@ public class RAM {
 	}
 
 	public static void setRB0(int rB0) {
+		rB0 = rB0 << 0; 
 		rB0 = rB0 | 0b11111110;
 		int newPORTB = getPORTB();
 		newPORTB = newPORTB & rB0;

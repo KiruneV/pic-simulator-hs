@@ -51,6 +51,11 @@ public class ApplicationGui {
 	private static JTextField textField;
 	private static JTextField textField_1;
 	private static JComboBox frequen;
+	private JCheckBox Zero_Flag;
+	private JCheckBox C_Flag;
+	private JCheckBox DC_Flag;
+	private JCheckBox PD_Flag;
+	private JCheckBox TO_Flag;
 	
 	
 	
@@ -253,7 +258,7 @@ public class ApplicationGui {
 								
 								JLabel lblNewLabel_2 = new JLabel("Pin Port A");
 								
-								JLabel lblNewLabel_2_1 = new JLabel("Pin Port A");
+								JLabel lblNewLabel_2_1 = new JLabel("Pin Port B");
 								
 								JPanel panel_1_1 = new JPanel();
 								
@@ -319,6 +324,8 @@ public class ApplicationGui {
 								JPanel panel_2 = new JPanel();
 								
 								JPanel panel_3 = new JPanel();
+								
+								JPanel panel_4 = new JPanel();
 								GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 								groupLayout.setHorizontalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
@@ -334,7 +341,9 @@ public class ApplicationGui {
 															.addPreferredGap(ComponentPlacement.RELATED)
 															.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 																.addGroup(groupLayout.createSequentialGroup()
-																	.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																	.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+																		.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																		.addComponent(panel_1_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 																	.addPreferredGap(ComponentPlacement.RELATED)
 																	.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
 																.addGroup(groupLayout.createSequentialGroup()
@@ -389,8 +398,11 @@ public class ApplicationGui {
 													.addPreferredGap(ComponentPlacement.RELATED)
 													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 														.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
-													.addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE))
+														.addGroup(groupLayout.createSequentialGroup()
+															.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))
+													.addPreferredGap(ComponentPlacement.RELATED))
 												.addComponent(scrollPane_2, GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
@@ -402,6 +414,26 @@ public class ApplicationGui {
 												.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE))
 											.addContainerGap(302, Short.MAX_VALUE))
 								);
+								
+								TO_Flag = new JCheckBox("TO");
+								TO_Flag.setEnabled(false);
+								panel_4.add(TO_Flag);
+								
+								PD_Flag = new JCheckBox("PD");
+								PD_Flag.setEnabled(false);
+								panel_4.add(PD_Flag);
+								
+								Zero_Flag = new JCheckBox("Z");
+								Zero_Flag.setEnabled(false);
+								panel_4.add(Zero_Flag);
+								
+								DC_Flag = new JCheckBox("DC");
+								DC_Flag.setEnabled(false);
+								panel_4.add(DC_Flag);
+								
+								C_Flag = new JCheckBox("C");
+								C_Flag.setEnabled(false);
+								panel_4.add(C_Flag);
 								
 								frequen = new JComboBox();
 								frequen.setModel(new DefaultComboBoxModel(new String[] {"32 khz", "100 khz", "500 khz", "1 Mhz", "2  Mhz", "4 Mhz", "8 Mhz", "12 Mhz", "16 Mhz", "20 Mhz"}));
@@ -597,7 +629,7 @@ public class ApplicationGui {
 			System.out.println(globalthings.freqInt);
 		}
 	}
-	public static void overwriteRAM() {
+	public void overwriteRAM() {
 		if (!textField_1.getText().equals("")&&!textField.getText().equals("")){
 			String rampos="0x"+textField_1.getText();
 			int ramposI=Integer.decode(rampos);
@@ -616,21 +648,21 @@ public class ApplicationGui {
 		}
 	}
 	
-	public static void startbutton() {
+	public void startbutton() {
 		
 	}
 	
-	public static void pausebutton() {
+	public void pausebutton() {
 		
 	}
 	
-	public static void resetbutton() {
+	public void resetbutton() {
 		
 	}
 	
 	
 	
-	public static void refresh() {
+	public void refresh() {
 //		for (int i = 0; i < stack8.size(); i++) {
 //			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
 //		}
@@ -647,6 +679,7 @@ public class ApplicationGui {
 				pos++;
 			}
 		}
+		
 		//w + sfr
 		{
 			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.w), 0, 1);
@@ -655,13 +688,89 @@ public class ApplicationGui {
 			//table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.bank[RAM.PCintern], 3, 1);
 			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.bank[RAM.STATUS])).replace(' ', '0'), 4, 1);
 			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.bank[RAM.FSR]), 5, 1);
+		//status
+			C_Flag.setSelected(RAM.getC()>0);
+			DC_Flag.setSelected(RAM.getDC()>0);
+			Zero_Flag.setSelected(RAM.getZ()>0);
+			PD_Flag.setSelected(RAM.getPD()>0);
+			TO_Flag.setSelected(RAM.getTO()>0);
 		}
 		
 	}
 	
-	public static void sendDATA() {
-		System.out.println("sendDATA");
-		//chckbxNewCheckBox_A0-A4	B0-B7
+	public void sendDATA() {
+		if(globalthings.debugMode) {
+			System.out.println("sendDATA");
+		}
+		//RA0-4	
+		if(chckbxNewCheckBox_A0.isSelected()) {
+			RAM.setRA0(1);
+		}else {
+			RAM.setRA0(0);
+		}
+		if(chckbxNewCheckBox_A1.isSelected()) {
+			RAM.setRA1(1);
+		}else {
+			RAM.setRA1(0);
+		}
+		if(chckbxNewCheckBox_A2.isSelected()) {
+			RAM.setRA2(1);
+		}else {
+			RAM.setRA2(0);
+		}
+		if(chckbxNewCheckBox_A3.isSelected()) {
+			RAM.setRA3(1);
+		}else {
+			RAM.setRA3(0);
+		}
+		if(chckbxNewCheckBox_A4.isSelected()) {
+			RAM.setRA4(1);
+		}else {
+			RAM.setRA4(0);
+		}
+		
+		//RB0-7
+		if(chckbxNewCheckBox_B0.isSelected()) {
+			RAM.setRB0(1);
+		}else {
+			RAM.setRB0(0);
+		}
+		if(chckbxNewCheckBox_A1.isSelected()) {
+			RAM.setRB1(1);
+		}else {
+			RAM.setRB1(0);
+		}
+		if(chckbxNewCheckBox_A2.isSelected()) {
+			RAM.setRB2(1);
+		}else {
+			RAM.setRB2(0);
+		}
+		if(chckbxNewCheckBox_A3.isSelected()) {
+			RAM.setRB3(1);
+		}else {
+			RAM.setRB3(0);
+		}
+		if(chckbxNewCheckBox_A4.isSelected()) {
+			RAM.setRB4(1);
+		}else {
+			RAM.setRB4(0);
+		}
+		if(chckbxNewCheckBox_B5.isSelected()) {
+			RAM.setRB5(1);
+		}else {
+			RAM.setRB5(0);
+		}
+		if(chckbxNewCheckBox_B6.isSelected()) {
+			RAM.setRB6(1);
+		}else {
+			RAM.setRB6(0);
+		}
+		if(chckbxNewCheckBox_B7.isSelected()) {
+			RAM.setRB7(1);
+		}else {
+			RAM.setRB7(0);
+		}
+		refresh();
 	}
 
 	public static void changeselectedRow(int row) {
