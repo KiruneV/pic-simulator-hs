@@ -350,7 +350,7 @@ public class RAM {
 
 	public static void setRB4(int rB4) {
 		rB4 = rB4 << 4; 
-		rB4 = rB4 | 0b11101111;
+		//rB4 = rB4 | 0b11101111;
 		int newPORTB = getPORTB();
 		newPORTB = newPORTB & rB4;
 		setPORTB(newPORTB);
