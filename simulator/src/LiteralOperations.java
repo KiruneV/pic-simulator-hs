@@ -5,12 +5,12 @@
  */
 public class LiteralOperations { // operations that start with 11
 	static int bitmask = 0xFF; // 00 0000 1111 1111
-	static int k;
+	static int k, wContent, result;
 
-	// add literal and w 
+	// add literal and w
 	public static void ADDLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		int wContent = RAM.getW();
+		wContent = RAM.getW();
 		// check digit carry
 		int dK = (0x08 & k) >>> 3;
 		int dW = (0x08 & wContent) >>> 3;
@@ -20,39 +20,39 @@ public class LiteralOperations { // operations that start with 11
 			RAM.setDC(0);
 		}
 		// adding literal and wContent
-		k += wContent;
+		result = k + wContent;
 		// check carry bit
-		if ((k & 0xF00) != 0) {
+		if ((result & 0xF00) != 0) {
 			RAM.setC(1);
-			k = k & 0xFF; // so k is not > 0xFF
+			result = result & 0xFF; // so k is not > 0xFF
 		} else {
 			RAM.setC(0);
 		}
 		// set zero flag when k == 0
-		RAM.checkZ(k);
-		RAM.setW(k);
+		RAM.checkZ(result);
+		RAM.setW(result);
 	}
 
 	// and literal with w
 	public static void ANDLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		int wContent = RAM.getW();
+		wContent = RAM.getW();
 		// and'ing k with w
-		k = k & wContent;
+		result = k & wContent;
 		// set zero flag when k == 0
-		RAM.checkZ(k);
-		RAM.setW(k);
+		RAM.checkZ(result);
+		RAM.setW(result);
 	}
 
 	// inclusive or literal and w
 	public static void IORLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		int wContent = RAM.getW();
+		wContent = RAM.getW();
 		// or'ing k with wContent
-		k = k | wContent;
+		result = k | wContent;
 		// set zero flag when k == 0
-		RAM.checkZ(k);
-		RAM.setW(k);
+		RAM.checkZ(result);
+		RAM.setW(result);
 	}
 
 	// move literal to w
@@ -71,7 +71,7 @@ public class LiteralOperations { // operations that start with 11
 	// subtract w from literal
 	public static void SUBLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		int wContent = RAM.getW();
+		wContent = RAM.getW();
 		// check digit carry
 		int dK = (0x08 & k) >>> 3;
 		int dW = (0x08 & wContent) >>> 3;
@@ -81,27 +81,27 @@ public class LiteralOperations { // operations that start with 11
 			RAM.setDC(0);
 		}
 		// subtracting k with w
-		k -= wContent;
+		result = k - wContent;
 		// check if k is negative
-		if ((k & 0x80) != 0) {
+		if ((result & 0x80) != 0) {
 			RAM.setC(0); // when k is negative
 		} else {
 			RAM.setC(1); // when k is positive
 		}
 		// set zero flag when k == 0
-		RAM.checkZ(k);
-		RAM.setW(k);
+		RAM.checkZ(result);
+		RAM.setW(result);
 	}
 
 	// exclusive or literal with w
 	public static void XORLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
-		int wContent = RAM.getW();
+		wContent = RAM.getW();
 		// xor'ing k with wwContent
-		k = k ^ wContent;
+		result = k ^ wContent;
 		// set zero flag when k == 0
-		RAM.checkZ(k);
-		RAM.setW(k);
+		RAM.checkZ(result);
+		RAM.setW(result);
 	}
 
 	// deleting

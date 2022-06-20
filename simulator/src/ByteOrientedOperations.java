@@ -5,48 +5,56 @@
  */
 public class ByteOrientedOperations { // operations that start with 00
 	static int[] bitmask = { 0x7F, 0x80 };
-	static int f, d, rotated;
+	static int f, d, result, wContent;
 
 	// add w and f
 	public static void ADDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
-		int w = RAM.getW();
+		result = RAM.getRegisterContent(f);
+		wContent = RAM.getW();
 		// check digit carry
-		int dF = (0x08 & fContent) >>> 3;
-		int dW = (0x08 & w) >>> 3;
-		// check digit carry
+		int dF = (0x08 & result);
+		int dW = (0x08 & wContent);
 		if ((dF & dW) != 0) {
 			RAM.setDC(1);
 		} else {
 			RAM.setDC(0);
 		}
+		int before = result;
 		// adding fContent and w
-		fContent += w;
+		result += wContent;
 		// check carry bit
-		if ((fContent & 0xF00) != 0) {
+		if ((result & 0xF00) != 0) {
 			RAM.setC(1);
-			fContent = fContent & 0xFF; // so fContent is not > 0xFF
+			result = result & 0xFF; // so fContent is not > 0xFF
 		}
+
+		// check digit carry
+//		if ((result & 0xF0) > (before & 0xF0)) {
+//			RAM.setDC(1);
+//		} else {
+//			RAM.setDC(0);
+//		}
+
 		// set zero flag when f == 0
-		RAM.checkZ(fContent);
+		RAM.checkZ(result);
 		// store fContent in register w (when d==0) or in fContent (when d==1)
-		RAM.setRegister(d, fContent, f);
+		RAM.setRegister(d, result, f);
 	}
 
 	// and w with f
 	public static void ANDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
-		int w = RAM.getW();
+		result = RAM.getRegisterContent(f);
+		wContent = RAM.getW();
 		// and'ing w and f
-		fContent = fContent & w;
+		result = result & wContent;
 		// set zero flag when f == 0
-		RAM.checkZ(fContent);
+		RAM.checkZ(result);
 		// store fContent in register w (when d==0) or in fContent (when d==1)
-		RAM.setRegister(d, fContent, f);
+		RAM.setRegister(d, result, f);
 	}
 
 	// clear f
@@ -66,66 +74,66 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void COMF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
+		result = RAM.getRegisterContent(f);
 		// complement f
-		fContent = ~fContent & 0xFF;
+		result = ~result & 0xFF;
 		// set zero flag when f == 0
-		RAM.checkZ(fContent);
+		RAM.checkZ(result);
 		// store f in register w (when d==0) or in f (when d==1)
-		RAM.setRegister(d, fContent, f);
+		RAM.setRegister(d, result, f);
 	}
 
 	// decrement f
 	public static void DECF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
-		if (fContent == 0) {
-			fContent = 255;
+		result = RAM.getRegisterContent(f);
+		if (result == 0) {
+			result = 255;
 		} else {
 			// decrement f
-			fContent--;
+			result--;
 			// set zero flag when f == 0
-			RAM.checkZ(fContent);
+			RAM.checkZ(result);
 		}
-		RAM.setRegister(d, fContent, f);
+		RAM.setRegister(d, result, f);
 	}
 
 	// decrement f, skip if 0
 	public static void DECFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
+		result = RAM.getRegisterContent(f);
 		// decrement f
-		fContent--;
-		RAM.setRegister(d, fContent, f);
-		if (f == 0) {
+		result--;
+		RAM.setRegister(d, result, f);
+		if (result == 0) {
 			NOP();
-		} else {
-			// TODO execute the next instruction
-		}
+		} // else {
+//			 execute the next instruction
+//		}
 	}
 
 	// increment f
 	public static void INCF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
+		result = RAM.getRegisterContent(f);
 		// increment f
-		fContent++;
+		result++;
 		// set zero flag when f == 0
 		RAM.checkZ(f);
-		RAM.setRegister(d, fContent, f);
+		RAM.setRegister(d, result, f);
 	}
 
 	// increment f, skip if 0
 	public static void INCFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
+		result = RAM.getRegisterContent(f);
 		// increment f
-		fContent += 1;
-		RAM.setRegister(d, fContent, f);
+		result += 1;
+		RAM.setRegister(d, result, f);
 		if (f == 0) {
 			NOP();
 		} else {
@@ -137,124 +145,133 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void IORWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
-		int w = RAM.getW();
+		result = RAM.getRegisterContent(f);
+		wContent = RAM.getW();
 		// or'ing w with f
-		w = w | fContent;
+		result = wContent | result;
 		// set zero flag when f == 0
-		RAM.checkZ(fContent);
-		RAM.setRegister(d, fContent, f);
+		RAM.checkZ(result);
+		RAM.setRegister(d, result, f);
 	}
 
 	// move f
 	public static void MOVF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
+		result = RAM.getRegisterContent(f);
 		// set zero flag when f == 0
-		RAM.checkZ(fContent);
-		RAM.setRegisterContent(fContent, f);
+		RAM.checkZ(result);
+		RAM.setRegisterContent(result, f);
 		// d = 1 is useful to test a file register since status flag z is affected
 	}
 
 	// move w to f
 	public static void MOVWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
-		int w = RAM.getW();
-		RAM.setRegisterContent(w, f);
+		wContent = RAM.getW();
+		RAM.setRegisterContent(wContent, f);
 	}
 
 	// no operation
 	public static void NOP() {
-		// nothing
+		// skippen!
 	}
 
 	// rotate left f through carry
 	public static void RLF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
-		int temp = fContent & 0b100000000;
-		rotated = fContent << 1;
+		result = RAM.getRegisterContent(f);
+		result = result << 1;
 		if (RAM.getC() == 1) {
-			rotated++;
+			result++;
 			RAM.setC(0);
 		}
-		if (temp != 0) {
+		if ((result & 0xF00) != 0) {
 			RAM.setC(1);
-			rotated = rotated & 0b11111111;
+			result = result & 0b11111111;
 		}
-		fContent = rotated;
-		RAM.setRegister(d, fContent, f);
+		RAM.setRegister(d, result, f);
 	}
 
 	// rotate right f through carry
 	public static void RRF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
-		int temp = fContent & 0b1;
-		rotated = f >>> 1;
+		result = RAM.getRegisterContent(f);
+		int temp = result & 0b1;
+		result = result >>> 1;
 		if (RAM.getC() == 1) {
-			rotated = rotated | 0b10000000;
+			result = result + 0x80;
 			RAM.setC(0);
 		}
 		if (temp != 0) {
 			RAM.setC(1);
 		}
-		fContent = rotated;
-		RAM.setRegister(d, fContent, f);
+		RAM.setRegister(d, result, f);
 	}
 
 	// subtract w from literal
 	public static void SUBWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
-		int w = RAM.getW();
+		result = RAM.getRegisterContent(f);
+		wContent = RAM.getW();
 		// check digit carry
-		int dF = (0x08 & fContent) >>> 3;
-		int dW = (0x08 & w) >>> 3;
+		int dF = (0x08 & result);
+		int dW = (0x08 & wContent);
 		if ((dF & dW) != 0) {
 			RAM.setDC(1);
 		} else {
 			RAM.setDC(0);
 		}
+//		if (0xF < (fContent & 0xF) + ((~w + 1) & 0x0F)) {
+//			RAM.setDC(1);
+//		} else {
+//			RAM.setDC(0);
+//		}
 		// subtracting fContent with w
-		fContent -= w;
-		// check if k is negative
-		if ((fContent & 0x40) != 0) {
+		result -= wContent;
+		// check if fContent is negative
+		if (result < 0) {
 			RAM.setC(0); // when fContent is negative
+			result = result & 0xFF;
 		} else {
 			RAM.setC(1); // when fContent is positive
 		}
+		// check digit carry
+//		if ((fContent & 0x10) != 0) {
+//			RAM.setDC(1);
+//		} else {
+//			RAM.setDC(0);
+//		}
 		// set zero flag when fContent == 0
-		RAM.checkZ(fContent);
-		RAM.setRegister(d, w, f);
+		RAM.checkZ(result);
+		RAM.setRegister(d, result, f);
 	}
 
 	// swap nibbles in f
 	public static void SWAPF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
-		int bit1 = (f & 0x0F) << 3; // bit 3 ... 0 bits in fContent
-		int bit2 = (f & 0x70) >>> 4; // bit 6 ... 4 in fContent
-		fContent = bit1 | bit2;
-		RAM.setRegister(d, fContent, f);
+		result = RAM.getRegisterContent(f);
+		int bit1 = (result & 0x0F) << 4; // bit 3 ... 0 bits in fContent
+		int bit2 = (result & 0xF0) >> 4; // bit 6 ... 4 in fContent
+		result = bit1 | bit2;
+		RAM.setRegister(d, result, f);
 	}
 
 	// exclusive or w with f
 	public static void XORWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
-		int fContent = RAM.getRegisterContent(f);
-		int wContent = RAM.getW();
+		result = RAM.getRegisterContent(f);
+		wContent = RAM.getW();
 		// xor'ing fContent with w
-		fContent = fContent ^ wContent;
+		result = result ^ wContent;
 		// set zero flag when fContent == 0
-		RAM.checkZ(fContent);
-		RAM.setRegister(d, fContent, f);
+		RAM.checkZ(result);
+		RAM.setRegister(d, result, f);
 	}
 
 	// TODO clear watchdog timer

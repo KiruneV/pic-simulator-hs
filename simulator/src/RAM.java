@@ -33,6 +33,9 @@ public class RAM {
 	}
 // brauchen wir nicht
 	public static void resetRAM() {
+		for (int i = 0; i < bank.length; i++) {
+			bank[i] = 0;
+		}
 //		// bank 0 (00h - 7Fh)
 	bank[TMR0] = 0b00000000;
 	bank[PCL] = 0b00000000;
