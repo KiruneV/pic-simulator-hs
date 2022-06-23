@@ -366,7 +366,7 @@ class test {
 		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("078D"); // addwf wert2
 		assertEquals(0xA0, RAM.getRegisterContent(wert2));
-		//assertEquals(1, RAM.getDC());
+		assertEquals(1, RAM.getDC());
 		assertEquals(0, RAM.getC());
 		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("0B8C"); // decfsz wert1

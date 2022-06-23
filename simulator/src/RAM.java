@@ -12,6 +12,9 @@ public class RAM {
 	static int w;
 
 	public RAM() {
+		for (int i = 0; i < bank.length; i++) {
+			bank[i] = 0;
+		}
 		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
 		bank[PCL] = 0b00000000;
@@ -31,65 +34,68 @@ public class RAM {
 		bank[EECON2] = 0b00000000;
 
 	}
+
 // brauchen wir nicht
 	public static void resetRAM() {
 		for (int i = 0; i < bank.length; i++) {
 			bank[i] = 0;
 		}
 //		// bank 0 (00h - 7Fh)
-	bank[TMR0] = 0b00000000;
-	bank[PCL] = 0b00000000;
-	bank[STATUS] = 0b00011000;
-	bank[FSR] = 0b00000000;
-	bank[PORTA] = 0b00000000;
-	bank[PORTB] = 0b00000000;
-	bank[EEDATA] = 0b00000000;
-	bank[EEADR] = 0b00000000;
-	bank[PCLATH] = 0b00000000;
-	bank[INTCON] = 0b00000000;
-	// bank 1 (80h - FFh)
-	bank[OPTION] = 0b11111111;
-	bank[TRISA] = 0b00011111;
-	bank[TRISB] = 0b11111111;
-	bank[EECON1] = 0b00000000;
-	bank[EECON2] = 0b00000000;
-		 
+		bank[TMR0] = 0b00000000;
+		bank[PCL] = 0b00000000;
+		bank[STATUS] = 0b00011000;
+		bank[FSR] = 0b00000000;
+		bank[PORTA] = 0b00000000;
+		bank[PORTB] = 0b00000000;
+		bank[EEDATA] = 0b00000000;
+		bank[EEADR] = 0b00000000;
+		bank[PCLATH] = 0b00000000;
+		bank[INTCON] = 0b00000000;
+		// bank 1 (80h - FFh)
+		bank[OPTION] = 0b11111111;
+		bank[TRISA] = 0b00011111;
+		bank[TRISB] = 0b11111111;
+		bank[EECON1] = 0b00000000;
+		bank[EECON2] = 0b00000000;
+
 	}
 
-	public static int getContent(int address) {
-		if (address == 0x01) {
-			return getTMR0();
-		} else if (address == 0x02 || address == 0x82) {
-			return getPCL();
-		} else if (address == 0x03 || address == 0x83) {
-			return getSTATUS();
-		} else if (address == 0x04 || address == 0x84) {
-			return getFSR();
-		} else if (address == 0x05) {
-			return getPORTA();
-		} else if (address == 0x06) {
-			return getPORTB();
-		} else if (address == 0x08) {
-			return getEEDATA();
-		} else if (address == 0x09) {
-			return getEEADR();
-		} else if (address == 0x0A || address == 0x8A) {
-			return getPCLATH();
-		} else if (address == 0x0B || address == 0x8B) {
-			return getINTCON();
-		} else if (address == 0x81) {
-			return getOPTION();
-		} else if (address == 0x85) {
-			return getTRISA();
-		} else if (address == 0x86) {
-			return getTRISB();
-		} else if (address == 0x88) {
-			return getEECON1();
-		} else if (address == 0x89) {
-			return getEECON2();
-		}
-		return 0x00;
-	}
+//	public static int getContent(int address) {
+//		if (address == 0x01) {
+//			return getTMR0();
+//		} else if (address == 0x02 || address == 0x82) {
+//			return getPCL();
+//		} else if (address == 0x03 || address == 0x83) {
+//			return getSTATUS();
+//		} else if (address == 0x04 || address == 0x84) {
+//			return getFSR();
+//		} else if (address == 0x05) {
+//			return getPORTA();
+//		} else if (address == 0x06) {
+//			return getPORTB();
+//		} else if (address == 0x08) {
+//			return getEEDATA();
+//		} else if (address == 0x09) {
+//			return getEEADR();
+//		} else if (address == 0x0A || address == 0x8A) {
+//			return getPCLATH();
+//		} else if (address == 0x0B || address == 0x8B) {
+//			return getINTCON();
+//		} else if (address == 0x81) {
+//			return getOPTION();
+//		} else if (address == 0x85) {
+//			return getTRISA();
+//		} else if (address == 0x86) {
+//			return getTRISB();
+//		} else if (address == 0x88) {
+//			return getEECON1();
+//		} else if (address == 0x89) {
+//			return getEECON2();
+//		} else if (address < 255 && address >= 0) {
+//			return bank[address];
+//		}
+//		return 0x00;
+//	}
 
 	public static int getTMR0() {
 		return bank[TMR0];
@@ -121,9 +127,12 @@ public class RAM {
 
 	// STATUS
 	public static void setIRP(int iRP) {
-		iRP = iRP | 0b01111111;
 		int newSTATUS = getSTATUS();
-		newSTATUS = newSTATUS & iRP;
+		if (iRP == 0) {
+			newSTATUS = newSTATUS & 0b01111111;
+		} else {
+			newSTATUS = newSTATUS | 0b10000000;
+		}
 		setSTATUS(newSTATUS);
 	}
 
@@ -132,9 +141,12 @@ public class RAM {
 	}
 
 	public static void setRP1(int rP1) {
-		rP1 = rP1 | 0b10111111;
 		int newSTATUS = getSTATUS();
-		newSTATUS = newSTATUS & rP1;
+		if (rP1 == 0) {
+			newSTATUS = newSTATUS & 0b10111111;
+		} else {
+			newSTATUS = newSTATUS | 0b01000000;
+		}
 		setSTATUS(newSTATUS);
 	}
 
@@ -143,9 +155,12 @@ public class RAM {
 	}
 
 	public static void setRP0(int rP0) {
-		rP0 = rP0 | 0b11011111;
 		int newSTATUS = getSTATUS();
-		newSTATUS = newSTATUS & rP0;
+		if (rP0 == 0) {
+			newSTATUS = newSTATUS & 0b11011111;
+		} else {
+			newSTATUS = newSTATUS | 0b00100000;
+		}
 		setSTATUS(newSTATUS);
 	}
 
@@ -156,7 +171,11 @@ public class RAM {
 	public static void setTO(int tO) {
 		tO = tO | 0b11101111;
 		int newSTATUS = getSTATUS();
-		newSTATUS = newSTATUS & tO;
+		if (tO == 0) {
+			newSTATUS = newSTATUS & 0b11101111;
+		} else {
+			newSTATUS = newSTATUS | 0b00010000;
+		}
 		setSTATUS(newSTATUS);
 	}
 
@@ -165,9 +184,12 @@ public class RAM {
 	}
 
 	public static void setPD(int pD) {
-		pD = pD | 0b11110111;
 		int newSTATUS = getSTATUS();
-		newSTATUS = newSTATUS & pD;
+		if (pD == 0) {
+			newSTATUS = newSTATUS & 0b11110111;
+		} else {
+			newSTATUS = newSTATUS | 0b00001000;
+		}
 		setSTATUS(newSTATUS);
 	}
 
@@ -177,10 +199,10 @@ public class RAM {
 
 	public static void setZ(int z) {
 		int newSTATUS = getSTATUS();
-		if(z == 0) {
+		if (z == 0) {
 			newSTATUS = newSTATUS & 0b11111011;
 		} else {
-			newSTATUS = newSTATUS | (z << 2);			
+			newSTATUS = newSTATUS | 0b00000100;
 		}
 		setSTATUS(newSTATUS);
 	}
@@ -200,10 +222,10 @@ public class RAM {
 
 	public static void setDC(int dC) {
 		int newSTATUS = getSTATUS();
-		if(dC == 0) {
+		if (dC == 0) {
 			newSTATUS = newSTATUS & 0b11111101;
 		} else {
-			newSTATUS = newSTATUS | (dC << 1);			
+			newSTATUS = newSTATUS | 0b00000010;
 		}
 		setSTATUS(newSTATUS);
 	}
@@ -214,11 +236,10 @@ public class RAM {
 
 	public static void setC(int c) {
 		int newSTATUS = getSTATUS();
-		if(c == 0) {
-			c = c | 0b11111110;
-			newSTATUS = newSTATUS & c;
+		if (c == 0) {
+			newSTATUS = newSTATUS & 0b11111110;
 		} else {
-			newSTATUS = newSTATUS | c;			
+			newSTATUS = newSTATUS | 0b00000001;
 		}
 		setSTATUS(newSTATUS);
 	}
@@ -245,10 +266,12 @@ public class RAM {
 	}
 
 	public static void setRA4(int rA4) {
-		rA4 = rA4 << 4; 
-		rA4 = rA4 | 0b11101111;
 		int newPORTA = getPORTA();
-		newPORTA = newPORTA & rA4;
+		if (rA4 == 0) {
+			newPORTA = newPORTA & 0b11101111;
+		} else {
+			newPORTA = newPORTA | 0b00010000;
+		}
 		setPORTA(newPORTA);
 	}
 
@@ -257,22 +280,26 @@ public class RAM {
 	}
 
 	public static void setRA3(int rA3) {
-		rA3 = rA3 << 3; 
-		rA3 = rA3 | 0b11110111;
 		int newPORTA = getPORTA();
-		newPORTA = newPORTA & rA3;
-		setPORTA(newPORTA);
+		if (rA3 == 0) {
+			newPORTA = newPORTA & 0b11110111;
+		} else {
+			newPORTA = newPORTA | 0b00001000;
+		}
+		setPORTB(newPORTA);
 	}
 
 	public static int getRA2() {
-		return (getPORTA() & 0b00000100) >>> 2;
+		return (getPORTB() & 0b00000100) >>> 2;
 	}
 
 	public static void setRA2(int rA2) {
-		rA2 = rA2 << 2; 
-		rA2 = rA2 | 0b11111011;
 		int newPORTA = getPORTA();
-		newPORTA = newPORTA & rA2;
+		if (rA2 == 0) {
+			newPORTA = newPORTA & 0b11111011;
+		} else {
+			newPORTA = newPORTA | 0b00000100;
+		}
 		setPORTA(newPORTA);
 	}
 
@@ -281,22 +308,26 @@ public class RAM {
 	}
 
 	public static void setRA1(int rA1) {
-		rA1 = rA1 << 1; 
-		rA1 = rA1 | 0b11111101;
 		int newPORTA = getPORTA();
-		newPORTA = newPORTA & rA1;
+		if (rA1 == 0) {
+			newPORTA = newPORTA & 0b11111101;
+		} else {
+			newPORTA = newPORTA | 0b00000010;
+		}
 		setPORTA(newPORTA);
 	}
 
 	public static int getRA0() {
-		return getPORTA() & 0b00000001;
+		return getPORTB() & 0b00000010;
 	}
 
 	public static void setRA0(int rA0) {
-		rA0 = rA0 << 0; 
-		rA0 = rA0 | 0b11111110;
 		int newPORTA = getPORTA();
-		newPORTA = newPORTA & rA0;
+		if (rA0 == 0) {
+			newPORTA = newPORTA & 0b11111110;
+		} else {
+			newPORTA = newPORTA | 0b00000001;
+		}
 		setPORTA(newPORTA);
 	}
 
@@ -313,10 +344,12 @@ public class RAM {
 	}
 
 	public static void setRB7(int rB7) {
-		rB7 = rB7 << 7; 
-		rB7 = rB7 | 0b01111111;
 		int newPORTB = getPORTB();
-		newPORTB = newPORTB & rB7;
+		if (rB7 == 0) {
+			newPORTB = newPORTB & 0b01111111;
+		} else {
+			newPORTB = newPORTB | 0b10000000;
+		}
 		setPORTB(newPORTB);
 	}
 
@@ -325,10 +358,12 @@ public class RAM {
 	}
 
 	public static void setRB6(int rB6) {
-		rB6 = rB6 << 6; 
-		rB6 = rB6 | 0b10111111;
 		int newPORTB = getPORTB();
-		newPORTB = newPORTB & rB6;
+		if (rB6 == 0) {
+			newPORTB = newPORTB & 0b10111111;
+		} else {
+			newPORTB = newPORTB | 0b01000000;
+		}
 		setPORTB(newPORTB);
 	}
 
@@ -337,10 +372,12 @@ public class RAM {
 	}
 
 	public static void setRB5(int rB5) {
-		rB5 = rB5 << 5; 
-		rB5 = rB5 | 0b11011111;
 		int newPORTB = getPORTB();
-		newPORTB = newPORTB & rB5;
+		if (rB5 == 0) {
+			newPORTB = newPORTB & 0b11011111;
+		} else {
+			newPORTB = newPORTB | 0b00100000;
+		}
 		setPORTB(newPORTB);
 	}
 
@@ -349,10 +386,12 @@ public class RAM {
 	}
 
 	public static void setRB4(int rB4) {
-		rB4 = rB4 << 4; 
-		rB4 = rB4 | 0b11101111;
 		int newPORTB = getPORTB();
-		newPORTB = newPORTB & rB4;
+		if (rB4 == 0) {
+			newPORTB = newPORTB & 0b11101111;
+		} else {
+			newPORTB = newPORTB | 0b00010000;
+		}
 		setPORTB(newPORTB);
 	}
 
@@ -361,10 +400,12 @@ public class RAM {
 	}
 
 	public static void setRB3(int rB3) {
-		rB3 = rB3 << 3; 
-		rB3 = rB3 | 0b11110111;
 		int newPORTB = getPORTB();
-		newPORTB = newPORTB & rB3;
+		if (rB3 == 0) {
+			newPORTB = newPORTB & 0b11110111;
+		} else {
+			newPORTB = newPORTB | 0b00001000;
+		}
 		setPORTB(newPORTB);
 	}
 
@@ -373,10 +414,12 @@ public class RAM {
 	}
 
 	public static void setRB2(int rB2) {
-		rB2 = rB2 << 2; 
-		rB2 = rB2 | 0b11111011;
 		int newPORTB = getPORTB();
-		newPORTB = newPORTB & rB2;
+		if (rB2 == 0) {
+			newPORTB = newPORTB & 0b11111011;
+		} else {
+			newPORTB = newPORTB | 0b00000100;
+		}
 		setPORTB(newPORTB);
 	}
 
@@ -385,10 +428,12 @@ public class RAM {
 	}
 
 	public static void setRB1(int rB1) {
-		rB1 = rB1 << 1; 
-		rB1 = rB1 | 0b11111101;
 		int newPORTB = getPORTB();
-		newPORTB = newPORTB & rB1;
+		if (rB1 == 0) {
+			newPORTB = newPORTB & 0b11111101;
+		} else {
+			newPORTB = newPORTB | 0b00000010;
+		}
 		setPORTB(newPORTB);
 	}
 
@@ -398,10 +443,12 @@ public class RAM {
 	}
 
 	public static void setRB0(int rB0) {
-		rB0 = rB0 << 0; 
-		rB0 = rB0 | 0b11111110;
 		int newPORTB = getPORTB();
-		newPORTB = newPORTB & rB0;
+		if (rB0 == 0) {
+			newPORTB = newPORTB & 0b11111110;
+		} else {
+			newPORTB = newPORTB | 0b00000001;
+		}
 		setPORTB(newPORTB);
 	}
 
@@ -442,9 +489,12 @@ public class RAM {
 	}
 
 	public static void setGIE(int gIE) {
-		gIE = gIE | 0b01111111;
 		int newINTCON = getINTCON();
-		newINTCON = newINTCON & gIE;
+		if (gIE == 0) {
+			newINTCON = newINTCON & 0b01111111;
+		} else {
+			newINTCON = newINTCON | 0b10000000;
+		}
 		setINTCON(newINTCON);
 	}
 
@@ -453,9 +503,12 @@ public class RAM {
 	}
 
 	public static void setEEIE(int eEIE) {
-		eEIE = eEIE | 0b10111111;
 		int newINTCON = getINTCON();
-		newINTCON = newINTCON & eEIE;
+		if (eEIE == 0) {
+			newINTCON = newINTCON & 0b10111111;
+		} else {
+			newINTCON = newINTCON | 0b01000000;
+		}
 		setINTCON(newINTCON);
 	}
 
@@ -464,9 +517,12 @@ public class RAM {
 	}
 
 	public static void setT0IE(int t0IE) {
-		t0IE = t0IE | 0b11011111;
 		int newINTCON = getINTCON();
-		newINTCON = newINTCON & t0IE;
+		if (t0IE == 0) {
+			newINTCON = newINTCON & 0b11011111;
+		} else {
+			newINTCON = newINTCON | 0b00100000;
+		}
 		setINTCON(newINTCON);
 	}
 
@@ -475,9 +531,12 @@ public class RAM {
 	}
 
 	public static void setINTE(int iNTE) {
-		iNTE = iNTE | 0b11101111;
 		int newINTCON = getINTCON();
-		newINTCON = newINTCON & iNTE;
+		if (iNTE == 0) {
+			newINTCON = newINTCON & 0b11101111;
+		} else {
+			newINTCON = newINTCON | 0b00010000;
+		}
 		setINTCON(newINTCON);
 	}
 
@@ -486,9 +545,12 @@ public class RAM {
 	}
 
 	public static void setRBIE(int rBIE) {
-		rBIE = rBIE | 0b11110111;
 		int newINTCON = getINTCON();
-		newINTCON = newINTCON & rBIE;
+		if (rBIE == 0) {
+			newINTCON = newINTCON & 0b11110111;
+		} else {
+			newINTCON = newINTCON | 0b00001000;
+		}
 		setINTCON(newINTCON);
 	}
 
@@ -497,9 +559,12 @@ public class RAM {
 	}
 
 	public static void setT0IF(int t0IF) {
-		t0IF = t0IF | 0b11111011;
 		int newINTCON = getINTCON();
-		newINTCON = newINTCON & t0IF;
+		if (t0IF == 0) {
+			newINTCON = newINTCON & 0b11111011;
+		} else {
+			newINTCON = newINTCON | 0b00000100;
+		}
 		setINTCON(newINTCON);
 	}
 
@@ -508,9 +573,12 @@ public class RAM {
 	}
 
 	public static void setINTF(int iNTF) {
-		iNTF = iNTF | 0b11111101;
 		int newINTCON = getINTCON();
-		newINTCON = newINTCON & iNTF;
+		if (iNTF == 0) {
+			newINTCON = newINTCON & 0b11111101;
+		} else {
+			newINTCON = newINTCON | 0b00000010;
+		}
 		setINTCON(newINTCON);
 	}
 
@@ -519,9 +587,12 @@ public class RAM {
 	}
 
 	public static void setRBIF(int rBIF) {
-		rBIF = rBIF | 0b11111110;
 		int newINTCON = getINTCON();
-		newINTCON = newINTCON & rBIF;
+		if (rBIF == 0) {
+			newINTCON = newINTCON & 0b11111110;
+		} else {
+			newINTCON = newINTCON | 0b00000001;
+		}
 		setINTCON(newINTCON);
 	}
 
@@ -538,9 +609,12 @@ public class RAM {
 	}
 
 	public static void setRBPU(int rBPU) {
-		rBPU = rBPU | 0b01111111;
 		int newOPTION = getOPTION();
-		newOPTION = newOPTION & rBPU;
+		if (rBPU == 0) {
+			newOPTION = newOPTION & 0b01111111;
+		} else {
+			newOPTION = newOPTION | 0b10000000;
+		}
 		setOPTION(newOPTION);
 	}
 
@@ -549,9 +623,12 @@ public class RAM {
 	}
 
 	public static void setINTEDG(int iNTEDG) {
-		iNTEDG = iNTEDG | 0b10111111;
 		int newOPTION = getOPTION();
-		newOPTION = newOPTION & iNTEDG;
+		if (iNTEDG == 0) {
+			newOPTION = newOPTION & 0b10111111;
+		} else {
+			newOPTION = newOPTION | 0b01000000;
+		}
 		setOPTION(newOPTION);
 	}
 
@@ -560,9 +637,12 @@ public class RAM {
 	}
 
 	public static void setT0CS(int t0CS) {
-		t0CS = t0CS | 0b11011111;
 		int newOPTION = getOPTION();
-		newOPTION = newOPTION & t0CS;
+		if (t0CS == 0) {
+			newOPTION = newOPTION & 0b11011111;
+		} else {
+			newOPTION = newOPTION | 0b00100000;
+		}
 		setOPTION(newOPTION);
 	}
 
@@ -571,9 +651,12 @@ public class RAM {
 	}
 
 	public static void setT0SE(int t0SE) {
-		t0SE = t0SE | 0b11101111;
 		int newOPTION = getOPTION();
-		newOPTION = newOPTION & t0SE;
+		if (t0SE == 0) {
+			newOPTION = newOPTION & 0b11101111;
+		} else {
+			newOPTION = newOPTION | 0b00010000;
+		}
 		setOPTION(newOPTION);
 	}
 
@@ -582,9 +665,12 @@ public class RAM {
 	}
 
 	public static void setPSA(int pSA) {
-		pSA = pSA | 0b11110111;
 		int newOPTION = getOPTION();
-		newOPTION = newOPTION & pSA;
+		if (pSA == 0) {
+			newOPTION = newOPTION & 0b11110111;
+		} else {
+			newOPTION = newOPTION | 0b00001000;
+		}
 		setOPTION(newOPTION);
 	}
 
@@ -593,9 +679,12 @@ public class RAM {
 	}
 
 	public static void setPS2(int pS2) {
-		pS2 = pS2 | 0b11111011;
 		int newOPTION = getOPTION();
-		newOPTION = newOPTION & pS2;
+		if (pS2 == 0) {
+			newOPTION = newOPTION & 0b11111011;
+		} else {
+			newOPTION = newOPTION | 0b00000100;
+		}
 		setOPTION(newOPTION);
 	}
 
@@ -604,9 +693,12 @@ public class RAM {
 	}
 
 	public static void setPS1(int pS1) {
-		pS1 = pS1 | 0b11111101;
 		int newOPTION = getOPTION();
-		newOPTION = newOPTION & pS1;
+		if (pS1 == 0) {
+			newOPTION = newOPTION & 0b11111101;
+		} else {
+			newOPTION = newOPTION | 0b00000010;
+		}
 		setOPTION(newOPTION);
 	}
 
@@ -615,9 +707,12 @@ public class RAM {
 	}
 
 	public static void setPS0(int pS0) {
-		pS0 = pS0 | 0b11111110;
 		int newOPTION = getOPTION();
-		newOPTION = newOPTION & pS0;
+		if (pS0 == 0) {
+			newOPTION = newOPTION & 0b11111110;
+		} else {
+			newOPTION = newOPTION | 0b00000001;
+		}
 		setOPTION(newOPTION);
 	}
 
@@ -652,7 +747,11 @@ public class RAM {
 	public static void setEEIF(int eEIF) {
 		eEIF = eEIF | 0b11101111;
 		int newEECON1 = getEECON1();
-		newEECON1 = newEECON1 & eEIF;
+		if (eEIF == 0) {
+			newEECON1 = newEECON1 & 0b11101111;
+		} else {
+			newEECON1 = newEECON1 | 0b00010000;
+		}
 		setEECON1(newEECON1);
 	}
 
@@ -661,9 +760,12 @@ public class RAM {
 	}
 
 	public static void setWRERR(int wRERR) {
-		wRERR = wRERR | 0b11110111;
 		int newEECON1 = getEECON1();
-		newEECON1 = newEECON1 & wRERR;
+		if (wRERR == 0) {
+			newEECON1 = newEECON1 & 0b11110111;
+		} else {
+			newEECON1 = newEECON1 | 0b00001000;
+		}
 		setEECON1(newEECON1);
 	}
 
@@ -672,9 +774,12 @@ public class RAM {
 	}
 
 	public static void setWREN(int wREN) {
-		wREN = wREN | 0b11111011;
 		int newEECON1 = getEECON1();
-		newEECON1 = newEECON1 & wREN;
+		if (wREN == 0) {
+			newEECON1 = newEECON1 & 0b11111011;
+		} else {
+			newEECON1 = newEECON1 | 0b00000100;
+		}
 		setEECON1(newEECON1);
 	}
 
@@ -683,9 +788,12 @@ public class RAM {
 	}
 
 	public static void setWR(int wR) {
-		wR = wR | 0b11111101;
 		int newEECON1 = getEECON1();
-		newEECON1 = newEECON1 & wR;
+		if (wR == 0) {
+			newEECON1 = newEECON1 & 0b11111101;
+		} else {
+			newEECON1 = newEECON1 | 0b00000010;
+		}
 		setEECON1(newEECON1);
 	}
 
@@ -694,9 +802,12 @@ public class RAM {
 	}
 
 	public static void setRD(int rD) {
-		rD = rD | 0b11111110;
 		int newEECON1 = getEECON1();
-		newEECON1 = newEECON1 & rD;
+		if (rD == 0) {
+			newEECON1 = newEECON1 & 0b11111110;
+		} else {
+			newEECON1 = newEECON1 | 0b00000001;
+		}
 		setEECON1(newEECON1);
 	}
 
@@ -714,13 +825,44 @@ public class RAM {
 	}
 
 	public static int getW() {
-		// TODO Auto-generated method stub
 		return w;
 	}
 
-	public static int getRegisterContent(int f) {
-		// TODO Auto-generated method stub
-		return bank[f];
+	public static int getRegisterContent(int address) { // TODO maybe noch exception
+		if (address == 0x01) {
+			return getTMR0();
+		} else if (address == 0x02 || address == 0x82) {
+			return getPCL();
+		} else if (address == 0x03 || address == 0x83) {
+			return getSTATUS();
+		} else if (address == 0x04 || address == 0x84) {
+			return getFSR();
+		} else if (address == 0x05) {
+			return getPORTA();
+		} else if (address == 0x06) {
+			return getPORTB();
+		} else if (address == 0x08) {
+			return getEEDATA();
+		} else if (address == 0x09) {
+			return getEEADR();
+		} else if (address == 0x0A || address == 0x8A) {
+			return getPCLATH();
+		} else if (address == 0x0B || address == 0x8B) {
+			return getINTCON();
+		} else if (address == 0x81) {
+			return getOPTION();
+		} else if (address == 0x85) {
+			return getTRISA();
+		} else if (address == 0x86) {
+			return getTRISB();
+		} else if (address == 0x88) {
+			return getEECON1();
+		} else if (address == 0x89) {
+			return getEECON2();
+		} else if (address < 0xFF && address >= 0x00) {
+			return bank[address];
+		}
+		return 0x00;
 	}
 
 	public static void setRegister(int d, int content, int f) {
