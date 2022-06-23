@@ -770,6 +770,9 @@ public class ApplicationGui {
 		}else {
 			RAM.setRB7(0);
 		}
+		System.out.println(RAM.getPORTA());
+
+		System.out.println(RAM.getPORTB());
 		refresh();
 	}
 
