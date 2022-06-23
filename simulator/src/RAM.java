@@ -286,11 +286,11 @@ public class RAM {
 		} else {
 			newPORTA = newPORTA | 0b00001000;
 		}
-		setPORTB(newPORTA);
+		setPORTA(newPORTA);
 	}
 
 	public static int getRA2() {
-		return (getPORTB() & 0b00000100) >>> 2;
+		return (getPORTA() & 0b00000100) >>> 2;
 	}
 
 	public static void setRA2(int rA2) {
@@ -318,7 +318,7 @@ public class RAM {
 	}
 
 	public static int getRA0() {
-		return getPORTB() & 0b00000010;
+		return getPORTA() & 0b00000001;
 	}
 
 	public static void setRA0(int rA0) {
@@ -439,7 +439,7 @@ public class RAM {
 
 	// or getINT
 	public static int getRB0() {
-		return getPORTB() & 0b00000010;
+		return getPORTB() & 0b00000001;
 	}
 
 	public static void setRB0(int rB0) {
