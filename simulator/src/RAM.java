@@ -828,7 +828,7 @@ public class RAM {
 		return w;
 	}
 
-	public static int getRegisterContent(int address) { // TODO maybe noch exception
+	public static int getRegisterContent(int address) { 
 		if (address == 0x01) {
 			return getTMR0();
 		} else if (address == 0x02 || address == 0x82) {

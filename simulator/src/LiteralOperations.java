@@ -11,7 +11,7 @@ public class LiteralOperations { // operations that start with 11
 	public static void ADDLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		wContent = RAM.getW();
-		// check digit carry
+		//TODO check digit carry
 		int dK = (0x08 & k) >>> 3;
 		int dW = (0x08 & wContent) >>> 3;
 		if ((dK & dW) != 0) {
@@ -65,14 +65,14 @@ public class LiteralOperations { // operations that start with 11
 	// return with literal in w
 	public static void RETLW(int hexInt) {
 		MOVLW(hexInt); // RETLW = MOVLW + RETURN
-		RETURN(); // jump out of subprogram
+		ByteOrientedOperations.RETURN(); // jump out of subprogram
 	}
 
 	// subtract w from literal
 	public static void SUBLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		wContent = RAM.getW();
-		// check digit carry
+		// TODO check digit carry
 		int dK = (0x08 & k) >>> 3;
 		int dW = (0x08 & wContent) >>> 3;
 		if ((dK & dW) != 0) {
@@ -105,8 +105,8 @@ public class LiteralOperations { // operations that start with 11
 	}
 
 	// deleting
-	public static void RETURN() {
-		// ruft goto auf die oberste adresse vom stack auf (pop)
-	}
+//	public static void RETURN() {
+//		// ruft goto auf die oberste adresse vom stack auf (pop)
+//	}
 
 }

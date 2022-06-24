@@ -22,7 +22,7 @@ public class fileReader {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		//  Auto-generated method stub
 		
 			ArrayList[] temp;
 			
@@ -34,10 +34,10 @@ public class fileReader {
 					System.out.println(temp[2]);
 					System.out.println(temp[3]);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
+					// Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					//  Auto-generated catch block
 					e.printStackTrace();
 				}
 

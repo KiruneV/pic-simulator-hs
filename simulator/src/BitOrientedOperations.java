@@ -39,7 +39,7 @@ public class BitOrientedOperations { // operations that start with 01
 		if ((result & mask) == 0) {
 			RAM.setPCL(RAM.getPCL()+1);
 		} else {
-			// TODO then the next instruction is executed
+			// then the next instruction is executed
 		}
 	}
 

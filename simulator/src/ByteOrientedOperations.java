@@ -13,7 +13,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
-		// check digit carry
+		//TODO check digit carry
 		int dF = (0x08 & result);
 		int dW = (0x08 & wContent);
 		if ((dF & dW) != 0) {
@@ -21,7 +21,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		} else {
 			RAM.setDC(0);
 		}
-		int before = result;
+		//int before = result;
 		// adding fContent and w
 		result += wContent;
 		// check carry bit
@@ -137,7 +137,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		if (f == 0) {
 			RAM.setPCL(RAM.getPCL()+1);
 		} else {
-			// TODO execute the next instruction
+			// execute the next instruction
 		}
 	}
 
@@ -217,7 +217,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
-		// check digit carry
+		//TODO check digit carry
 		int dF = (0x08 & result);
 		int dW = (0x08 & wContent);
 		if ((dF & dW) != 0) {
@@ -313,7 +313,8 @@ public class ByteOrientedOperations { // operations that start with 00
 			}
 		}
 	}
-
+	
+	//TODO sleep
 	public static void SLEEP() {
 		CLRWDT();
 		// WDT (watchdog timer) = 00h
