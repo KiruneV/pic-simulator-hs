@@ -217,6 +217,7 @@ public class ApplicationGui {
 									{"E8", null, null, null, null, null, null, null, null},
 									{"F0", null, null, null, null, null, null, null, null},
 									{"F8", null, null, null, null, null, null, null, null},
+									{"FF", null, null, null, null, null, null, null, null},
 								},
 								new String[] {
 										"0x", "00", "01", "02", "03", "04", "05", "06", "07"
@@ -746,11 +747,12 @@ public class ApplicationGui {
 		}
 		//RAManzeige
 		int pos=0;
-		for (int i = 0; i < 31; i++) {
+		for (int i = 0; i < 32; i++) {
 			for (int j = 1; j < 9; j++) {
-				String temp=Integer.toHexString(RAM.bank[pos]);
+				String temp=Integer.toHexString(RAM.getRegisterContent(pos));
 				table.getModel().setValueAt(temp, i, j);
 				pos++;
+				//System.out.println(pos);
 			}
 		}
 		

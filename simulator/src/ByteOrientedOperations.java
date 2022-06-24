@@ -108,7 +108,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		result--;
 		RAM.setRegister(d, result, f);
 		if (result == 0) {
-			NOP();
+			RAM.setPCL(RAM.getPCL()+1);
 		} // else {
 //			 execute the next instruction
 //		}
@@ -135,7 +135,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		result += 1;
 		RAM.setRegister(d, result, f);
 		if (f == 0) {
-			NOP();
+			RAM.setPCL(RAM.getPCL()+1);
 		} else {
 			// TODO execute the next instruction
 		}
@@ -279,26 +279,47 @@ public class ByteOrientedOperations { // operations that start with 00
 		// WDT (watchdog timer) = 00h
 		// WDT prescaler = 0
 		// !TO = 1
+		RAM.setTO(1);
 		// !PD = 1
+		RAM.setPD(1);
 	}
 
 	// TODO return from interrupt
 	public static void RETFIE() {
 		// return from interrupt
 		// PC (programm counter) = TOS (top of the stack)
+		if(!globalthings.stack8.isEmpty()) {
+			RAM.setPCL(globalthings.stack8.pop());
+			globalthings.jumpPerformed=true;
+		}else {
+			if(globalthings.debugMode==true) {
+				System.out.println("STACK is empty!");
+			}
+		}
 		// GIE (global interrupt enable bit) = 1
+		RAM.setGIE(1);
 
 	}
 
 	// return from subroutine
 	public static void RETURN() {
 		// PC (programm counter) = TOS (top of the stack)
+		if(!globalthings.stack8.isEmpty()) {
+			RAM.setPCL(globalthings.stack8.pop());
+			globalthings.jumpPerformed=true;
+		}else {
+			if(globalthings.debugMode==true) {
+				System.out.println("STACK is empty!");
+			}
+		}
 	}
 
 	public static void SLEEP() {
+		CLRWDT();
 		// WDT (watchdog timer) = 00h
 		// WDT prescaler = 0
 		// !TO = 1
 		// !PD = 0
+		RAM.setPD(0);
 	}
 }

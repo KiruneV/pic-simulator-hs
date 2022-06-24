@@ -8,7 +8,7 @@ public class RAM {
 	static int TMR0 = 0x01, PCL = 0x02, STATUS = 0x03, FSR = 0x04, PORTA = 0x05, PORTB = 0x06, EEDATA = 0x08,
 			EEADR = 0x09, PCLATH = 0x0A, INTCON = 0x0B, OPTION = 0x81, TRISA = 0x85, TRISB = 0x86, EECON1 = 0x88,
 			EECON2 = 0x89;
-	static int bank[] = new int[0xFF];
+	static int bank[] = new int[256];
 	static int w;
 
 	public RAM() {
@@ -859,7 +859,7 @@ public class RAM {
 			return getEECON1();
 		} else if (address == 0x89) {
 			return getEECON2();
-		} else if (address < 0xFF && address >= 0x00) {
+		} else if (address <= 0xFF && address >= 0x00) {
 			return bank[address];
 		}
 		return 0x00;
