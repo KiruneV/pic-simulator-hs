@@ -19,6 +19,9 @@ public class decoder {
 		String hexString="0x"+inputStr;
 		int hexInt=Integer.decode(hexString);
 		DecodeInt(hexInt);
+		if(!globalthings.jumpPerformed) {
+			RAM.setPCL(RAM.getPCL()+1);
+		}
 		//System.out.println(Integer.toBinaryString(hexInt));
 		//System.out.println(hexInt);
 	}
