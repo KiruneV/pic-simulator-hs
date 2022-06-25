@@ -22,7 +22,9 @@ public class ControlOperations { // operations that start with 10
 		k = hexInt & bitmask; // select k out of the hexInt
 		// TODO jump to address k
 		RAM.setPCL(k);
+		//System.out.println("goto"+k+"pcl:"+RAM.getPCL());
 		globalthings.jumpPerformed=true;
+		
 		// setAddress(k);
 	}
 	

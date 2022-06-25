@@ -6,4 +6,5 @@ public class globalthings {
 	public static Stack8<Integer> stack8=new Stack8<Integer>(8);
 	public static int freqInt;
 	public static boolean jumpPerformed;
+	public static boolean GUIon=false;
 }

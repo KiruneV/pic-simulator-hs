@@ -13,11 +13,12 @@ public class decoder {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		DecodeStr("FFF");
+		DecodeStr("2806");
 	}
 	public static void DecodeStr(String inputStr) {
 		String hexString="0x"+inputStr;
 		int hexInt=Integer.decode(hexString);
+		
 		DecodeInt(hexInt);
 		if(!globalthings.jumpPerformed) {
 			RAM.setPCL(RAM.getPCL()+1);

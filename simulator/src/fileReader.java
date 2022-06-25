@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 public class fileReader {
 
+	
 	@SuppressWarnings("rawtypes")
 	public static ArrayList[] linesCodeLineswithcodeCodestring;
 	/**
@@ -40,11 +41,6 @@ public class fileReader {
 					//  Auto-generated catch block
 					e.printStackTrace();
 				}
-
-				
-			
-			
-			
 		
 	}
 
@@ -61,18 +57,18 @@ public class fileReader {
 		BufferedReader br = new BufferedReader(fr);
 
 		ArrayList<String> lines = new ArrayList<>();
-		ArrayList<Integer> lineswithcode = new ArrayList<>();
 		ArrayList<Integer> code = new ArrayList<>();
+		ArrayList<Integer> lineswithcode = new ArrayList<>();
 		ArrayList<String> codeString = new ArrayList<>();
-
 		ArrayList<String> codeStringZeile = new ArrayList<>();
+		
 		String line;
 		int counter =0;
 		while((line = br.readLine()) != null) { 
 			lines.add(line); 
 			if (Character.isDigit(line.charAt(0))) {
 				code.add(Integer.decode("0x"+line.substring(5, 9)));
-				codeString.add("0x"+line.substring(5, 9));
+				codeString.add(line.substring(5, 9));
 				lineswithcode.add(counter);
 				codeStringZeile.add(line);
 			}

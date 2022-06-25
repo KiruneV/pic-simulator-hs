@@ -319,8 +319,12 @@ public class ByteOrientedOperations { // operations that start with 00
 		CLRWDT();
 		// WDT (watchdog timer) = 00h
 		// WDT prescaler = 0
-		// !TO = 1
+		//already done in CLRWDT !TO = 1
 		// !PD = 0
 		RAM.setPD(0);
+		//refresh gui manually so that one could see the changes
+		if(globalthings.GUIon) {
+			ApplicationGui.refresh();
+		}
 	}
 }
