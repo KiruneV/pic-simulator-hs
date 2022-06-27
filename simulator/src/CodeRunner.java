@@ -33,6 +33,4 @@ public class CodeRunner extends Thread {
         	ApplicationGui.refresh();
         }
     }
-	@SuppressWarnings("deprecation")
-	public void cancel() { stop(); }
 }

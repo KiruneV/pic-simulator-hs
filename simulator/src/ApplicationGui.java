@@ -59,6 +59,7 @@ public class ApplicationGui {
 	private static JButton pauseButton;
 	private static JButton startButton;
 	private static JButton resetButton;
+	private JMenu fileMenu;
 	
 	
 
@@ -99,12 +100,13 @@ public class ApplicationGui {
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
-		JMenu mnNewMenu = new JMenu("File");
-		menuBar.add(mnNewMenu);
+		fileMenu = new JMenu("File");
+		fileMenu.setToolTipText("Reset Pic if not enabled");
+		menuBar.add(fileMenu);
 
 		JMenuItem mntmNewMenuItem = new JMenuItem("select file");
 		mntmNewMenuItem.setAction(action);
-		mnNewMenu.add(mntmNewMenuItem);
+		fileMenu.add(mntmNewMenuItem);
 				
 				JPanel panel = new JPanel();
 				
@@ -759,14 +761,16 @@ public class ApplicationGui {
 	
 	@SuppressWarnings("removal")
 	public void pausebutton() {
-		codeRunner.suspend();
+		codeRunner.interrupt();
 	}
 	
 	
 	@SuppressWarnings("unchecked")
 	public void resetbutton() {
+		if(codeRunner!=null) {
 		codeRunner.resume();
 		codeRunner.interrupt();
+		}
 		RAM.resetRAM();
 		refresh();
 		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
@@ -783,6 +787,7 @@ public class ApplicationGui {
 		pauseButton.setEnabled(false);
 		resumeButton.setEnabled(false);
 		startButton.setEnabled(true);
+		fileMenu.setEnabled(true);
 		refresh();
 		
 	}
@@ -798,9 +803,6 @@ public class ApplicationGui {
 		//long start = new Date().getTime();
 		//while(new Date().getTime() - start < 100L){}
 		
-//		for (int i = 0; i < stack8.size(); i++) {
-//			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
-//		}
 		//stackanzeige
 		for (int i = 0; i < 7; i++) {
 			table_2.getModel().setValueAt(null, i, 1);
@@ -892,7 +894,7 @@ public class ApplicationGui {
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "Load File");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "Reset Pic if not enabled");
 		}
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser fileChooser = new JFileChooser();
@@ -915,7 +917,7 @@ public class ApplicationGui {
 					}
 					startButton.setEnabled(true);
 					resetButton.setEnabled(true);
-
+					fileMenu.setEnabled(false);
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {

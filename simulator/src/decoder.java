@@ -25,6 +25,7 @@ public class decoder {
 			
 		}
 		globalthings.jumpPerformed=false;
+		globalthings.tacktVT++;
 		//System.out.println(Integer.toBinaryString(hexInt));
 		//System.out.println(hexInt);
 	}

@@ -7,4 +7,5 @@ public class globalthings {
 	public static int freqInt;
 	public static boolean jumpPerformed;
 	public static boolean GUIon=false;
+	public static int tacktVT;
 }

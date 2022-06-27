@@ -41,6 +41,7 @@ public class RAM {
 			bank[i] = 0;
 		}
 		globalthings.stack8.clear();
+		globalthings.tacktVT=0;
 //		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
 		bank[PCL] = 0b00000000;
