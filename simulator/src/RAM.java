@@ -40,6 +40,7 @@ public class RAM {
 		for (int i = 0; i < bank.length; i++) {
 			bank[i] = 0;
 		}
+		globalthings.stack8.clear();
 //		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
 		bank[PCL] = 0b00000000;

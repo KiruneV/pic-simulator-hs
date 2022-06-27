@@ -765,8 +765,10 @@ public class ApplicationGui {
 	
 	@SuppressWarnings("unchecked")
 	public void resetbutton() {
-		codeRunner.cancel();
+		codeRunner.resume();
+		codeRunner.interrupt();
 		RAM.resetRAM();
+		refresh();
 		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
 		for (int i = 0; i < table_1.getModel().getRowCount()-1; i++) {
 			if((boolean) table_1.getModel().getValueAt(i, 1)) {
@@ -775,9 +777,12 @@ public class ApplicationGui {
 				breakpointlist.add(false);
 			}
 		}
+		
+		RAM.resetRAM();
 		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3], breakpointlist);
 		pauseButton.setEnabled(false);
 		resumeButton.setEnabled(false);
+		startButton.setEnabled(true);
 		refresh();
 		
 	}
@@ -797,6 +802,9 @@ public class ApplicationGui {
 //			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
 //		}
 		//stackanzeige
+		for (int i = 0; i < 7; i++) {
+			table_2.getModel().setValueAt(null, i, 1);
+		}
 		for (int i = 0; i <globalthings.stack8.size(); i++) {
 			((DefaultTableModel) table_2.getModel()).setValueAt(Integer.toHexString(globalthings.stack8.elementAt(i)), i, 1);
 		}

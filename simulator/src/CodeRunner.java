@@ -15,19 +15,19 @@ public class CodeRunner extends Thread {
 	CodeRunner(ArrayList<String> codeString,ArrayList<Boolean> breakpointlist){
 		this.codeString=codeString;
 		this.breakpointlist=breakpointlist;
-		System.out.println(codeString);
+//		System.out.println(codeString);
 	}
 	@SuppressWarnings("removal")
 	public void run() {
-        while(true) {
+        while(!Thread.currentThread().isInterrupted()) {
         	if (breakpointlist.get(RAM.getPCL())) {
         		//System.out.println("breakpoint");
 				ApplicationGui.resumeButton.setEnabled(true);
 				this.suspend();
 				ApplicationGui.resumeButton.setEnabled(false);
 			}
-        	System.out.println(RAM.getPCL());
-        	System.out.println(codeString.get(RAM.getPCL()));
+//        	System.out.println(RAM.getPCL());
+//        	System.out.println(codeString.get(RAM.getPCL()));
         	decoder.DecodeStr(codeString.get(RAM.getPCL()));
         	
         	ApplicationGui.refresh();

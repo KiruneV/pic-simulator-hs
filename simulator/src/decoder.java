@@ -13,7 +13,7 @@ public class decoder {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		DecodeStr("2806");
+		DecodeStr("3E25");
 	}
 	public static void DecodeStr(String inputStr) {
 		String hexString="0x"+inputStr;
@@ -22,7 +22,9 @@ public class decoder {
 		DecodeInt(hexInt);
 		if(!globalthings.jumpPerformed) {
 			RAM.setPCL(RAM.getPCL()+1);
+			
 		}
+		globalthings.jumpPerformed=false;
 		//System.out.println(Integer.toBinaryString(hexInt));
 		//System.out.println(hexInt);
 	}
