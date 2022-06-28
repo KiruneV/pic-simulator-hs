@@ -13,15 +13,15 @@ public class ByteOrientedOperations { // operations that start with 00
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
-		//TODO check digit carry
-		int dF = (0x08 & result);
-		int dW = (0x08 & wContent);
-		if ((dF & dW) != 0) {
+		// TODO check digit carry
+		int dF = (0x0F & result);
+		int dW = (0x0F & wContent);
+		if ((dF + dW) > 15) {
 			RAM.setDC(1);
 		} else {
 			RAM.setDC(0);
 		}
-		//int before = result;
+		// int before = result;
 		// adding fContent and w
 		result += wContent;
 		// check carry bit
@@ -108,7 +108,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		result--;
 		RAM.setRegister(d, result, f);
 		if (result == 0) {
-			RAM.setPCL(RAM.getPCL()+1);
+			RAM.setPCL(RAM.getPCL() + 1);
 		} // else {
 //			 execute the next instruction
 //		}
@@ -133,9 +133,12 @@ public class ByteOrientedOperations { // operations that start with 00
 		result = RAM.getRegisterContent(f);
 		// increment f
 		result += 1;
+		if(result > 0xFF) {
+			result = 0;
+		}
 		RAM.setRegister(d, result, f);
-		if (f == 0) {
-			RAM.setPCL(RAM.getPCL()+1);
+		if (result == 0) {
+			RAM.setPCL(RAM.getPCL() + 1);
 		} else {
 			// execute the next instruction
 		}
@@ -161,7 +164,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		result = RAM.getRegisterContent(f);
 		// set zero flag when f == 0
 		RAM.checkZ(result);
-		RAM.setRegisterContent(result, f);
+		RAM.setRegister(d, result, f);
 		// d = 1 is useful to test a file register since status flag z is affected
 	}
 
@@ -217,10 +220,10 @@ public class ByteOrientedOperations { // operations that start with 00
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
-		//TODO check digit carry
-		int dF = (0x08 & result);
-		int dW = (0x08 & wContent);
-		if ((dF & dW) != 0) {
+		// check digit carry
+		int dF = (0x0F & result);
+		int dW = (0x0F & ~wContent);
+		if ((dF + (dW + 1)) > 15) {
 			RAM.setDC(1);
 		} else {
 			RAM.setDC(0);
@@ -288,11 +291,11 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void RETFIE() {
 		// return from interrupt
 		// PC (programm counter) = TOS (top of the stack)
-		if(!globalthings.stack8.isEmpty()) {
+		if (!globalthings.stack8.isEmpty()) {
 			RAM.setPCL(globalthings.stack8.pop());
-			globalthings.jumpPerformed=true;
-		}else {
-			if(globalthings.debugMode==true) {
+			globalthings.jumpPerformed = true;
+		} else {
+			if (globalthings.debugMode == true) {
 				System.out.println("STACK is empty!");
 			}
 		}
@@ -304,26 +307,26 @@ public class ByteOrientedOperations { // operations that start with 00
 	// return from subroutine
 	public static void RETURN() {
 		// PC (programm counter) = TOS (top of the stack)
-		if(!globalthings.stack8.isEmpty()) {
+		if (!globalthings.stack8.isEmpty()) {
 			RAM.setPCL(globalthings.stack8.pop());
-			globalthings.jumpPerformed=true;
-		}else {
-			if(globalthings.debugMode==true) {
+			globalthings.jumpPerformed = true;
+		} else {
+			if (globalthings.debugMode == true) {
 				System.out.println("STACK is empty!");
 			}
 		}
 	}
-	
-	//TODO sleep
+
+	// TODO sleep
 	public static void SLEEP() {
 		CLRWDT();
 		// WDT (watchdog timer) = 00h
 		// WDT prescaler = 0
-		//already done in CLRWDT !TO = 1
+		// already done in CLRWDT !TO = 1
 		// !PD = 0
 		RAM.setPD(0);
-		//refresh gui manually so that one could see the changes
-		if(globalthings.GUIon) {
+		// refresh gui manually so that one could see the changes
+		if (globalthings.GUIon) {
 			ApplicationGui.refresh();
 		}
 	}

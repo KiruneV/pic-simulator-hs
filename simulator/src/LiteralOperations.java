@@ -11,10 +11,10 @@ public class LiteralOperations { // operations that start with 11
 	public static void ADDLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		wContent = RAM.getW();
-		//TODO check digit carry
-		int dK = (0x08 & k) >>> 3;
-		int dW = (0x08 & wContent) >>> 3;
-		if ((dK & dW) != 0) {
+		// check digit carry
+		int dK = (0x0F & k);
+		int dW = (0x0F & wContent);
+		if ((dK + dW) > 15) {
 			RAM.setDC(1);
 		} else {
 			RAM.setDC(0);
@@ -72,10 +72,10 @@ public class LiteralOperations { // operations that start with 11
 	public static void SUBLW(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		wContent = RAM.getW();
-		// TODO check digit carry
-		int dK = (0x08 & k) >>> 3;
-		int dW = (0x08 & wContent) >>> 3;
-		if ((dK & dW) != 0) {
+		// check digit carry
+		int dF = (0x0F & result);
+		int dW = (0x0F & ~wContent);
+		if ((dF + (dW + 1)) > 15) {
 			RAM.setDC(1);
 		} else {
 			RAM.setDC(0);

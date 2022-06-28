@@ -38,8 +38,7 @@ public class BitOrientedOperations { // operations that start with 01
 		// check if bit b in f is null
 		if ((result & mask) == 0) {
 			RAM.setPCL(RAM.getPCL()+1);
-		} else {
-			// then the next instruction is executed
+			// dont do the next operation
 		}
 	}
 
@@ -58,6 +57,5 @@ public class BitOrientedOperations { // operations that start with 01
 
 	public static void NOP() {
 		// TODO Auto-generated method stub
-
 	}
 }
