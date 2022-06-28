@@ -912,7 +912,7 @@ public class ApplicationGui {
 					fileread.readFileLines(selectedFile.getAbsolutePath());
 
 					for (int i = 0; i < fileReader.linesCodeLineswithcodeCodestring[4].size(); i++) {
-						Object[]data= {false,false,fileReader.linesCodeLineswithcodeCodestring[4].get(i)};
+						Object[]data= {true,false,fileReader.linesCodeLineswithcodeCodestring[4].get(i)};
 						((DefaultTableModel) table_1.getModel()).addRow(data);
 					}
 					startButton.setEnabled(true);
