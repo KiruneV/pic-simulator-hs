@@ -202,6 +202,7 @@ public class ApplicationGui {
 						table.setCellSelectionEnabled(true);
 						table.setModel(new DefaultTableModel(
 								new Object[][] {
+									{"00", null, null, null, null, null, null, null, null},
 									{"08", null, null, null, null, null, null, null, null},
 									{"10", null, null, null, null, null, null, null, null},
 									{"18", null, null, null, null, null, null, null, null},
@@ -233,7 +234,6 @@ public class ApplicationGui {
 									{"E8", null, null, null, null, null, null, null, null},
 									{"F0", null, null, null, null, null, null, null, null},
 									{"F8", null, null, null, null, null, null, null, null},
-									{"FF", null, null, null, null, null, null, null, null},
 								},
 								new String[] {
 										"0x", "00", "01", "02", "03", "04", "05", "06", "07"
@@ -722,8 +722,8 @@ public class ApplicationGui {
 	}
 	public void overwriteRAM() {
 		if (!textField_1.getText().equals("")&&!textField.getText().equals("")){
-			String rampos="0x"+textField_1.getText();
-			int ramposI=Integer.decode(rampos);
+			
+			int ramposI=Integer.parseInt(textField_1.getText());
 			String ramval="0x"+textField.getText();
 			int ramvalI=Integer.decode(ramval);
 			if(ramvalI>255||ramposI>255||ramvalI<0||ramposI<0) {
@@ -731,7 +731,8 @@ public class ApplicationGui {
 					System.out.println("Wrong input for ram");
 				}
 			}else {
-				RAM.bank[ramposI]=ramvalI;
+				RAM.setRegisterContent(ramvalI, ramposI);
+				//bank[ramposI]=ramvalI;
 				textField_1.setText("");
 				textField.setText("");
 				refresh();
@@ -816,8 +817,9 @@ public class ApplicationGui {
 			for (int j = 1; j < 9; j++) {
 				String temp=Integer.toHexString(RAM.getRegisterContent(pos));
 				table.getModel().setValueAt(temp, i, j);
+
+				//System.out.println(pos+"  "+RAM.getRegisterContent(pos));
 				pos++;
-				//System.out.println(pos);
 			}
 		}
 		
