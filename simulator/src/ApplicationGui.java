@@ -26,7 +26,7 @@ public class ApplicationGui {
 	private JFrame frame;
 	private final Action action = new SwingAction();
 	private static JTable table;
-	private static JTable table_1;
+	public static JTable table_1;
 	public fileReader fileread;
 	private final Action action_1 = new SwingAction_1();
 	private static JTable table_2;
