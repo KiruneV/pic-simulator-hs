@@ -646,7 +646,7 @@ public class ApplicationGui {
 								table_3 = new JTable();
 								table_3.setModel(new DefaultTableModel(
 									new Object[][] {
-										{"W-Rerister", null},
+										{"W-Register", null},
 										{"PCL", null},
 										{"PCLATH", null},
 										{"PC-Intern", null},

@@ -31,6 +31,9 @@ public class CodeRunner extends Thread {
         	decoder.DecodeStr(codeString.get(RAM.getPCL()));
         	
         	ApplicationGui.refresh();
+        	if(RAM.getGIE()==1&&RAM.getT0IE()==1&&RAM.getT0IF()==1) {
+        		//TODO interrupt
+        	}
         }
     }
 }
