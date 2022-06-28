@@ -6,7 +6,7 @@
 public class BitOrientedOperations { // operations that start with 01
 	static int[] bitmask = { 0x7F, 0x380 };
 	static int f, b, result, mask;
-
+	
 	// bit clear f
 	public static void BCF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt

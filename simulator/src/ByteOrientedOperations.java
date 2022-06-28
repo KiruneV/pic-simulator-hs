@@ -6,7 +6,7 @@
 public class ByteOrientedOperations { // operations that start with 00
 	static int[] bitmask = { 0x7F, 0x80 };
 	static int f, d, result, wContent;
-
+	
 	// add w and f
 	public static void ADDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
@@ -21,7 +21,6 @@ public class ByteOrientedOperations { // operations that start with 00
 		} else {
 			RAM.setDC(0);
 		}
-		int before = result;
 		// adding fContent and w
 		result += wContent;
 		// check carry bit

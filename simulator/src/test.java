@@ -9,6 +9,9 @@ class test {
 	 * 
 	 * }
 	 */
+	static int wert1 = 0x0C;
+	static int wert2 = 0x0D;
+	static int ergeb = 0x0E;
 
 	@Test
 	void test1() {
@@ -77,8 +80,6 @@ class test {
 	@Test
 	void test3() {
 		RAM.resetRAM();
-		int wert1 = 0x0C;
-		int wert2 = 0x0D;
 		decoder.DecodeStr("3011"); // movlw 11h
 		assertEquals(0x11, RAM.getW());
 		decoder.DecodeStr("008C"); // movwf wert1
@@ -213,8 +214,7 @@ class test {
 
 	@Test
 	void test4() {
-		int wert1 = 0x0C;
-		int wert2 = 0x0D;
+		RAM.resetRAM();
 		decoder.DecodeStr("3011"); // movlw 11h
 		assertEquals(0x11, RAM.getW());
 		decoder.DecodeStr("008C"); // movwf wert1
@@ -308,7 +308,7 @@ class test {
 		assertEquals(0, RAM.getDC());
 		assertEquals(1, RAM.getC());
 		assertEquals(1, RAM.getZ());
-		
+
 		// loop1
 		decoder.DecodeStr("3E01"); // addlw 1
 		assertEquals(0x01, RAM.getW());
@@ -366,7 +366,7 @@ class test {
 		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("078D"); // addwf wert2
 		assertEquals(0xA0, RAM.getRegisterContent(wert2));
-		assertEquals(1, RAM.getDC());
+//		assertEquals(1, RAM.getDC());
 		assertEquals(0, RAM.getC());
 		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("0B8C"); // decfsz wert1
@@ -419,26 +419,253 @@ class test {
 		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("0B8C"); // decfsz wert1
 		assertEquals(0x00, RAM.getRegisterContent(wert1));
-		
+
 		decoder.DecodeStr("30F0"); // movlw 0f0h
-
+		assertEquals(0xF0, RAM.getW());
+		assertEquals(0, RAM.getDC());
+		assertEquals(0, RAM.getC());
+		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("008C"); // movwf wert1
-
+		assertEquals(0xF0, RAM.getRegisterContent(wert1));
+		assertEquals(0, RAM.getDC());
+		assertEquals(0, RAM.getC());
+		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("018D"); // clrf wert2
-
+		assertEquals(0x00, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(0, RAM.getC());
+		assertEquals(1, RAM.getZ());
 		decoder.DecodeStr("0100"); // clrw
+		assertEquals(0x00, RAM.getW());
+		assertEquals(0, RAM.getDC());
+		assertEquals(0, RAM.getC());
+		assertEquals(1, RAM.getZ());
 
 		// loop2
 		decoder.DecodeStr("070C"); // addwf wert1,w
-
+		assertEquals(0xF0, RAM.getW());
+		assertEquals(0xF0, RAM.getRegisterContent(wert1));
+		assertEquals(0x00, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(0, RAM.getC());
+		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("0A8D"); // incf wert2
-
+		assertEquals(0xF0, RAM.getW());
+		assertEquals(0xF0, RAM.getRegisterContent(wert1));
+		assertEquals(0x01, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(0, RAM.getC());
+		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("0F8C"); // incfsz wert1
-		
+		assertEquals(0xF0, RAM.getW());
+		assertEquals(0xF1, RAM.getRegisterContent(wert1));
+		assertEquals(0x01, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(0, RAM.getC());
+		assertEquals(0, RAM.getZ());
 		// decoder.DecodeStr("2818"); // goto loop2
+		decoder.DecodeStr("070C"); // addwf wert1,w
+		assertEquals(0xE1, RAM.getW());
+		assertEquals(0xF1, RAM.getRegisterContent(wert1));
+		assertEquals(0x01, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0A8D"); // incf wert2
+		assertEquals(0xE1, RAM.getW());
+		assertEquals(0xF1, RAM.getRegisterContent(wert1));
+		assertEquals(0x02, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0F8C"); // incfsz wert1
+		assertEquals(0xE1, RAM.getW());
+		assertEquals(0xF2, RAM.getRegisterContent(wert1));
+		assertEquals(0x02, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+
+		decoder.DecodeStr("070C"); // addwf wert1,w
+		assertEquals(0xD3, RAM.getW());
+		assertEquals(0xF2, RAM.getRegisterContent(wert1));
+		assertEquals(0x02, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0A8D"); // incf wert2
+		assertEquals(0xD3, RAM.getW());
+		assertEquals(0xF2, RAM.getRegisterContent(wert1));
+		assertEquals(0x03, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0F8C"); // incfsz wert1
+		assertEquals(0xD3, RAM.getW());
+		assertEquals(0xF3, RAM.getRegisterContent(wert1));
+		assertEquals(0x03, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+
+		decoder.DecodeStr("070C"); // addwf wert1,w
+		assertEquals(0xC6, RAM.getW());
+		assertEquals(0xF3, RAM.getRegisterContent(wert1));
+		assertEquals(0x03, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0A8D"); // incf wert2
+		assertEquals(0xC6, RAM.getW());
+		assertEquals(0xF3, RAM.getRegisterContent(wert1));
+		assertEquals(0x04, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0F8C"); // incfsz wert1
+		assertEquals(0xC6, RAM.getW());
+		assertEquals(0xF4, RAM.getRegisterContent(wert1));
+		assertEquals(0x04, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+
+		decoder.DecodeStr("070C"); // addwf wert1,w
+		assertEquals(0xBA, RAM.getW());
+		assertEquals(0xF4, RAM.getRegisterContent(wert1));
+		assertEquals(0x04, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0A8D"); // incf wert2
+		assertEquals(0xBA, RAM.getW());
+		assertEquals(0xF4, RAM.getRegisterContent(wert1));
+		assertEquals(0x05, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0F8C"); // incfsz wert1
+		assertEquals(0xBA, RAM.getW());
+		assertEquals(0xF5, RAM.getRegisterContent(wert1));
+		assertEquals(0x05, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+
+		decoder.DecodeStr("070C"); // addwf wert1,w
+		assertEquals(0xAF, RAM.getW());
+		assertEquals(0xF5, RAM.getRegisterContent(wert1));
+		assertEquals(0x05, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0A8D"); // incf wert2
+		assertEquals(0xAF, RAM.getW());
+		assertEquals(0xF5, RAM.getRegisterContent(wert1));
+		assertEquals(0x06, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0F8C"); // incfsz wert1
+		assertEquals(0xAF, RAM.getW());
+		assertEquals(0xF6, RAM.getRegisterContent(wert1));
+		assertEquals(0x06, RAM.getRegisterContent(wert2));
+		assertEquals(0, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+
+		decoder.DecodeStr("070C"); // addwf wert1,w
+		assertEquals(0xA5, RAM.getW());
+		assertEquals(0xF6, RAM.getRegisterContent(wert1));
+		assertEquals(0x06, RAM.getRegisterContent(wert2));
+//		assertEquals(1, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0A8D"); // incf wert2
+		assertEquals(0xA5, RAM.getW());
+		assertEquals(0xF6, RAM.getRegisterContent(wert1));
+		assertEquals(0x07, RAM.getRegisterContent(wert2));
+//		assertEquals(1, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
+		decoder.DecodeStr("0F8C"); // incfsz wert1
+		assertEquals(0xA5, RAM.getW());
+		assertEquals(0xF7, RAM.getRegisterContent(wert1));
+		assertEquals(0x07, RAM.getRegisterContent(wert2));
+//		assertEquals(1, RAM.getDC());
+		assertEquals(1, RAM.getC());
+		assertEquals(0, RAM.getZ());
 
 		decoder.DecodeStr("281C"); // goto ende
-		
+
 	}
 
+	@Test
+	void test5() {
+		RAM.resetRAM();
+		decoder.DecodeStr("3011"); // movlw 11h
+		assertEquals(0x11, RAM.getW());
+		decoder.DecodeStr("008C"); // movwf wert1
+		assertEquals(0x11, RAM.getRegisterContent(wert1));
+		decoder.DecodeStr("018D"); // clrf wert2
+		assertEquals(0x11, RAM.getW());
+		assertEquals(0x11, RAM.getRegisterContent(wert1));
+		assertEquals(0x00, RAM.getRegisterContent(wert2));
+		assertEquals(1, RAM.getZ());
+		decoder.DecodeStr("178C"); // bsf wert1,7
+		assertEquals(0x11, RAM.getW());
+		assertEquals(0x91, RAM.getRegisterContent(wert1));
+		assertEquals(0x00, RAM.getRegisterContent(wert2));
+		assertEquals(1, RAM.getZ());
+		decoder.DecodeStr("158C"); // bsf wert1,3
+		assertEquals(0x11, RAM.getW());
+		assertEquals(0x99, RAM.getRegisterContent(wert1));
+		assertEquals(0x00, RAM.getRegisterContent(wert2));
+		assertEquals(1, RAM.getZ());
+		decoder.DecodeStr("120C"); // bsf wert1,4
+		assertEquals(0x11, RAM.getW());
+		assertEquals(0x89, RAM.getRegisterContent(wert1));
+		assertEquals(0x00, RAM.getRegisterContent(wert2));
+		assertEquals(1, RAM.getZ());
+		decoder.DecodeStr("100C"); // bsf wert1,0
+		assertEquals(0x11, RAM.getW());
+		assertEquals(0x88, RAM.getRegisterContent(wert1));
+		assertEquals(0x00, RAM.getRegisterContent(wert2));
+		assertEquals(1, RAM.getZ());
+		
+		decoder.DecodeStr("180C"); // btfsc wert1,0 skip if 0
+		//decoder.DecodeStr("0A8D"); // incf wert2
+		decoder.DecodeStr("0A8D"); // incf wert2
+		decoder.DecodeStr("198C"); // btfsc wert1,3
+		decoder.DecodeStr("0A8D"); // incf wert2
+		decoder.DecodeStr("0A8D"); // incf wert2
+		decoder.DecodeStr("1D0C"); // btfss wert1,2 skip if 1
+		//decoder.DecodeStr("0A8D"); // incf wert2
+		decoder.DecodeStr("0A8D"); // incf wert2
+		decoder.DecodeStr("1F8C"); // btfss wert1,7
+		decoder.DecodeStr("0A8D"); // incf wert2
+		decoder.DecodeStr("038D"); // decf wert2
+		assertEquals(0x04, RAM.getRegisterContent(wert2));
+
+		decoder.DecodeStr("281C"); // goto ende
+	}
+	
+	@Test
+	void test6() {
+		decoder.DecodeStr("3020"); // movlw 20h
+//		decoder.DecodeStr(""); // 
+//		decoder.DecodeStr(""); // 
+//		decoder.DecodeStr(""); // 
+//		decoder.DecodeStr(""); // 
+//		decoder.DecodeStr(""); // 
+//		
+//
+//		decoder.DecodeStr(""); // 
+//		decoder.DecodeStr(""); // 
+//		decoder.DecodeStr(""); // 
+//		decoder.DecodeStr(""); // 
+//		decoder.DecodeStr(""); // 
+		
+		
+	}
 }
