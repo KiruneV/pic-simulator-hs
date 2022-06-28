@@ -20,7 +20,7 @@ public class CodeRunner extends Thread {
 	@SuppressWarnings("removal")
 	public void run() {
         while(!Thread.currentThread().isInterrupted()) {
-        	if (breakpointlist.get(RAM.getPCL())) {
+        	if ((boolean) ApplicationGui.table_1.getModel().getValueAt(RAM.getPCL(), 0) /*breakpointlist.get(RAM.getPCL()*/) {
         		//System.out.println("breakpoint");
 				ApplicationGui.resumeButton.setEnabled(true);
 				this.suspend();
