@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -19,10 +20,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 
 
 public class ApplicationGui {
@@ -50,13 +47,19 @@ public class ApplicationGui {
 	private static JCheckBox chckbxNewCheckBox_A4;
 	private static JTextField textField;
 	private static JTextField textField_1;
+	@SuppressWarnings("rawtypes")
 	private static JComboBox frequen;
-	private JCheckBox Zero_Flag;
-	private JCheckBox C_Flag;
-	private JCheckBox DC_Flag;
-	private JCheckBox PD_Flag;
-	private JCheckBox TO_Flag;
-	
+	private static JCheckBox Zero_Flag;
+	private static JCheckBox C_Flag;
+	private static JCheckBox DC_Flag;
+	private static JCheckBox PD_Flag;
+	private static JCheckBox TO_Flag;
+	private CodeRunner codeRunner;
+	public static JButton resumeButton;
+	private static JButton pauseButton;
+	private static JButton startButton;
+	private static JButton resetButton;
+	private JMenu fileMenu;
 	
 	
 
@@ -86,7 +89,7 @@ public class ApplicationGui {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	@SuppressWarnings("serial")
+	@SuppressWarnings({ "serial"})
 	private void initialize() {
 		globalthings.stopwatch=StopWatch.create();
 		
@@ -97,41 +100,55 @@ public class ApplicationGui {
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
-		JMenu mnNewMenu = new JMenu("File");
-		menuBar.add(mnNewMenu);
+		fileMenu = new JMenu("File");
+		fileMenu.setToolTipText("Reset Pic if not enabled");
+		menuBar.add(fileMenu);
 
 		JMenuItem mntmNewMenuItem = new JMenuItem("select file");
 		mntmNewMenuItem.setAction(action);
-		mnNewMenu.add(mntmNewMenuItem);
+		fileMenu.add(mntmNewMenuItem);
 				
 				JPanel panel = new JPanel();
 				
-				JButton btnNewButton_1 = new JButton("Start");
-				btnNewButton_1.addMouseListener(new MouseAdapter() {
+				startButton = new JButton("Start");
+				startButton.setEnabled(false);
+				startButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						startbutton();
 					}
 				});
-				panel.add(btnNewButton_1);
+				panel.add(startButton);
 				
-				JButton btnNewButton_2 = new JButton("Pause");
-				btnNewButton_2.addMouseListener(new MouseAdapter() {
+				pauseButton = new JButton("Pause");
+				pauseButton.setEnabled(false);
+				pauseButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						pausebutton();
 					}
 				});
-				panel.add(btnNewButton_2);
+				panel.add(pauseButton);
 				
-				JButton btnNewButton_3 = new JButton("Reset Pic");
-				btnNewButton_3.addMouseListener(new MouseAdapter() {
+				resetButton = new JButton("Reset Pic");
+				resetButton.setEnabled(false);
+				resetButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						resetbutton();
 					}
 				});
-				panel.add(btnNewButton_3);
+				
+				resumeButton = new JButton("resume");
+				resumeButton.setEnabled(false);
+				resumeButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						resumebutton();
+					}
+				});
+				panel.add(resumeButton);
+				panel.add(resetButton);
 						
 								JButton btnNewButton = new JButton("select row test");
 								btnNewButton.setAction(action_1);
@@ -157,7 +174,7 @@ public class ApplicationGui {
 							Class[] columnTypes = new Class[] {
 								Integer.class, Object.class
 							};
-							public Class getColumnClass(int columnIndex) {
+							public Class<?> getColumnClass(int columnIndex) {
 								return columnTypes[columnIndex];
 							}
 						});
@@ -216,6 +233,7 @@ public class ApplicationGui {
 									{"E8", null, null, null, null, null, null, null, null},
 									{"F0", null, null, null, null, null, null, null, null},
 									{"F8", null, null, null, null, null, null, null, null},
+									{"FF", null, null, null, null, null, null, null, null},
 								},
 								new String[] {
 										"0x", "00", "01", "02", "03", "04", "05", "06", "07"
@@ -262,56 +280,6 @@ public class ApplicationGui {
 								
 								JPanel panel_1_1 = new JPanel();
 								
-								chckbxNewCheckBox_B0 = new JCheckBox("0");
-								chckbxNewCheckBox_B0.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										sendDATA();
-										refresh();
-									}
-								});
-								panel_1_1.add(chckbxNewCheckBox_B0);
-								
-								chckbxNewCheckBox_B1 = new JCheckBox("1");
-								chckbxNewCheckBox_B1.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										sendDATA();
-										refresh();
-									}
-								});
-								panel_1_1.add(chckbxNewCheckBox_B1);
-								
-								chckbxNewCheckBox_B2 = new JCheckBox("2");
-								chckbxNewCheckBox_B2.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										sendDATA();
-										refresh();
-									}
-								});
-								panel_1_1.add(chckbxNewCheckBox_B2);
-								
-								chckbxNewCheckBox_B3 = new JCheckBox("3");
-								chckbxNewCheckBox_B3.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										sendDATA();
-										refresh();
-									}
-								});
-								panel_1_1.add(chckbxNewCheckBox_B3);
-								
-								chckbxNewCheckBox_B4 = new JCheckBox("4");
-								chckbxNewCheckBox_B4.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										sendDATA();
-										refresh();
-									}
-								});
-								panel_1_1.add(chckbxNewCheckBox_B4);
-								
 								DEBUGradio = new JRadioButton("Debug");
 								DEBUGradio.setSelected(true);
 								DEBUGradio.addMouseListener(new MouseAdapter() {
@@ -332,77 +300,78 @@ public class ApplicationGui {
 										.addGroup(groupLayout.createSequentialGroup()
 											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 												.addGroup(groupLayout.createSequentialGroup()
-													.addGap(17)
-													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-														.addGroup(groupLayout.createSequentialGroup()
-															.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
-															.addGap(8)
-															.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)
-															.addPreferredGap(ComponentPlacement.RELATED)
-															.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-																.addGroup(groupLayout.createSequentialGroup()
-																	.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-																		.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-																		.addComponent(panel_1_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-																	.addPreferredGap(ComponentPlacement.RELATED)
-																	.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
-																.addGroup(groupLayout.createSequentialGroup()
-																	.addComponent(lblNewLabel_2_1, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-																	.addGap(553))
-																.addGroup(groupLayout.createSequentialGroup()
-																	.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-																	.addPreferredGap(ComponentPlacement.UNRELATED)
-																	.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))
-																.addGroup(groupLayout.createSequentialGroup()
-																	.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-																	.addGap(553))))
-														.addGroup(groupLayout.createSequentialGroup()
-															.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-															.addGap(4)
-															.addComponent(btnNewButton)
-															.addPreferredGap(ComponentPlacement.RELATED)
-															.addComponent(DEBUGradio, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))))
-												.addGroup(groupLayout.createSequentialGroup()
 													.addContainerGap()
 													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-														.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)
-														.addComponent(lblNewLabel))
+														.addComponent(lblNewLabel)
+														.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE))
 													.addPreferredGap(ComponentPlacement.RELATED)
 													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 														.addComponent(lblNewLabel_1)
-														.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 644, GroupLayout.PREFERRED_SIZE))))
+														.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 644, GroupLayout.PREFERRED_SIZE)))
+												.addGroup(groupLayout.createSequentialGroup()
+													.addGap(17)
+													.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+														.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+															.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+															.addGap(8)
+															.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)))
+													.addPreferredGap(ComponentPlacement.RELATED)
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+														.addGroup(groupLayout.createSequentialGroup()
+															.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+																.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																.addComponent(panel_1_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
+														.addGroup(groupLayout.createSequentialGroup()
+															.addComponent(lblNewLabel_2_1, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+															.addGap(553))
+														.addGroup(groupLayout.createSequentialGroup()
+															.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+															.addGap(553))
+														.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+															.addGroup(groupLayout.createSequentialGroup()
+																.addComponent(btnNewButton)
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(DEBUGradio, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+															.addGroup(groupLayout.createSequentialGroup()
+																.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE))))))
 											.addGap(256))
 								);
 								groupLayout.setVerticalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
 										.addGroup(groupLayout.createSequentialGroup()
-											.addGap(7)
 											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-												.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 												.addGroup(groupLayout.createSequentialGroup()
-													.addGap(5)
+													.addGap(12)
 													.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-														.addComponent(btnNewButton)
-														.addComponent(DEBUGradio))))
-											.addGap(4)
+														.addComponent(DEBUGradio)
+														.addComponent(btnNewButton)))
+												.addGroup(groupLayout.createSequentialGroup()
+													.addGap(7)
+													.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+											.addPreferredGap(ComponentPlacement.RELATED)
 											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 												.addComponent(scrollPane_3, 0, 0, Short.MAX_VALUE)
 												.addGroup(groupLayout.createSequentialGroup()
 													.addComponent(lblNewLabel_2)
 													.addGap(3)
-													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-														.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-													.addPreferredGap(ComponentPlacement.UNRELATED)
-													.addComponent(lblNewLabel_2_1)
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+														.addGroup(groupLayout.createSequentialGroup()
+															.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(lblNewLabel_2_1))
+														.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 													.addPreferredGap(ComponentPlacement.RELATED)
 													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 														.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 															.addPreferredGap(ComponentPlacement.RELATED)
-															.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))
-													.addPreferredGap(ComponentPlacement.RELATED))
+															.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))))
 												.addComponent(scrollPane_2, GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
@@ -410,9 +379,9 @@ public class ApplicationGui {
 												.addComponent(lblNewLabel_1))
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
-												.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE))
-											.addContainerGap(302, Short.MAX_VALUE))
+												.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 347, GroupLayout.PREFERRED_SIZE)
+												.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 347, GroupLayout.PREFERRED_SIZE))
+											.addContainerGap(185, Short.MAX_VALUE))
 								);
 								
 								TO_Flag = new JCheckBox("TO");
@@ -434,8 +403,9 @@ public class ApplicationGui {
 								C_Flag = new JCheckBox("C");
 								C_Flag.setEnabled(false);
 								panel_4.add(C_Flag);
-								
+
 								frequen = new JComboBox();
+
 								frequen.setModel(new DefaultComboBoxModel(new String[] {"32 khz", "100 khz", "500 khz", "1 Mhz", "2  Mhz", "4 Mhz", "8 Mhz", "12 Mhz", "16 Mhz", "20 Mhz"}));
 								panel_3.add(frequen);
 								
@@ -448,7 +418,7 @@ public class ApplicationGui {
 								});
 								panel_3.add(freqbutton);
 								
-								JLabel lblNewLabel_3 = new JLabel("RamPos:");
+								JLabel lblNewLabel_3 = new JLabel("RamPosInt:");
 								panel_2.add(lblNewLabel_3);
 								
 								textField_1 = new JTextField();
@@ -471,87 +441,207 @@ public class ApplicationGui {
 								});
 								panel_2.add(btnNewButton_4);
 								
-								chckbxNewCheckBox_B5 = new JCheckBox("5");
-								chckbxNewCheckBox_B5.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										sendDATA();
-										refresh();
-									}
-								});
-								panel_1_1.add(chckbxNewCheckBox_B5);
-								
-								chckbxNewCheckBox_B6 = new JCheckBox("6");
-								chckbxNewCheckBox_B6.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										sendDATA();
-										refresh();
-									}
-								});
-								panel_1_1.add(chckbxNewCheckBox_B6);
-								
 								chckbxNewCheckBox_B7 = new JCheckBox("7");
 								chckbxNewCheckBox_B7.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
+										
+										if(chckbxNewCheckBox_B7.isSelected()) {
+											RAM.setRB7(1);
+										}else {
+											RAM.setRB7(0);
+										}
 										sendDATA();
 										refresh();
 									}
 								});
 								panel_1_1.add(chckbxNewCheckBox_B7);
 								
-								chckbxNewCheckBox_A0 = new JCheckBox("0");
-								chckbxNewCheckBox_A0.addMouseListener(new MouseAdapter() {
+								chckbxNewCheckBox_B0 = new JCheckBox("0");
+								chckbxNewCheckBox_B0.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
+										if(chckbxNewCheckBox_B0.isSelected()) {
+											RAM.setRB0(1);
+										}else {
+											RAM.setRB0(0);
+										}
 										sendDATA();
 										refresh();
 									}
 								});
-								panel_1.add(chckbxNewCheckBox_A0);
 								
-								chckbxNewCheckBox_A1 = new JCheckBox("1");
-								chckbxNewCheckBox_A1.addMouseListener(new MouseAdapter() {
+								chckbxNewCheckBox_B1 = new JCheckBox("1");
+								chckbxNewCheckBox_B1.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
+										
+										if(chckbxNewCheckBox_B1.isSelected()) {
+											RAM.setRB1(1);
+										}else {
+											RAM.setRB1(0);
+										}
 										sendDATA();
 										refresh();
 									}
 								});
-								panel_1.add(chckbxNewCheckBox_A1);
 								
-								chckbxNewCheckBox_A2 = new JCheckBox("2");
-								chckbxNewCheckBox_A2.addMouseListener(new MouseAdapter() {
+								chckbxNewCheckBox_B2 = new JCheckBox("2");
+								chckbxNewCheckBox_B2.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
+										
+										if(chckbxNewCheckBox_B2.isSelected()) {
+											RAM.setRB2(1);
+										}else {
+											RAM.setRB2(0);
+										}
 										sendDATA();
 										refresh();
 									}
 								});
-								panel_1.add(chckbxNewCheckBox_A2);
 								
-								chckbxNewCheckBox_A3 = new JCheckBox("3");
-								chckbxNewCheckBox_A3.addMouseListener(new MouseAdapter() {
+								chckbxNewCheckBox_B3 = new JCheckBox("3");
+								chckbxNewCheckBox_B3.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
-
+										
+										if(chckbxNewCheckBox_B3.isSelected()) {
+											RAM.setRB3(1);
+										}else {
+											RAM.setRB3(0);
+										}
 										sendDATA();
 										refresh();
 									}
 								});
-								panel_1.add(chckbxNewCheckBox_A3);
+								
+								chckbxNewCheckBox_B4 = new JCheckBox("4");
+								chckbxNewCheckBox_B4.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										
+										if(chckbxNewCheckBox_B4.isSelected()) {
+											RAM.setRB4(1);
+										}else {
+											RAM.setRB4(0);
+										}
+										sendDATA();
+										refresh();
+									}
+								});
+								
+								chckbxNewCheckBox_B5 = new JCheckBox("5");
+								chckbxNewCheckBox_B5.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										
+										if(chckbxNewCheckBox_B5.isSelected()) {
+											RAM.setRB5(1);
+										}else {
+											RAM.setRB5(0);
+										}
+										sendDATA();
+										refresh();
+									}
+								});
+								
+								chckbxNewCheckBox_B6 = new JCheckBox("6");
+								chckbxNewCheckBox_B6.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										
+										if(chckbxNewCheckBox_B6.isSelected()) {
+											RAM.setRB6(1);
+										}else {
+											RAM.setRB6(0);
+										}
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1_1.add(chckbxNewCheckBox_B6);
+								panel_1_1.add(chckbxNewCheckBox_B5);
+								panel_1_1.add(chckbxNewCheckBox_B4);
+								panel_1_1.add(chckbxNewCheckBox_B3);
+								panel_1_1.add(chckbxNewCheckBox_B2);
+								panel_1_1.add(chckbxNewCheckBox_B1);
+								panel_1_1.add(chckbxNewCheckBox_B0);
 								
 								chckbxNewCheckBox_A4 = new JCheckBox("4");
 								chckbxNewCheckBox_A4.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
-
+										if(chckbxNewCheckBox_A4.isSelected()) {
+											RAM.setRA4(1);
+										}else {
+											RAM.setRA4(0);
+										}
 										sendDATA();
 										refresh();
 									}
 								});
 								panel_1.add(chckbxNewCheckBox_A4);
+								
+								chckbxNewCheckBox_A0 = new JCheckBox("0");
+								chckbxNewCheckBox_A0.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										if(chckbxNewCheckBox_A0.isSelected()) {
+											RAM.setRA0(1);
+										}else {
+											RAM.setRA0(0);
+										}
+										sendDATA();
+										refresh();
+									}
+								});
+								
+								chckbxNewCheckBox_A1 = new JCheckBox("1");
+								chckbxNewCheckBox_A1.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										if(chckbxNewCheckBox_A1.isSelected()) {
+											RAM.setRA1(1);
+										}else {
+											RAM.setRA1(0);
+										}
+										sendDATA();
+										refresh();
+									}
+								});
+								
+								chckbxNewCheckBox_A2 = new JCheckBox("2");
+								chckbxNewCheckBox_A2.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										if(chckbxNewCheckBox_A2.isSelected()) {
+											RAM.setRA2(1);
+										}else {
+											RAM.setRA2(0);
+										}
+										sendDATA();
+										refresh();
+									}
+								});
+								
+								chckbxNewCheckBox_A3 = new JCheckBox("3");
+								chckbxNewCheckBox_A3.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										if(chckbxNewCheckBox_A3.isSelected()) {
+											RAM.setRA3(1);
+										}else {
+											RAM.setRA3(0);
+										}
+										sendDATA();
+										refresh();
+									}
+								});
+								panel_1.add(chckbxNewCheckBox_A3);
+								panel_1.add(chckbxNewCheckBox_A2);
+								panel_1.add(chckbxNewCheckBox_A1);
+								panel_1.add(chckbxNewCheckBox_A0);
 								
 								table_3 = new JTable();
 								table_3.setModel(new DefaultTableModel(
@@ -583,6 +673,7 @@ public class ApplicationGui {
 								setfreq();
 								debugRadio();
 								refresh();
+								globalthings.GUIon=true;
 	}
 	
 	public void debugRadio() {
@@ -648,35 +739,85 @@ public class ApplicationGui {
 		}
 	}
 	
+	
+	@SuppressWarnings("unchecked")
 	public void startbutton() {
+		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
+		for (int i = 0; i < table_1.getModel().getRowCount(); i++) {
+			//System.out.println(table_1.getModel().getValueAt(i, 1));
+			if((boolean) table_1.getModel().getValueAt(i, 0)) {
+				breakpointlist.add(true);
+			}else {
+				breakpointlist.add(false);
+			}
+		}
+		changeselectedRow(0);
+		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3], breakpointlist);
+		pauseButton.setEnabled(true);
+		startButton.setEnabled(false);
+		codeRunner.start();
 		
 	}
 	
+	@SuppressWarnings("removal")
 	public void pausebutton() {
-		
+		codeRunner.interrupt();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
 	public void resetbutton() {
+		if(codeRunner!=null) {
+		codeRunner.resume();
+		codeRunner.interrupt();
+		}
+		RAM.resetRAM();
+		refresh();
+		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
+		for (int i = 0; i < table_1.getModel().getRowCount()-1; i++) {
+			if((boolean) table_1.getModel().getValueAt(i, 1)) {
+				breakpointlist.add(true);
+			}else {
+				breakpointlist.add(false);
+			}
+		}
 		
+		RAM.resetRAM();
+		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3], breakpointlist);
+		pauseButton.setEnabled(false);
+		resumeButton.setEnabled(false);
+		startButton.setEnabled(true);
+		fileMenu.setEnabled(true);
+		refresh();
+		
+	}
+	
+	@SuppressWarnings("removal")
+	public void resumebutton() {
+		codeRunner.resume();
 	}
 	
 	
 	
-	public void refresh() {
-//		for (int i = 0; i < stack8.size(); i++) {
-//			((DefaultTableModel) table_2.getModel()).setValueAt(0, i, 1);
-//		}
+	public static void refresh() {
+		//long start = new Date().getTime();
+		//while(new Date().getTime() - start < 100L){}
+		
 		//stackanzeige
+		for (int i = 0; i < 7; i++) {
+			table_2.getModel().setValueAt(null, i, 1);
+		}
 		for (int i = 0; i <globalthings.stack8.size(); i++) {
 			((DefaultTableModel) table_2.getModel()).setValueAt(Integer.toHexString(globalthings.stack8.elementAt(i)), i, 1);
 		}
 		//RAManzeige
 		int pos=0;
-		for (int i = 0; i < 31; i++) {
+		for (int i = 0; i < 32; i++) {
 			for (int j = 1; j < 9; j++) {
-				String temp=Integer.toHexString(RAM.bank[pos]);
+				String temp=Integer.toHexString(RAM.getRegisterContent(pos));
 				table.getModel().setValueAt(temp, i, j);
 				pos++;
+				//System.out.println(pos);
 			}
 		}
 		
@@ -695,6 +836,24 @@ public class ApplicationGui {
 			PD_Flag.setSelected(RAM.getPD()>0);
 			TO_Flag.setSelected(RAM.getTO()>0);
 		}
+		//PIN A0-4
+		chckbxNewCheckBox_A0.setSelected(RAM.getRA0()>0);
+		chckbxNewCheckBox_A1.setSelected(RAM.getRA1()>0);
+		chckbxNewCheckBox_A2.setSelected(RAM.getRA2()>0);
+		chckbxNewCheckBox_A3.setSelected(RAM.getRA3()>0);
+		chckbxNewCheckBox_A4.setSelected(RAM.getRA4()>0);
+		//PIN B0-7
+
+		chckbxNewCheckBox_B0.setSelected(RAM.getRB0()>0);
+		chckbxNewCheckBox_B1.setSelected(RAM.getRB1()>0);
+		chckbxNewCheckBox_B2.setSelected(RAM.getRB2()>0);
+		chckbxNewCheckBox_B3.setSelected(RAM.getRB3()>0);
+		chckbxNewCheckBox_B4.setSelected(RAM.getRB4()>0);
+		chckbxNewCheckBox_B5.setSelected(RAM.getRB5()>0);
+		chckbxNewCheckBox_B6.setSelected(RAM.getRB6()>0);
+		chckbxNewCheckBox_B7.setSelected(RAM.getRB7()>0);
+		
+		changeselectedRow(RAM.getPCL());
 		
 	}
 	
@@ -703,76 +862,20 @@ public class ApplicationGui {
 			System.out.println("sendDATA");
 		}
 		//RA0-4	
-		if(chckbxNewCheckBox_A0.isSelected()) {
-			RAM.setRA0(1);
-		}else {
-			RAM.setRA0(0);
-		}
-		if(chckbxNewCheckBox_A1.isSelected()) {
-			RAM.setRA1(1);
-		}else {
-			RAM.setRA1(0);
-		}
-		if(chckbxNewCheckBox_A2.isSelected()) {
-			RAM.setRA2(1);
-		}else {
-			RAM.setRA2(0);
-		}
-		if(chckbxNewCheckBox_A3.isSelected()) {
-			RAM.setRA3(1);
-		}else {
-			RAM.setRA3(0);
-		}
-		if(chckbxNewCheckBox_A4.isSelected()) {
-			RAM.setRA4(1);
-		}else {
-			RAM.setRA4(0);
-		}
+		
+		
+		
+		
 		
 		//RB0-7
-		if(chckbxNewCheckBox_B0.isSelected()) {
-			RAM.setRB0(1);
-		}else {
-			RAM.setRB0(0);
-		}
-		if(chckbxNewCheckBox_A1.isSelected()) {
-			RAM.setRB1(1);
-		}else {
-			RAM.setRB1(0);
-		}
-		if(chckbxNewCheckBox_A2.isSelected()) {
-			RAM.setRB2(1);
-		}else {
-			RAM.setRB2(0);
-		}
-		if(chckbxNewCheckBox_A3.isSelected()) {
-			RAM.setRB3(1);
-		}else {
-			RAM.setRB3(0);
-		}
-		if(chckbxNewCheckBox_A4.isSelected()) {
-			RAM.setRB4(1);
-		}else {
-			RAM.setRB4(0);
-		}
-		if(chckbxNewCheckBox_B5.isSelected()) {
-			RAM.setRB5(1);
-		}else {
-			RAM.setRB5(0);
-		}
-		if(chckbxNewCheckBox_B6.isSelected()) {
-			RAM.setRB6(1);
-		}else {
-			RAM.setRB6(0);
-		}
-		if(chckbxNewCheckBox_B7.isSelected()) {
-			RAM.setRB7(1);
-		}else {
-			RAM.setRB7(0);
-		}
-		System.out.println(RAM.getPORTA());
+		
+		
+		if (globalthings.debugMode) {
 
-		System.out.println(RAM.getPORTB());
+			System.out.println(RAM.getPORTA());
+
+			System.out.println(RAM.getPORTB());
+		}
 		refresh();
 	}
 
@@ -791,7 +894,7 @@ public class ApplicationGui {
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "Load File");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "Reset Pic if not enabled");
 		}
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser fileChooser = new JFileChooser();
@@ -812,7 +915,9 @@ public class ApplicationGui {
 						Object[]data= {false,false,fileReader.linesCodeLineswithcodeCodestring[4].get(i)};
 						((DefaultTableModel) table_1.getModel()).addRow(data);
 					}
-
+					startButton.setEnabled(true);
+					resetButton.setEnabled(true);
+					fileMenu.setEnabled(false);
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
@@ -826,7 +931,7 @@ public class ApplicationGui {
 	}
 	@SuppressWarnings("serial")
 	private class SwingAction_1 extends AbstractAction {
-		int i=0;
+		//int i=0;
 		public SwingAction_1() {
 			putValue(NAME, "Refresh/testing");
 			putValue(SHORT_DESCRIPTION, "Some short description");

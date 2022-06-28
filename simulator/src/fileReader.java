@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 public class fileReader {
 
+	
 	@SuppressWarnings("rawtypes")
 	public static ArrayList[] linesCodeLineswithcodeCodestring;
 	/**
@@ -22,7 +23,7 @@ public class fileReader {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		//  Auto-generated method stub
 		
 			ArrayList[] temp;
 			
@@ -34,17 +35,12 @@ public class fileReader {
 					System.out.println(temp[2]);
 					System.out.println(temp[3]);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
+					// Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					//  Auto-generated catch block
 					e.printStackTrace();
 				}
-
-				
-			
-			
-			
 		
 	}
 
@@ -61,18 +57,18 @@ public class fileReader {
 		BufferedReader br = new BufferedReader(fr);
 
 		ArrayList<String> lines = new ArrayList<>();
-		ArrayList<Integer> lineswithcode = new ArrayList<>();
 		ArrayList<Integer> code = new ArrayList<>();
+		ArrayList<Integer> lineswithcode = new ArrayList<>();
 		ArrayList<String> codeString = new ArrayList<>();
-
 		ArrayList<String> codeStringZeile = new ArrayList<>();
+		
 		String line;
 		int counter =0;
 		while((line = br.readLine()) != null) { 
 			lines.add(line); 
 			if (Character.isDigit(line.charAt(0))) {
 				code.add(Integer.decode("0x"+line.substring(5, 9)));
-				codeString.add("0x"+line.substring(5, 9));
+				codeString.add(line.substring(5, 9));
 				lineswithcode.add(counter);
 				codeStringZeile.add(line);
 			}

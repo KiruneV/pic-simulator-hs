@@ -13,12 +13,19 @@ public class decoder {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		DecodeStr("FFF");
+		DecodeStr("3E25");
 	}
 	public static void DecodeStr(String inputStr) {
 		String hexString="0x"+inputStr;
 		int hexInt=Integer.decode(hexString);
+		
 		DecodeInt(hexInt);
+		if(!globalthings.jumpPerformed) {
+			RAM.setPCL(RAM.getPCL()+1);
+			
+		}
+		globalthings.jumpPerformed=false;
+		globalthings.tacktVT++;
 		//System.out.println(Integer.toBinaryString(hexInt));
 		//System.out.println(hexInt);
 	}

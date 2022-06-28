@@ -8,7 +8,7 @@ public class RAM {
 	static int TMR0 = 0x01, PCL = 0x02, STATUS = 0x03, FSR = 0x04, PORTA = 0x05, PORTB = 0x06, EEDATA = 0x08,
 			EEADR = 0x09, PCLATH = 0x0A, INTCON = 0x0B, OPTION = 0x81, TRISA = 0x85, TRISB = 0x86, EECON1 = 0x88,
 			EECON2 = 0x89;
-	static int bank[] = new int[0xFF];
+	static int bank[] = new int[256];
 	static int w;
 
 	public RAM() {
@@ -40,6 +40,8 @@ public class RAM {
 		for (int i = 0; i < bank.length; i++) {
 			bank[i] = 0;
 		}
+		globalthings.stack8.clear();
+		globalthings.tacktVT=0;
 //		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
 		bank[PCL] = 0b00000000;
@@ -286,11 +288,11 @@ public class RAM {
 		} else {
 			newPORTA = newPORTA | 0b00001000;
 		}
-		setPORTB(newPORTA);
+		setPORTA(newPORTA);
 	}
 
 	public static int getRA2() {
-		return (getPORTB() & 0b00000100) >>> 2;
+		return (getPORTA() & 0b00000100) >>> 2;
 	}
 
 	public static void setRA2(int rA2) {
@@ -318,7 +320,7 @@ public class RAM {
 	}
 
 	public static int getRA0() {
-		return getPORTB() & 0b00000010;
+		return getPORTA() & 0b00000001;
 	}
 
 	public static void setRA0(int rA0) {
@@ -439,7 +441,7 @@ public class RAM {
 
 	// or getINT
 	public static int getRB0() {
-		return getPORTB() & 0b00000010;
+		return getPORTB() & 0b00000001;
 	}
 
 	public static void setRB0(int rB0) {
@@ -828,7 +830,7 @@ public class RAM {
 		return w;
 	}
 
-	public static int getRegisterContent(int address) { // TODO maybe noch exception
+	public static int getRegisterContent(int address) { 
 		if (address == 0x01) {
 			return getTMR0();
 		} else if (address == 0x02 || address == 0x82) {
@@ -859,7 +861,7 @@ public class RAM {
 			return getEECON1();
 		} else if (address == 0x89) {
 			return getEECON2();
-		} else if (address < 0xFF && address >= 0x00) {
+		} else if (address <= 0xFF && address >= 0x00) {
 			return bank[address];
 		}
 		return 0x00;

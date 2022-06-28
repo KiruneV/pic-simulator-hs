@@ -6,14 +6,14 @@
 public class ByteOrientedOperations { // operations that start with 00
 	static int[] bitmask = { 0x7F, 0x80 };
 	static int f, d, result, wContent;
-	
+
 	// add w and f
 	public static void ADDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
-		// check digit carry
+		//TODO check digit carry
 		int dF = (0x08 & result);
 		int dW = (0x08 & wContent);
 		if ((dF & dW) != 0) {
@@ -21,6 +21,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		} else {
 			RAM.setDC(0);
 		}
+		//int before = result;
 		// adding fContent and w
 		result += wContent;
 		// check carry bit
@@ -107,7 +108,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		result--;
 		RAM.setRegister(d, result, f);
 		if (result == 0) {
-			NOP();
+			RAM.setPCL(RAM.getPCL()+1);
 		} // else {
 //			 execute the next instruction
 //		}
@@ -134,9 +135,9 @@ public class ByteOrientedOperations { // operations that start with 00
 		result += 1;
 		RAM.setRegister(d, result, f);
 		if (f == 0) {
-			NOP();
+			RAM.setPCL(RAM.getPCL()+1);
 		} else {
-			// TODO execute the next instruction
+			// execute the next instruction
 		}
 	}
 
@@ -216,7 +217,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
-		// check digit carry
+		//TODO check digit carry
 		int dF = (0x08 & result);
 		int dW = (0x08 & wContent);
 		if ((dF & dW) != 0) {
@@ -278,26 +279,52 @@ public class ByteOrientedOperations { // operations that start with 00
 		// WDT (watchdog timer) = 00h
 		// WDT prescaler = 0
 		// !TO = 1
+		RAM.setTO(1);
 		// !PD = 1
+		RAM.setPD(1);
 	}
 
 	// TODO return from interrupt
 	public static void RETFIE() {
 		// return from interrupt
 		// PC (programm counter) = TOS (top of the stack)
+		if(!globalthings.stack8.isEmpty()) {
+			RAM.setPCL(globalthings.stack8.pop());
+			globalthings.jumpPerformed=true;
+		}else {
+			if(globalthings.debugMode==true) {
+				System.out.println("STACK is empty!");
+			}
+		}
 		// GIE (global interrupt enable bit) = 1
+		RAM.setGIE(1);
 
 	}
 
 	// return from subroutine
 	public static void RETURN() {
 		// PC (programm counter) = TOS (top of the stack)
+		if(!globalthings.stack8.isEmpty()) {
+			RAM.setPCL(globalthings.stack8.pop());
+			globalthings.jumpPerformed=true;
+		}else {
+			if(globalthings.debugMode==true) {
+				System.out.println("STACK is empty!");
+			}
+		}
 	}
-
+	
+	//TODO sleep
 	public static void SLEEP() {
+		CLRWDT();
 		// WDT (watchdog timer) = 00h
 		// WDT prescaler = 0
-		// !TO = 1
+		//already done in CLRWDT !TO = 1
 		// !PD = 0
+		RAM.setPD(0);
+		//refresh gui manually so that one could see the changes
+		if(globalthings.GUIon) {
+			ApplicationGui.refresh();
+		}
 	}
 }
