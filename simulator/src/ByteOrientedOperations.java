@@ -122,7 +122,9 @@ public class ByteOrientedOperations { // operations that start with 00
 		// increment f
 		result++;
 		// set zero flag when f == 0
-		RAM.checkZ(f);
+		 int ftemp=result;
+		 int dtemp=d;
+		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 	}
 
@@ -197,20 +199,19 @@ public class ByteOrientedOperations { // operations that start with 00
 		RAM.setRegister(d, result, f);
 	}
 
+	// TODO
 	// rotate right f through carry
 	public static void RRF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		int temp = result & 0b1;
-		result = result >>> 1;
+		result = result >> 1;
 		if (RAM.getC() == 1) {
-			result = result + 0x80;
+			result = result | 0b10000000;
 			RAM.setC(0);
 		}
-		if (temp != 0) {
-			RAM.setC(1);
-		}
+		RAM.setC(temp);
 		RAM.setRegister(d, result, f);
 	}
 
