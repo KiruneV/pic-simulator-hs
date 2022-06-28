@@ -185,7 +185,7 @@ class test {
 		assertEquals(0xD9, RAM.getW());
 		assertEquals(0xD9, RAM.getRegisterContent(wert1));
 		assertEquals(0x52, RAM.getRegisterContent(wert2));
-		// assertEquals(1, RAM.getDC());
+		assertEquals(1, RAM.getDC());
 		assertEquals(1, RAM.getC());
 		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("020D"); // subwf wert2,w
