@@ -419,7 +419,7 @@ class test {
 		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("0B8C"); // decfsz wert1
 		assertEquals(0x00, RAM.getRegisterContent(wert1));
-
+		
 		decoder.DecodeStr("30F0"); // movlw 0f0h
 		assertEquals(0xF0, RAM.getW());
 		assertEquals(0, RAM.getDC());

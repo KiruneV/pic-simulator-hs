@@ -8,12 +8,13 @@ public class ByteOrientedOperations { // operations that start with 00
 	static int f, d, result, wContent;
 
 	// add w and f
+	// status affected: c, dc, z
 	public static void ADDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
-		// TODO check digit carry
+		// check digit carry
 		int dF = (0x0F & result);
 		int dW = (0x0F & wContent);
 		if ((dF + dW) > 15) {
@@ -25,9 +26,11 @@ public class ByteOrientedOperations { // operations that start with 00
 		// adding fContent and w
 		result += wContent;
 		// check carry bit
-		if ((result & 0xF00) != 0) {
+		if (result > 0xFF) {
 			RAM.setC(1);
-			result = result & 0xFF; // so fContent is not > 0xFF
+			result = result & 0xFF; // so k is not > 0xFF
+		} else {
+			RAM.setC(0);
 		}
 
 		// check digit carry
@@ -44,6 +47,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// and w with f
+	// status affected: z
 	public static void ANDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
@@ -58,6 +62,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// clear f
+	// status affected: z
 	public static void CLRF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		RAM.setZ(1);
@@ -65,12 +70,14 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// clear w
+	// status affected: z
 	public static void CLRW() {
 		RAM.setZ(1);
 		RAM.setW(0);
 	}
 
 	// complement f
+	// status affected: z
 	public static void COMF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
@@ -84,6 +91,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// decrement f
+	// status affected: z
 	public static void DECF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
@@ -94,18 +102,25 @@ public class ByteOrientedOperations { // operations that start with 00
 			// decrement f
 			result--;
 			// set zero flag when f == 0
-			RAM.checkZ(result);
 		}
+		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 	}
 
 	// decrement f, skip if 0
+	// status affected: none
 	public static void DECFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		// decrement f
-		result--;
+		if (result == 0) {
+			result = 255;
+		} else {
+			// decrement f
+			result--;
+			// set zero flag when result == 0
+		}
 		RAM.setRegister(d, result, f);
 		if (result == 0) {
 			RAM.setPCL(RAM.getPCL() + 1);
@@ -115,38 +130,52 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// increment f
+	// status affected: z
 	public static void INCF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
+		if (result == 255) {
+			result = 0;
+		} else {
+			result++;
+		}
 		// increment f
-		result++;
-		// set zero flag when f == 0
-		 int ftemp=result;
-		 int dtemp=d;
+//		result += 1;
+//		if(result > 0xFF) {
+//			result = 0;
+//		}
+		// set zero flag when result == 0
 		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 	}
 
 	// increment f, skip if 0
+	// status affected: none
 	public static void INCFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		// increment f
-		result += 1;
-		if(result > 0xFF) {
+		if (result == 255) {
 			result = 0;
+		} else {
+			result++;
 		}
+//		result += 1;
+//		if(result > 0xFF) {
+//			result = 0;
+//		}
 		RAM.setRegister(d, result, f);
 		if (result == 0) {
 			RAM.setPCL(RAM.getPCL() + 1);
-		} else {
+		} // else {
 			// execute the next instruction
-		}
+			// }
 	}
 
 	// inclusive or w with f
+	// status affected: z
 	public static void IORWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
@@ -160,6 +189,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// move f
+	// status affected: z
 	public static void MOVF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
@@ -171,6 +201,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// move w to f
+	// status affected: none
 	public static void MOVWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		wContent = RAM.getW();
@@ -178,44 +209,53 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// no operation
+	// status affected: none
 	public static void NOP() {
 		// skippen!
 	}
 
 	// rotate left f through carry
+	// status affected: c
 	public static void RLF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		result = result << 1;
 		if (RAM.getC() == 1) {
-			result++;
+			result = result | 0x01;
 			RAM.setC(0);
 		}
-		if ((result & 0xF00) != 0) {
+		if (result > 0xFF) {
 			RAM.setC(1);
-			result = result & 0b11111111;
+			result = result & 0xFF;
 		}
 		RAM.setRegister(d, result, f);
 	}
 
 	// TODO
 	// rotate right f through carry
+	// status affected: c
 	public static void RRF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
-		int temp = result & 0b1;
-		result = result >> 1;
-		if (RAM.getC() == 1) {
-			result = result | 0b10000000;
-			RAM.setC(0);
+		// int temp = result & 0b1;
+		int c;
+		if ((result & 0x01) != 0) {
+			c = 1;
+		} else {
+			c = 0; 
 		}
-		RAM.setC(temp);
+		result = result >>> 1;
+		if (RAM.getC() == 1) {
+			result = result | 0x80;
+		}
+		RAM.setC(c);
 		RAM.setRegister(d, result, f);
 	}
 
 	// subtract w from literal
+	// status affected: c, dc, z
 	public static void SUBWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
@@ -243,6 +283,11 @@ public class ByteOrientedOperations { // operations that start with 00
 		} else {
 			RAM.setC(1); // when fContent is positive
 		}
+//		if ((result & 0x80) != 0) {
+//			RAM.setC(0); // when result is negative
+//		} else {
+//			RAM.setC(1); // when result is positive
+//		}
 		// check digit carry
 //		if ((fContent & 0x10) != 0) {
 //			RAM.setDC(1);
@@ -255,6 +300,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// swap nibbles in f
+	// status affected: none
 	public static void SWAPF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
@@ -266,19 +312,21 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// exclusive or w with f
+	// status affected: z
 	public static void XORWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
 		// xor'ing fContent with w
-		result = result ^ wContent;
+		result = wContent ^ result;
 		// set zero flag when fContent == 0
 		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 	}
 
 	// TODO clear watchdog timer
+	// status affected: !to, !pd
 	public static void CLRWDT() {
 		// WDT (watchdog timer) = 00h
 		// WDT prescaler = 0
@@ -289,6 +337,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// TODO return from interrupt
+	// status affected: none
 	public static void RETFIE() {
 		// return from interrupt
 		// PC (programm counter) = TOS (top of the stack)
@@ -306,6 +355,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// return from subroutine
+	// status affected: none
 	public static void RETURN() {
 		// PC (programm counter) = TOS (top of the stack)
 		if (!globalthings.stack8.isEmpty()) {
@@ -319,6 +369,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	// TODO sleep
+	// status affected: !to, !pd
 	public static void SLEEP() {
 		CLRWDT();
 		// WDT (watchdog timer) = 00h

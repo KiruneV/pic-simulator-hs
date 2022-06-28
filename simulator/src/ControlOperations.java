@@ -8,6 +8,7 @@ public class ControlOperations { // operations that start with 10
 	static int k;
 
 	// call subroutine
+	// status affected: none
 	public static void CALL(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		// lege address act pcl+1 in stack
@@ -18,6 +19,7 @@ public class ControlOperations { // operations that start with 10
 	}
 
 	// unconditional branch
+	// status affected: none
 	public static void GOTO(int hexInt) {
 		k = hexInt & bitmask; // select k out of the hexInt
 		// jump to address k
