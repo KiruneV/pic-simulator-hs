@@ -12,6 +12,9 @@ public class BitOrientedOperations { // operations that start with 01
 	public static void BCF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		mask = 0b01 << b;
 		// clear bit b in f
@@ -24,6 +27,9 @@ public class BitOrientedOperations { // operations that start with 01
 	public static void BSF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		mask = 0b01 << b;
 		// set bit b in f
@@ -36,6 +42,9 @@ public class BitOrientedOperations { // operations that start with 01
 	public static void BTFSC(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		mask = 0b01 << b;
 		// check if bit b in f is null
@@ -50,6 +59,9 @@ public class BitOrientedOperations { // operations that start with 01
 	public static void BTFSS(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		b = (hexInt & bitmask[1]) >>> 7; // select b out of the hexInt and rotate 7 times to the right
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		mask = 0b01 << b;
 		// check if bit b in f is not null

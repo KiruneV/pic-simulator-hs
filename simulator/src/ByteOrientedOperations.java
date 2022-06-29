@@ -12,6 +12,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void ADDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
 		// check digit carry
@@ -51,6 +54,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void ANDWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
 		// and'ing w and f
@@ -65,6 +71,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	// status affected: z
 	public static void CLRF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		RAM.setZ(1);
 		RAM.setRegisterContent(0, f);
 	}
@@ -81,6 +90,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void COMF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		// complement f
 		result = ~result & 0xFF;
@@ -95,6 +107,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void DECF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		if (result == 0) {
 			result = 255;
@@ -112,6 +127,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void DECFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		// decrement f
 		if (result == 0) {
@@ -134,6 +152,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void INCF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		if (result == 255) {
 			result = 0;
@@ -155,6 +176,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void INCFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		// increment f
 		if (result == 255) {
@@ -179,6 +203,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void IORWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
 		// or'ing w with f
@@ -193,6 +220,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void MOVF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		// set zero flag when f == 0
 		RAM.checkZ(result);
@@ -204,6 +234,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	// status affected: none
 	public static void MOVWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		wContent = RAM.getW();
 		RAM.setRegisterContent(wContent, f);
 	}
@@ -219,6 +252,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void RLF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		result = result << 1;
 		if (RAM.getC() == 1) {
@@ -238,13 +274,16 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void RRF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		// int temp = result & 0b1;
 		int c;
 		if ((result & 0x01) != 0) {
 			c = 1;
 		} else {
-			c = 0; 
+			c = 0;
 		}
 		result = result >>> 1;
 		if (RAM.getC() == 1) {
@@ -259,6 +298,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void SUBWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
 		// check digit carry
@@ -304,6 +346,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void SWAPF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		int bit1 = (result & 0x0F) << 4; // bit 3 ... 0 bits in fContent
 		int bit2 = (result & 0xF0) >> 4; // bit 6 ... 4 in fContent
@@ -316,6 +361,9 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void XORWF(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
+		if (f == 0) {
+			f = RAM.getFSR();
+		}
 		result = RAM.getRegisterContent(f);
 		wContent = RAM.getW();
 		// xor'ing fContent with w
