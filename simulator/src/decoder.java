@@ -20,16 +20,12 @@ public class decoder {
 		int hexInt=Integer.decode(hexString);
 		
 		DecodeInt(hexInt);
-		if(!globalthings.jumpPerformed) {
-			RAM.setPCL(RAM.getPCL()+1);
-			
-		}
-		globalthings.jumpPerformed=false;
-		globalthings.tacktVT++;
+		
 		//System.out.println(Integer.toBinaryString(hexInt));
 		//System.out.println(hexInt);
 	}
 	public static void DecodeInt(int inputInt) {
+		globalthings.changeStatus=true;
 		int hauptmaske=0x7000;
 		final int byteOriented=0b00000000000000;//00
 		final int bitOriented=0b01000000000000;//01

@@ -30,7 +30,7 @@ public class LiteralOperations { // operations that start with 11
 			RAM.setC(0);
 		}
 		// set zero flag when result == 0
-		RAM.checkZ(result);
+//		RAM.checkZ(result);
 		RAM.setW(result);
 	}
 
@@ -101,7 +101,7 @@ public class LiteralOperations { // operations that start with 11
 //			RAM.setC(1); // when result is positive
 //		}
 		// set zero flag when result == 0
-		RAM.checkZ(result);
+//		RAM.checkZ(result);
 		RAM.setW(result);
 	}
 

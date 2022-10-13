@@ -29,12 +29,12 @@ public class ByteOrientedOperations { // operations that start with 00
 		// adding fContent and w
 		result += wContent;
 		// check carry bit
-		if (result > 0xFF) {
-			RAM.setC(1);
-			result = result & 0xFF; // so k is not > 0xFF
-		} else {
-			RAM.setC(0);
-		}
+//		if (result > 0xFF) {
+//			RAM.setC(1);
+//			result = result & 0xFF; // so k is not > 0xFF
+//		} else {
+//			RAM.setC(0);
+//		}
 
 		// check digit carry
 //		if ((result & 0xF0) > (before & 0xF0)) {
@@ -44,7 +44,7 @@ public class ByteOrientedOperations { // operations that start with 00
 //		}
 
 		// set zero flag when f == 0
-		RAM.checkZ(result);
+//		RAM.checkZ(result);
 		// store fContent in register w (when d==0) or in fContent (when d==1)
 		RAM.setRegister(d, result, f);
 	}
@@ -62,7 +62,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		// and'ing w and f
 		result = result & wContent;
 		// set zero flag when f == 0
-		RAM.checkZ(result);
+//		RAM.checkZ(result);
 		// store fContent in register w (when d==0) or in fContent (when d==1)
 		RAM.setRegister(d, result, f);
 	}
@@ -74,14 +74,14 @@ public class ByteOrientedOperations { // operations that start with 00
 		if (f == 0) {
 			f = RAM.getFSR();
 		}
-		RAM.setZ(1);
+//		RAM.setZ(1);
 		RAM.setRegisterContent(0, f);
 	}
 
 	// clear w
 	// status affected: z
 	public static void CLRW() {
-		RAM.setZ(1);
+//		RAM.setZ(1);
 		RAM.setW(0);
 	}
 
@@ -97,7 +97,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		// complement f
 		result = ~result & 0xFF;
 		// set zero flag when f == 0
-		RAM.checkZ(result);
+//		RAM.checkZ(result);
 		// store f in register w (when d==0) or in f (when d==1)
 		RAM.setRegister(d, result, f);
 	}
@@ -118,7 +118,7 @@ public class ByteOrientedOperations { // operations that start with 00
 			result--;
 			// set zero flag when f == 0
 		}
-		RAM.checkZ(result);
+//		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 	}
 
@@ -142,9 +142,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		RAM.setRegister(d, result, f);
 		if (result == 0) {
 			RAM.setPCL(RAM.getPCL() + 1);
-		} // else {
-//			 execute the next instruction
-//		}
+		} 
 	}
 
 	// increment f
@@ -166,8 +164,8 @@ public class ByteOrientedOperations { // operations that start with 00
 //		if(result > 0xFF) {
 //			result = 0;
 //		}
-		// set zero flag when result == 0
-		RAM.checkZ(result);
+//		// set zero flag when result == 0
+//		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 	}
 
@@ -210,8 +208,8 @@ public class ByteOrientedOperations { // operations that start with 00
 		wContent = RAM.getW();
 		// or'ing w with f
 		result = wContent | result;
-		// set zero flag when f == 0
-		RAM.checkZ(result);
+//		// set zero flag when f == 0
+//		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 	}
 
@@ -224,8 +222,8 @@ public class ByteOrientedOperations { // operations that start with 00
 			f = RAM.getFSR();
 		}
 		result = RAM.getRegisterContent(f);
-		// set zero flag when f == 0
-		RAM.checkZ(result);
+//		// set zero flag when f == 0
+//		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 		// d = 1 is useful to test a file register since status flag z is affected
 	}
@@ -261,10 +259,10 @@ public class ByteOrientedOperations { // operations that start with 00
 			result = result | 0x01;
 			RAM.setC(0);
 		}
-		if (result > 0xFF) {
-			RAM.setC(1);
-			result = result & 0xFF;
-		}
+//		if (result > 0xFF) {
+//			RAM.setC(1);
+//			result = result & 0xFF;
+//		}
 		RAM.setRegister(d, result, f);
 	}
 
@@ -285,7 +283,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		} else {
 			c = 0;
 		}
-		result = result >>> 1;
+		result = result >> 1;
 		if (RAM.getC() == 1) {
 			result = result | 0x80;
 		}
@@ -337,7 +335,7 @@ public class ByteOrientedOperations { // operations that start with 00
 //			RAM.setDC(0);
 //		}
 		// set zero flag when fContent == 0
-		RAM.checkZ(result);
+//		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 	}
 
@@ -392,6 +390,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		if (!globalthings.stack8.isEmpty()) {
 			RAM.setPCL(globalthings.stack8.pop());
 			globalthings.jumpPerformed = true;
+			globalthings.cycle++;
 		} else {
 			if (globalthings.debugMode == true) {
 				System.out.println("STACK is empty!");
@@ -407,8 +406,11 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void RETURN() {
 		// PC (programm counter) = TOS (top of the stack)
 		if (!globalthings.stack8.isEmpty()) {
-			RAM.setPCL(globalthings.stack8.pop());
+			int topofStack=globalthings.stack8.pop();
+			RAM.setPCL(topofStack);
+			RAM.PC=topofStack;
 			globalthings.jumpPerformed = true;
+			globalthings.cycle++;
 		} else {
 			if (globalthings.debugMode == true) {
 				System.out.println("STACK is empty!");

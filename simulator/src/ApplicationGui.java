@@ -60,6 +60,8 @@ public class ApplicationGui {
 	private static JButton startButton;
 	private static JButton resetButton;
 	private JMenu fileMenu;
+	private JButton freqbutton;
+	private static JTextField timepassed;
 	
 	
 
@@ -115,7 +117,9 @@ public class ApplicationGui {
 				startButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						startbutton();
+						if(startButton.getModel().isEnabled()) {
+							startbutton();
+						}
 					}
 				});
 				panel.add(startButton);
@@ -125,7 +129,9 @@ public class ApplicationGui {
 				pauseButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						pausebutton();
+						if(pauseButton.getModel().isEnabled()) {
+							pausebutton();
+						}
 					}
 				});
 				panel.add(pauseButton);
@@ -135,7 +141,9 @@ public class ApplicationGui {
 				resetButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						resetbutton();
+						if(resetButton.getModel().isEnabled()) {
+							resetbutton();
+						}
 					}
 				});
 				
@@ -294,6 +302,8 @@ public class ApplicationGui {
 								JPanel panel_3 = new JPanel();
 								
 								JPanel panel_4 = new JPanel();
+								
+								JPanel panel_5 = new JPanel();
 								GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 								groupLayout.setHorizontalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
@@ -310,9 +320,9 @@ public class ApplicationGui {
 														.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 644, GroupLayout.PREFERRED_SIZE)))
 												.addGroup(groupLayout.createSequentialGroup()
 													.addGap(17)
-													.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-														.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+														.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
 															.addGap(8)
 															.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)))
@@ -323,22 +333,23 @@ public class ApplicationGui {
 																.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 																.addComponent(panel_1_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 															.addPreferredGap(ComponentPlacement.RELATED)
-															.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
+															.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+																.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 303, GroupLayout.PREFERRED_SIZE)
+																.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)))
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(lblNewLabel_2_1, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
 															.addGap(553))
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
 															.addGap(553))
-														.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-															.addGroup(groupLayout.createSequentialGroup()
-																.addComponent(btnNewButton)
-																.addPreferredGap(ComponentPlacement.RELATED)
-																.addComponent(DEBUGradio, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-															.addGroup(groupLayout.createSequentialGroup()
-																.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(ComponentPlacement.RELATED)
-																.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE))))))
+														.addGroup(groupLayout.createSequentialGroup()
+															.addComponent(btnNewButton)
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(DEBUGradio, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+														.addGroup(groupLayout.createSequentialGroup()
+															.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE)))))
 											.addGap(256))
 								);
 								groupLayout.setVerticalGroup(
@@ -366,12 +377,13 @@ public class ApplicationGui {
 															.addComponent(lblNewLabel_2_1))
 														.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 													.addPreferredGap(ComponentPlacement.RELATED)
-													.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-														.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addGroup(groupLayout.createSequentialGroup()
-															.addComponent(panel_1_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-															.addPreferredGap(ComponentPlacement.RELATED)
-															.addComponent(panel_4, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))))
+													.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+														.addComponent(panel_3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addComponent(panel_1_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+													.addPreferredGap(ComponentPlacement.RELATED)
+													.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+														.addComponent(panel_5, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+														.addComponent(panel_4, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))
 												.addComponent(scrollPane_2, GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
@@ -381,8 +393,17 @@ public class ApplicationGui {
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 												.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 347, GroupLayout.PREFERRED_SIZE)
 												.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 347, GroupLayout.PREFERRED_SIZE))
-											.addContainerGap(185, Short.MAX_VALUE))
+											.addContainerGap(183, Short.MAX_VALUE))
 								);
+								
+								JLabel lblNewLabel_5 = new JLabel("Time passed in ms:");
+								panel_5.add(lblNewLabel_5);
+								
+								timepassed = new JTextField();
+								timepassed.setEnabled(false);
+								timepassed.setEditable(false);
+								panel_5.add(timepassed);
+								timepassed.setColumns(10);
 								
 								TO_Flag = new JCheckBox("TO");
 								TO_Flag.setEnabled(false);
@@ -409,11 +430,13 @@ public class ApplicationGui {
 								frequen.setModel(new DefaultComboBoxModel(new String[] {"32 khz", "100 khz", "500 khz", "1 Mhz", "2  Mhz", "4 Mhz", "8 Mhz", "12 Mhz", "16 Mhz", "20 Mhz"}));
 								panel_3.add(frequen);
 								
-								JButton freqbutton = new JButton("Apply freq");
+								freqbutton = new JButton("Apply freq");
 								freqbutton.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
-										setfreq();
+										if(freqbutton.getModel().isEnabled()) {
+											setfreq();
+										}
 									}
 								});
 								panel_3.add(freqbutton);
@@ -756,6 +779,7 @@ public class ApplicationGui {
 		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3], breakpointlist);
 		pauseButton.setEnabled(true);
 		startButton.setEnabled(false);
+		freqbutton.setEnabled(false);
 		codeRunner.start();
 		
 	}
@@ -772,6 +796,9 @@ public class ApplicationGui {
 		codeRunner.resume();
 		codeRunner.interrupt();
 		}
+		while(!globalthings.RunnerIsInterruped) {
+			
+		}
 		RAM.resetRAM();
 		refresh();
 		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
@@ -784,11 +811,13 @@ public class ApplicationGui {
 		}
 		
 		RAM.resetRAM();
+		
 		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3], breakpointlist);
 		pauseButton.setEnabled(false);
 		resumeButton.setEnabled(false);
 		startButton.setEnabled(true);
 		fileMenu.setEnabled(true);
+		freqbutton.setEnabled(true);
 		refresh();
 		
 	}
@@ -803,7 +832,8 @@ public class ApplicationGui {
 	public static void refresh() {
 		//long start = new Date().getTime();
 		//while(new Date().getTime() - start < 100L){}
-		
+		//time passed
+		timepassed.setText(Double.toString(globalthings.timePassed));
 		//stackanzeige
 		for (int i = 0; i < 7; i++) {
 			table_2.getModel().setValueAt(null, i, 1);
@@ -826,11 +856,11 @@ public class ApplicationGui {
 		//w + sfr
 		{
 			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.w), 0, 1);
-			table_3.getModel().setValueAt("0x"+String.format("%4s", Integer.toHexString(RAM.bank[RAM.PCL])).replace(' ', '0'), 1, 1);
-			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.bank[RAM.PCLATH]), 2, 1);
-			//table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.bank[RAM.PCintern], 3, 1);
-			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.bank[RAM.STATUS])).replace(' ', '0'), 4, 1);
-			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.bank[RAM.FSR]), 5, 1);
+			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.getPCL())).replace(' ', '0'), 1, 1);
+			table_3.getModel().setValueAt("0b"+String.format("%5s", Integer.toBinaryString(RAM.getPCLATH())).replace(' ', '0'), 2, 1);
+			table_3.getModel().setValueAt("0b"+Integer.toBinaryString(RAM.PC), 3, 1);
+			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.getSTATUS())).replace(' ', '0'), 4, 1);
+			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.getFSR()), 5, 1);
 		//status
 			C_Flag.setSelected(RAM.getC()>0);
 			DC_Flag.setSelected(RAM.getDC()>0);
@@ -855,7 +885,7 @@ public class ApplicationGui {
 		chckbxNewCheckBox_B6.setSelected(RAM.getRB6()>0);
 		chckbxNewCheckBox_B7.setSelected(RAM.getRB7()>0);
 		
-		changeselectedRow(RAM.getPCL());
+		changeselectedRow(RAM.PC);
 		
 	}
 	

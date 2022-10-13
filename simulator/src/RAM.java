@@ -10,11 +10,14 @@ public class RAM {
 			EECON2 = 0x89;
 	static int bank[] = new int[256];
 	static int w;
+	public static int PC;
 
 	public RAM() {
 		for (int i = 0; i < bank.length; i++) {
 			bank[i] = 0;
 		}
+		w=0;
+		PC=0;
 		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
 		bank[PCL] = 0b00000000;
@@ -42,6 +45,12 @@ public class RAM {
 		}
 		globalthings.stack8.clear();
 		globalthings.tacktVT=0;
+		globalthings.cycle=0;
+		globalthings.timePassed=0;
+		globalthings.jumpPerformed=false;
+		globalthings.started=false;
+		w=0;
+		PC=0;
 //		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
 		bank[PCL] = 0b00000000;
@@ -112,7 +121,20 @@ public class RAM {
 	}
 
 	public static void setPCL(int pCL) {
-		bank[PCL] = pCL;
+		int temp=pCL;
+		
+		int temppcLback=temp&0b11111111;
+		bank[PCL] = temppcLback;
+//		if(temp>255) {
+//			int temppcfront=temp&~(0b11111111);
+//			bank[PCLATH]=temppcfront;
+//			PCIntern=pCL;
+//		}else {
+//			//PCIntern=PCIntern&~(0b11111111);
+//			//PCIntern=PCIntern|temppcLback;
+//			PCIntern=temppcLback;
+//		}
+		
 	}
 
 	public static int getSTATUS() {
@@ -471,10 +493,15 @@ public class RAM {
 	}
 
 	public static int getPCLATH() {
+		//return PCIntern&~(0b11111111);
 		return bank[PCLATH];
 	}
 
 	public static void setPCLATH(int pCLATH) {
+//		int temppcInt=PCIntern&(0b11111111);
+//		temppcInt=PCIntern|(pCLATH<<8);
+//		PCIntern=temppcInt;
+		//RAM.PC=RAM.getPCL()|(RAM.getPCLATH()<<8);
 		bank[PCLATH] = pCLATH;
 	}
 
@@ -823,6 +850,8 @@ public class RAM {
 
 	// set w register
 	public static void setW(int oW) {
+		oW=checkCarry(oW);
+		checkZ(oW);
 		w = oW;
 	}
 
@@ -866,8 +895,19 @@ public class RAM {
 		}
 		return 0x00;
 	}
+	
+	public static int checkCarry(int result) {
+		if (result > 0xFF) {
+			RAM.setC(1);
+			result = result & 0xFF;
+		}
+		
+		
+		return result;
+	}
 
 	public static void setRegister(int d, int content, int f) {
+		
 		if (d == 0) {
 			setW(content);
 		} else {
@@ -881,10 +921,16 @@ public class RAM {
 			if (getIRP() == 1) { // access bank 1
 				f += 0x80;
 			}
+			if(globalthings.changeStatus) {
+				fContent=checkCarry(fContent);
+				checkZ(fContent);
+			}
+
 			bank[f] = fContent;
 		} else {
 			System.out.println("setRegisterContent falsch");
 		}
 	}
+
 
 }
