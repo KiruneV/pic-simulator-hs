@@ -673,8 +673,10 @@ public class ApplicationGui {
 										{"PCL", null},
 										{"PCLATH", null},
 										{"PC-Intern", null},
+										{"PC hex", null},
 										{"STATUS", null},
 										{"FSR", null},
+										
 									},
 									new String[] {
 										"SFR+W", ""
@@ -701,8 +703,10 @@ public class ApplicationGui {
 	
 	public void debugRadio() {
 		globalthings.debugMode=DEBUGradio.isSelected();
-		System.out.println(globalthings.debugMode);
-		
+		System.out.println("Debugmode="+globalthings.debugMode);
+		for (int i = 0; i < ((DefaultTableModel) table_1.getModel()).getRowCount()-1; i++) {
+			((DefaultTableModel) table_1.getModel()).setValueAt(globalthings.debugMode, i, 0);
+		}
 	}
 
 	public static void setfreq() {
@@ -766,17 +770,17 @@ public class ApplicationGui {
 	
 	@SuppressWarnings("unchecked")
 	public void startbutton() {
-		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
-		for (int i = 0; i < table_1.getModel().getRowCount(); i++) {
-			//System.out.println(table_1.getModel().getValueAt(i, 1));
-			if((boolean) table_1.getModel().getValueAt(i, 0)) {
-				breakpointlist.add(true);
-			}else {
-				breakpointlist.add(false);
-			}
-		}
+//		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
+//		for (int i = 0; i < table_1.getModel().getRowCount(); i++) {
+//			//System.out.println(table_1.getModel().getValueAt(i, 1));
+//			if((boolean) table_1.getModel().getValueAt(i, 0)) {
+//				breakpointlist.add(true);
+//			}else {
+//				breakpointlist.add(false);
+//			}
+//		}
 		changeselectedRow(0);
-		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3], breakpointlist);
+		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3]);
 		pauseButton.setEnabled(true);
 		startButton.setEnabled(false);
 		freqbutton.setEnabled(false);
@@ -801,18 +805,19 @@ public class ApplicationGui {
 		}
 		RAM.resetRAM();
 		refresh();
-		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
-		for (int i = 0; i < table_1.getModel().getRowCount()-1; i++) {
-			if((boolean) table_1.getModel().getValueAt(i, 1)) {
-				breakpointlist.add(true);
-			}else {
-				breakpointlist.add(false);
-			}
-		}
+		
+//		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
+//		for (int i = 0; i < table_1.getModel().getRowCount()-1; i++) {
+//			if((boolean) table_1.getModel().getValueAt(i, 1)) {
+//				breakpointlist.add(true);
+//			}else {
+//				breakpointlist.add(false);
+//			}
+//		}
 		
 		RAM.resetRAM();
 		
-		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3], breakpointlist);
+		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3]);
 		pauseButton.setEnabled(false);
 		resumeButton.setEnabled(false);
 		startButton.setEnabled(true);
@@ -859,8 +864,9 @@ public class ApplicationGui {
 			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.getPCL())).replace(' ', '0'), 1, 1);
 			table_3.getModel().setValueAt("0b"+String.format("%5s", Integer.toBinaryString(RAM.getPCLATH())).replace(' ', '0'), 2, 1);
 			table_3.getModel().setValueAt("0b"+Integer.toBinaryString(RAM.PC), 3, 1);
-			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.getSTATUS())).replace(' ', '0'), 4, 1);
-			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.getFSR()), 5, 1);
+			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.PC), 4, 1);
+			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.getSTATUS())).replace(' ', '0'), 5, 1);
+			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.getFSR()), 6, 1);
 		//status
 			C_Flag.setSelected(RAM.getC()>0);
 			DC_Flag.setSelected(RAM.getDC()>0);
@@ -885,7 +891,8 @@ public class ApplicationGui {
 		chckbxNewCheckBox_B6.setSelected(RAM.getRB6()>0);
 		chckbxNewCheckBox_B7.setSelected(RAM.getRB7()>0);
 		
-		changeselectedRow(RAM.PC);
+			changeselectedRow(globalthings.pcact);
+		
 		
 	}
 	

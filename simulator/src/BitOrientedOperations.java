@@ -40,7 +40,7 @@ public class BitOrientedOperations { // operations that start with 01
 		RAM.setRegisterContent(result, f);
 	}
 
-	// bit test, skip if clear
+	// bit test, skip if clear //TODO PC
 	// status affected: none
 	public static void BTFSC(int hexInt) {
 		globalthings.changeStatus=false;
@@ -53,13 +53,13 @@ public class BitOrientedOperations { // operations that start with 01
 		mask = 0b01 << b;
 		// check if bit b in f is null
 		if ((result & mask) == 0) {
-			RAM.setPCL(RAM.getPCL()+1);
+			RAM.PC=(RAM.PC+1);
 			globalthings.cycle++;
 			// dont do the next operation
 		}
 	}
 
-	// bit test f, skip if set
+	// bit test f, skip if set //TODO PC
 	// status affected: none
 	public static void BTFSS(int hexInt) {
 		globalthings.changeStatus=false;
@@ -72,7 +72,7 @@ public class BitOrientedOperations { // operations that start with 01
 		mask = 0b01 << b;
 		// check if bit b in f is not null
 		if ((result & mask) != 0) {
-			RAM.setPCL(RAM.getPCL()+1);
+			RAM.PC=(RAM.PC+1);
 			globalthings.cycle++;
 			// dont do the next operation
 		}

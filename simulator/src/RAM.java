@@ -17,6 +17,7 @@ public class RAM {
 			bank[i] = 0;
 		}
 		w=0;
+		//TODO pc
 		PC=0;
 		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
@@ -48,8 +49,11 @@ public class RAM {
 		globalthings.cycle=0;
 		globalthings.timePassed=0;
 		globalthings.jumpPerformed=false;
+		globalthings.callPerformed=false;
+		globalthings.GOTOPerformed=false;
 		globalthings.started=false;
 		w=0;
+		//TODO pc
 		PC=0;
 //		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
@@ -125,6 +129,7 @@ public class RAM {
 		
 		int temppcLback=temp&0b11111111;
 		bank[PCL] = temppcLback;
+		RAM.PC=temppcLback|((RAM.getPCLATH()& 0b00011111) << 8);
 //		if(temp>255) {
 //			int temppcfront=temp&~(0b11111111);
 //			bank[PCLATH]=temppcfront;
@@ -916,17 +921,49 @@ public class RAM {
 		}
 	}
 
-	public static void setRegisterContent(int fContent, int f) {
-		if (f <= 0x7F) {
+	public static void setRegisterContent(int fContent, int address) {
+		if (address <= 0x7F) {
 			if (getIRP() == 1) { // access bank 1
-				f += 0x80;
+				address += 0x80;
 			}
 			if(globalthings.changeStatus) {
 				fContent=checkCarry(fContent);
 				checkZ(fContent);
 			}
-
-			bank[f] = fContent;
+			
+			if (address == 0x01) {
+				setTMR0(fContent);
+			} else if (address == 0x02 || address == 0x82) {
+				setPCL(fContent);
+			} else if (address == 0x03 || address == 0x83) {
+				setSTATUS(fContent);
+			} else if (address == 0x04 || address == 0x84) {
+				setFSR(fContent);
+			} else if (address == 0x05) {
+				setPORTA(fContent);
+			} else if (address == 0x06) {
+				setPORTB(fContent);
+			} else if (address == 0x08) {
+				setEEDATA(fContent);
+			} else if (address == 0x09) {
+				setEEADR(fContent);
+			} else if (address == 0x0A || address == 0x8A) {
+				setPCLATH(fContent);
+			} else if (address == 0x0B || address == 0x8B) {
+				setINTCON(fContent);
+			} else if (address == 0x81) {
+				setOPTION(fContent);
+			} else if (address == 0x85) {
+				setTRISA(fContent);
+			} else if (address == 0x86) {
+				setTRISB(fContent);
+			} else if (address == 0x88) {
+				setEECON1(fContent);
+			} else if (address == 0x89) {
+				setEECON2(fContent);
+			} else if (address <= 0xFF && address >= 0x00) {
+				bank[address] = fContent;
+			}
 		} else {
 			System.out.println("setRegisterContent falsch");
 		}

@@ -122,7 +122,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		RAM.setRegister(d, result, f);
 	}
 
-	// decrement f, skip if 0
+	// decrement f, skip if 0 //TODO PC
 	// status affected: none
 	public static void DECFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
@@ -141,7 +141,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		}
 		RAM.setRegister(d, result, f);
 		if (result == 0) {
-			RAM.setPCL(RAM.getPCL() + 1);
+			RAM.PC=(RAM.PC + 1);
 		} 
 	}
 
@@ -169,7 +169,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		RAM.setRegister(d, result, f);
 	}
 
-	// increment f, skip if 0
+	// increment f, skip if 0 TODO PC
 	// status affected: none
 	public static void INCFSZ(int hexInt) {
 		f = hexInt & bitmask[0]; // select f out of the hexInt
@@ -190,7 +190,7 @@ public class ByteOrientedOperations { // operations that start with 00
 //		}
 		RAM.setRegister(d, result, f);
 		if (result == 0) {
-			RAM.setPCL(RAM.getPCL() + 1);
+			RAM.PC=(RAM.PC + 1);
 		} // else {
 			// execute the next instruction
 			// }
@@ -382,32 +382,25 @@ public class ByteOrientedOperations { // operations that start with 00
 		RAM.setPD(1);
 	}
 
+	
 	// TODO return from interrupt
 	// status affected: none
 	public static void RETFIE() {
 		// return from interrupt
 		// PC (programm counter) = TOS (top of the stack)
-		if (!globalthings.stack8.isEmpty()) {
-			RAM.setPCL(globalthings.stack8.pop());
-			globalthings.jumpPerformed = true;
-			globalthings.cycle++;
-		} else {
-			if (globalthings.debugMode == true) {
-				System.out.println("STACK is empty!");
-			}
-		}
+		RETURN();
 		// GIE (global interrupt enable bit) = 1
 		RAM.setGIE(1);
 
 	}
-
+	//TODO PC stuff
 	// return from subroutine
 	// status affected: none
 	public static void RETURN() {
 		// PC (programm counter) = TOS (top of the stack)
 		if (!globalthings.stack8.isEmpty()) {
 			int topofStack=globalthings.stack8.pop();
-			RAM.setPCL(topofStack);
+			//RAM.setPCL(topofStack);
 			RAM.PC=topofStack;
 			globalthings.jumpPerformed = true;
 			globalthings.cycle++;
