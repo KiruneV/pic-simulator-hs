@@ -50,7 +50,7 @@ public class CodeRunner extends Thread {
     		globalthings.timePassed=((double)globalthings.cycle/(double)globalthings.freqInt)/1000;
     		
     		//TODO inc timer0
-    		
+    		//i do this now ig
     		
     		//inc PC
         	if(!globalthings.callPerformed&&!globalthings.GOTOPerformed) {
