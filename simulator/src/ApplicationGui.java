@@ -28,7 +28,6 @@ public class ApplicationGui {
 	private static JTable table;
 	public static JTable table_1;
 	public fileReader fileread;
-	private final Action action_1 = new SwingAction_1();
 	private static JTable table_2;
 	private static JTable table_3;
 	private JRadioButton DEBUGradio;
@@ -62,6 +61,7 @@ public class ApplicationGui {
 	private JMenu fileMenu;
 	private JButton freqbutton;
 	private static JTextField timepassed;
+	private JButton refreshBtn;
 	
 	
 
@@ -158,8 +158,13 @@ public class ApplicationGui {
 				panel.add(resumeButton);
 				panel.add(resetButton);
 						
-								JButton btnNewButton = new JButton("select row test");
-								btnNewButton.setAction(action_1);
+								refreshBtn = new JButton("Refresh");
+								refreshBtn.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										refresh();
+									}
+								});
 						
 						JScrollPane scrollPane_2 = new JScrollPane();
 						
@@ -335,21 +340,22 @@ public class ApplicationGui {
 															.addPreferredGap(ComponentPlacement.RELATED)
 															.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 																.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 303, GroupLayout.PREFERRED_SIZE)
-																.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)))
+																.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)))
 														.addGroup(groupLayout.createSequentialGroup()
-															.addComponent(lblNewLabel_2_1, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+															.addComponent(lblNewLabel_2_1, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
 															.addGap(553))
 														.addGroup(groupLayout.createSequentialGroup()
-															.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+															.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
 															.addGap(553))
-														.addGroup(groupLayout.createSequentialGroup()
-															.addComponent(btnNewButton)
-															.addPreferredGap(ComponentPlacement.RELATED)
-															.addComponent(DEBUGradio, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+															.addPreferredGap(ComponentPlacement.UNRELATED)
+															.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE))
+														.addGroup(groupLayout.createSequentialGroup()
+															.addComponent(DEBUGradio, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
 															.addPreferredGap(ComponentPlacement.RELATED)
-															.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE)))))
+															.addComponent(refreshBtn)
+															.addPreferredGap(ComponentPlacement.RELATED)))))
 											.addGap(256))
 								);
 								groupLayout.setVerticalGroup(
@@ -360,7 +366,7 @@ public class ApplicationGui {
 													.addGap(12)
 													.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 														.addComponent(DEBUGradio)
-														.addComponent(btnNewButton)))
+														.addComponent(refreshBtn)))
 												.addGroup(groupLayout.createSequentialGroup()
 													.addGap(7)
 													.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
@@ -445,6 +451,7 @@ public class ApplicationGui {
 								panel_2.add(lblNewLabel_3);
 								
 								textField_1 = new JTextField();
+								textField_1.setToolTipText("0-255");
 								panel_2.add(textField_1);
 								textField_1.setColumns(5);
 								
@@ -452,6 +459,7 @@ public class ApplicationGui {
 								panel_2.add(lblNewLabel_4);
 								
 								textField = new JTextField();
+								textField.setToolTipText("0-ff");
 								panel_2.add(textField);
 								textField.setColumns(8);
 								
@@ -703,6 +711,7 @@ public class ApplicationGui {
 	
 	public void debugRadio() {
 		globalthings.debugMode=DEBUGradio.isSelected();
+		
 		System.out.println("Debugmode="+globalthings.debugMode);
 		for (int i = 0; i < ((DefaultTableModel) table_1.getModel()).getRowCount()-1; i++) {
 			((DefaultTableModel) table_1.getModel()).setValueAt(globalthings.debugMode, i, 0);
@@ -806,15 +815,6 @@ public class ApplicationGui {
 		RAM.resetRAM();
 		refresh();
 		
-//		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
-//		for (int i = 0; i < table_1.getModel().getRowCount()-1; i++) {
-//			if((boolean) table_1.getModel().getValueAt(i, 1)) {
-//				breakpointlist.add(true);
-//			}else {
-//				breakpointlist.add(false);
-//			}
-//		}
-		
 		RAM.resetRAM();
 		
 		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3]);
@@ -901,11 +901,6 @@ public class ApplicationGui {
 			System.out.println("sendDATA");
 		}
 		//RA0-4	
-		
-		
-		
-		
-		
 		//RB0-7
 		
 		
@@ -968,18 +963,5 @@ public class ApplicationGui {
 			}
 		}
 	}
-	@SuppressWarnings("serial")
-	private class SwingAction_1 extends AbstractAction {
-		//int i=0;
-		public SwingAction_1() {
-			putValue(NAME, "Refresh/testing");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-			//changeselectedRow(i++);
-			//globalthings.stack8.push(i);
-			refresh();
-			//System.out.println("hewwo"+globalthings.stack8.size());
-		}
-	}
+	
 }

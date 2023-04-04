@@ -9,8 +9,8 @@ import java.util.ArrayList;
  *
  */
 public class CodeRunner extends Thread {
-	private ArrayList<String> codeString;//linesCodeLineswithcodeCodestring[3]
-	//private Object lock;
+	private ArrayList<String> codeString;
+	
 	CodeRunner(ArrayList<String> codeString){
 		this.codeString=codeString;
 //		System.out.println(codeString);
@@ -21,16 +21,21 @@ public class CodeRunner extends Thread {
         while(!Thread.currentThread().isInterrupted()) {
         	
     		
-        	//TODO checktimer interupt
+        	//timer interupt
         	if(RAM.getGIE()==1&&RAM.getT0IE()==1&&RAM.getT0IF()==1) {
-        		//TODO interrupt
+        		int intcon = RAM.getINTCON();
+    			intcon = (byte) (intcon & 0b01111111);
+    			RAM.setINTCON(intcon);;
+    			ControlOperations.CALL(0x0004);
+    			globalthings.cycle++;
+    			globalthings.jumpPerformed=false;
+        		globalthings.callPerformed=false;
         	}
         	
-        	//fetch
-        	
+        	//fetch pc
         	globalthings.pcact=RAM.PC;
         	
-        	
+        	//check for breakpoint
         	if ((boolean) ApplicationGui.table_1.getModel().getValueAt(globalthings.pcact, 0) ) {
         		//System.out.println("breakpoint");
 				ApplicationGui.resumeButton.setEnabled(true);
@@ -38,26 +43,32 @@ public class CodeRunner extends Thread {
 				this.suspend();
 				ApplicationGui.resumeButton.setEnabled(false);
 			}
-//        	System.out.println(RAM.getPCL());
-//        	System.out.println(codeString.get(RAM.getPCL()));
-//        	if(globalthings.CALLGOTOPerformed) {
-//        		decoder.DecodeStr(codeString.get(globalthings.jumpadress));
 
-        	
+        	//do instruction
         	decoder.DecodeStr(codeString.get(globalthings.pcact));
+        	
         	//+1 cyclus standard
     		globalthings.cycle++;
     		globalthings.timePassed=((double)globalthings.cycle/(double)globalthings.freqInt)/1000;
     		
-    		//TODO inc timer0
-    		//i do this now ig
+    		//inc timer0 without scaler
+    		int timer =  RAM.getTMR0();
+            if(timer >=  0xFF) {
+                int intcon = RAM.getINTCON();
+                intcon =  (intcon | 0b00000100);
+                RAM.setINTCON(intcon);
+                timer=timer%0xFF;
+            }else {
+            	timer++;
+            }
+    		RAM.setTMR0(timer);
     		
     		//inc PC
         	if(!globalthings.callPerformed&&!globalthings.GOTOPerformed) {
             RAM.PC=RAM.PC+1;}
         	RAM.bank[RAM.PCL] = (byte) RAM.PC;//sync pc pcl
         		
-    		
+    		//reset helpchecks
         	globalthings.started=true;
         	globalthings.jumpPerformed=false;
     		globalthings.callPerformed=false;
@@ -66,15 +77,6 @@ public class CodeRunner extends Thread {
         	ApplicationGui.refresh();
         	
         	
-
-//    		if(!globalthings.jumpPerformed) {
-//    			RAM.setPCL(RAM.getPCL()+1);
-//    			
-//    		}
-//    		if(!globalthings.jumpPerformed) {
-//    			RAM.PC=RAM.getPCL()|((RAM.getPCLATH()&0b11111)<<8);
-//    		}
-//    		globalthings.jumpPerformed=false;
     		
         }
         globalthings.RunnerIsInterruped=true;
