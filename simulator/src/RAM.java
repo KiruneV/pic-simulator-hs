@@ -41,6 +41,9 @@ public class RAM {
 
 	}
 
+	/**
+	 * 
+	 */
 	public static void resetRAM() {
 		for (int i = 0; i < bank.length; i++) {
 			bank[i] = 0;
@@ -55,7 +58,6 @@ public class RAM {
 		globalthings.started=false;
 		globalthings.prescaler=0;
 		w=0;
-		//TODO pc
 		PC=0;
 //		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
@@ -874,6 +876,11 @@ public class RAM {
 		return w;
 	}
 
+	/**
+	 * gets value from bank
+	 * @param address address in bank
+	 * @return value from specified address
+	 */
 	public static int getRegisterContent(int address) { 
 		if (address == 0x01) {
 			return getTMR0();
@@ -911,6 +918,12 @@ public class RAM {
 		return 0x00;
 	}
 	
+	
+	/**
+	 * checks if a value is over 255 then sets it to that cap and sets the carrybit
+	 * @param result value to be checked
+	 * @return the corrected input
+	 */
 	public static int checkCarry(int result) {
 		if (result > 0xFF) {
 			RAM.setC(1);
@@ -921,6 +934,12 @@ public class RAM {
 		return result;
 	}
 
+	/**
+	 * sets value either in w or bank
+	 * @param d if 0 sets w else bank
+	 * @param content to be inserted
+	 * @param f address in bank
+	 */
 	public static void setRegister(int d, int content, int f) {
 		
 		if (d == 0) {
@@ -931,6 +950,11 @@ public class RAM {
 		}
 	}
 
+	/**
+	 * sets value in bank
+	 * @param fContent to be inserted
+	 * @param address address in bank
+	 */
 	public static void setRegisterContent(int fContent, int address) {
 		if (address <= 0x7F) {
 			if (getIRP() == 1) { // access bank 1
@@ -973,6 +997,8 @@ public class RAM {
 				setEECON2(fContent);
 			} else if (address <= 0xFF && address >= 0x00) {
 				bank[address] = fContent;
+			}else {
+				System.out.println("setRegisterContent falsch");
 			}
 		} else {
 			System.out.println("setRegisterContent falsch");
