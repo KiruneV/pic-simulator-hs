@@ -41,7 +41,6 @@ public class RAM {
 
 	}
 
-// brauchen wir nicht
 	public static void resetRAM() {
 		for (int i = 0; i < bank.length; i++) {
 			bank[i] = 0;
@@ -77,42 +76,6 @@ public class RAM {
 
 	}
 
-//	public static int getContent(int address) {
-//		if (address == 0x01) {
-//			return getTMR0();
-//		} else if (address == 0x02 || address == 0x82) {
-//			return getPCL();
-//		} else if (address == 0x03 || address == 0x83) {
-//			return getSTATUS();
-//		} else if (address == 0x04 || address == 0x84) {
-//			return getFSR();
-//		} else if (address == 0x05) {
-//			return getPORTA();
-//		} else if (address == 0x06) {
-//			return getPORTB();
-//		} else if (address == 0x08) {
-//			return getEEDATA();
-//		} else if (address == 0x09) {
-//			return getEEADR();
-//		} else if (address == 0x0A || address == 0x8A) {
-//			return getPCLATH();
-//		} else if (address == 0x0B || address == 0x8B) {
-//			return getINTCON();
-//		} else if (address == 0x81) {
-//			return getOPTION();
-//		} else if (address == 0x85) {
-//			return getTRISA();
-//		} else if (address == 0x86) {
-//			return getTRISB();
-//		} else if (address == 0x88) {
-//			return getEECON1();
-//		} else if (address == 0x89) {
-//			return getEECON2();
-//		} else if (address < 255 && address >= 0) {
-//			return bank[address];
-//		}
-//		return 0x00;
-//	}
 
 	public static int getTMR0() {
 		return bank[TMR0];

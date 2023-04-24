@@ -93,7 +93,7 @@ public class ApplicationGui {
 	 */
 	@SuppressWarnings({ "serial"})
 	private void initialize() {
-		globalthings.stopwatch=StopWatch.create();
+		//globalthings.stopwatch=StopWatch.create();
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1207, 1070);
