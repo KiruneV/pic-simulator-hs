@@ -53,6 +53,7 @@ public class RAM {
 		globalthings.callPerformed=false;
 		globalthings.GOTOPerformed=false;
 		globalthings.started=false;
+		globalthings.prescaler=0;
 		w=0;
 		//TODO pc
 		PC=0;
@@ -83,6 +84,50 @@ public class RAM {
 
 	public static void setTMR0(int tMR0) {
 		bank[TMR0] = tMR0;
+	}
+	
+	/**
+	 * increment timer with prescaler
+	 * @author johannes
+	 */
+	public static void inctimmer() {
+//		without prescaler
+//		int timer =  RAM.getTMR0();
+//		
+//			if(timer >=  0xFF) {
+//                int intcon = RAM.getINTCON();
+//                intcon =  (intcon | 0b00000100);
+//                RAM.setINTCON(intcon);
+//                timer=timer%0xFF;
+//            }else {
+//            	timer++;
+//            }
+//		
+//		RAM.setTMR0(timer);
+		
+		int timer = RAM.getTMR0();
+		int intcon = RAM.getINTCON();
+
+		if (RAM.getPSA() == 0) {
+		    // prescaler is active
+			int ps20 = RAM.getOPTION() & 0b00000111;
+			int prescalermax = 2 << ps20;
+		    globalthings.prescaler++;
+		    if (globalthings.prescaler < prescalermax) {
+		        return;
+		    }
+		    globalthings.prescaler = 0;
+		}
+
+		if (timer >= 0xFF) {
+		    intcon |= 0b00000100;
+		    timer %= 0xFF;
+		} else {
+		    timer++;
+		}
+		RAM.setINTCON(intcon);
+		RAM.setTMR0(timer);
+		return;
 	}
 
 	public static int getPCL() {

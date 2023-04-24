@@ -51,17 +51,9 @@ public class CodeRunner extends Thread {
     		globalthings.cycle++;
     		globalthings.timePassed=((double)globalthings.cycle/(double)globalthings.freqInt)/1000;
     		
-    		//inc timer0 without scaler
-    		int timer =  RAM.getTMR0();
-            if(timer >=  0xFF) {
-                int intcon = RAM.getINTCON();
-                intcon =  (intcon | 0b00000100);
-                RAM.setINTCON(intcon);
-                timer=timer%0xFF;
-            }else {
-            	timer++;
-            }
-    		RAM.setTMR0(timer);
+    		//inc timer0
+    		RAM.inctimmer();
+
     		
     		//inc PC
         	if(!globalthings.callPerformed&&!globalthings.GOTOPerformed) {

@@ -19,5 +19,6 @@ public class globalthings {
 	public static boolean RunnerIsInterruped=false;
 	public static boolean callPerformed;
 	public static int pcact;
+	public static int prescaler;
 	
 }
