@@ -1,7 +1,9 @@
 /***
- * 
+ * main:
  * @author Moritz
- *
+ * implementaion of fixes related to the coderunner:
+ * @author johannes
+ * 
  */
 public class RAM {
 

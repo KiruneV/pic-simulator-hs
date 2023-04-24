@@ -1,5 +1,9 @@
 import org.apache.commons.lang3.time.StopWatch;
-
+/**
+ * 
+ * @author johannes
+ *
+ */
 public class globalthings {
 	public static boolean debugMode;
 	public static StopWatch stopwatch;
