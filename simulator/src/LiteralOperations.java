@@ -61,9 +61,10 @@ public class LiteralOperations { // operations that start with 11
 	// move literal to wc
 	// status affected: none
 	public static void MOVLW(int hexInt) {
+		globalthings.changeStatus=false;
 		k = hexInt & bitmask; // select k out of the hexInt
 		// load k into w register
-		RAM.setW(k);
+		RAM.w=k;
 	}
 
 	// return with literal in w

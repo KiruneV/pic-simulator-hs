@@ -8,13 +8,6 @@
  */
 public class decoder {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		DecodeStr("3E25");
-	}
 	public static void DecodeStr(String inputStr) {
 		String hexString="0x"+inputStr;
 		int hexInt=Integer.decode(hexString);

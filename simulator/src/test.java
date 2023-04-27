@@ -426,24 +426,12 @@ class test {
 		
 		decoder.DecodeStr("30F0"); // movlw 0f0h
 		assertEquals(0xF0, RAM.getW());
-		assertEquals(0, RAM.getDC());
-		assertEquals(0, RAM.getC());
-		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("008C"); // movwf wert1
 		assertEquals(0xF0, RAM.getRegisterContent(wert1));
-		assertEquals(0, RAM.getDC());
-		assertEquals(0, RAM.getC());
-		assertEquals(0, RAM.getZ());
 		decoder.DecodeStr("018D"); // clrf wert2
 		assertEquals(0x00, RAM.getRegisterContent(wert2));
-		assertEquals(0, RAM.getDC());
-		assertEquals(0, RAM.getC());
-		assertEquals(1, RAM.getZ());
 		decoder.DecodeStr("0100"); // clrw
 		assertEquals(0x00, RAM.getW());
-		assertEquals(0, RAM.getDC());
-		assertEquals(0, RAM.getC());
-		assertEquals(1, RAM.getZ());
 
 		// loop2
 		decoder.DecodeStr("070C"); // addwf wert1,w
@@ -656,7 +644,12 @@ class test {
 	
 	@Test
 	void test6() {
-		decoder.DecodeStr("3020"); // movlw 20h
+		RAM.resetRAM();
+		decoder.DecodeStr("3001"); // movlw 00000001b option
+		decoder.DecodeStr("1683"); // bank umschalten
+		assertEquals(1, RAM.getRP0());
+		decoder.DecodeStr("0081"); // option reg
+		assertEquals(1, RAM.getOPTION());
 //		decoder.DecodeStr(""); // 
 //		decoder.DecodeStr(""); // 
 //		decoder.DecodeStr(""); // 

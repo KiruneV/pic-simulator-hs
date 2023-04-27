@@ -231,6 +231,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	// move w to f
 	// status affected: none
 	public static void MOVWF(int hexInt) {
+		globalthings.changeStatus=false;
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		if (f == 0) {
 			f = RAM.getFSR();
@@ -342,6 +343,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	// swap nibbles in f
 	// status affected: none
 	public static void SWAPF(int hexInt) {
+		globalthings.changeStatus=false;
 		f = hexInt & bitmask[0]; // select f out of the hexInt
 		d = hexInt & bitmask[1]; // select d out of the hexInt
 		if (f == 0) {
@@ -386,6 +388,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	// TODO return from interrupt
 	// status affected: none
 	public static void RETFIE() {
+		globalthings.changeStatus=false;
 		// return from interrupt
 		// PC (programm counter) = TOS (top of the stack)
 		RETURN();
@@ -397,6 +400,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	// return from subroutine
 	// status affected: none
 	public static void RETURN() {
+		globalthings.changeStatus=false;
 		// PC (programm counter) = TOS (top of the stack)
 		if (!globalthings.stack8.isEmpty()) {
 			int topofStack=globalthings.stack8.pop();

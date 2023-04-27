@@ -57,6 +57,7 @@ public class RAM {
 		globalthings.GOTOPerformed=false;
 		globalthings.started=false;
 		globalthings.prescaler=0;
+		globalthings.pcact=0;
 		w=0;
 		PC=0;
 //		// bank 0 (00h - 7Fh)
@@ -85,6 +86,8 @@ public class RAM {
 	}
 
 	public static void setTMR0(int tMR0) {
+		globalthings.timerstop=2;
+		
 		bank[TMR0] = tMR0;
 	}
 	
@@ -93,42 +96,61 @@ public class RAM {
 	 * @author johannes
 	 */
 	public static void inctimmer() {
-//		without prescaler
-//		int timer =  RAM.getTMR0();
-//		
-//			if(timer >=  0xFF) {
-//                int intcon = RAM.getINTCON();
-//                intcon =  (intcon | 0b00000100);
-//                RAM.setINTCON(intcon);
-//                timer=timer%0xFF;
-//            }else {
-//            	timer++;
-//            }
-//		
-//		RAM.setTMR0(timer);
-		
-		int timer = RAM.getTMR0();
-		int intcon = RAM.getINTCON();
+		//		without prescaler
+		//		int timer =  RAM.getTMR0();
+		//		
+		//			if(timer >=  0xFF) {
+		//                int intcon = RAM.getINTCON();
+		//                intcon =  (intcon | 0b00000100);
+		//                RAM.setINTCON(intcon);
+		//                timer=timer%0xFF;
+		//            }else {
+		//            	timer++;
+		//            }
+		//		
+		//		RAM.setTMR0(timer);
 
-		if (RAM.getPSA() == 0) {
-		    // prescaler is active
+		int timer = RAM.getTMR0();
+		
+		int PSA=RAM.getPSA();
+		if (PSA == 0) {
+			// prescaler is active
 			int ps20 = RAM.getOPTION() & 0b00000111;
 			int prescalermax = 2 << ps20;
-		    globalthings.prescaler++;
-		    if (globalthings.prescaler < prescalermax) {
-		        return;
-		    }
-		    globalthings.prescaler = 0;
+			globalthings.prescaler++;
+			if (globalthings.prescaler < prescalermax) {
+				return;
+			}
+
 		}
 
-		if (timer >= 0xFF) {
-		    intcon |= 0b00000100;
-		    timer %= 0xFF;
-		} else {
-		    timer++;
+
+		if(globalthings.timerstop>0) {
+			globalthings.timerstop--;
+			return;
 		}
-		RAM.setINTCON(intcon);
-		RAM.setTMR0(timer);
+		
+		
+		if (timer >= 0xFF) {
+			int intcon = RAM.getINTCON();
+			intcon |= 0b00000100;
+			timer %= 0xFF;
+			RAM.setINTCON(intcon);
+			RAM.setT0IF(1);
+			RAM.setTMR0(timer);
+			if(PSA==0) {
+				globalthings.prescaler = 0;
+			}
+			//return;
+		} else {
+			timer++;
+			if(PSA==0) {
+				globalthings.prescaler = 0;
+			}
+		}
+		
+		//RAM.setTMR0(timer);
+		bank[TMR0] = timer;
 		return;
 	}
 
@@ -647,6 +669,7 @@ public class RAM {
 	}
 
 	public static void setOPTION(int oPTION) {
+		globalthings.prescaler=0;
 		bank[OPTION] = oPTION;
 	}
 
@@ -881,7 +904,54 @@ public class RAM {
 	 * @param address address in bank
 	 * @return value from specified address
 	 */
-	public static int getRegisterContent(int address) { 
+	public static int getRegisterContent(int address) {
+		int RPO=getRP0();
+		if (RPO == 1) { // access bank 1
+			address += 0x80;
+		}
+		if (address == 0x01) {
+			return getTMR0();
+		} else if (address == 0x02 || address == 0x82) {
+			return getPCL();
+		} else if (address == 0x03 || address == 0x83) {
+			return getSTATUS();
+		} else if (address == 0x04 || address == 0x84) {
+			return getFSR();
+		} else if (address == 0x05) {
+			return getPORTA();
+		} else if (address == 0x06) {
+			return getPORTB();
+		} else if (address == 0x08) {
+			return getEEDATA();
+		} else if (address == 0x09) {
+			return getEEADR();
+		} else if (address == 0x0A || address == 0x8A) {
+			return getPCLATH();
+		} else if (address == 0x0B || address == 0x8B) {
+			return getINTCON();
+		} else if (address == 0x81) {
+			return getOPTION();
+		} else if (address == 0x85) {
+			return getTRISA();
+		} else if (address == 0x86) {
+			return getTRISB();
+		} else if (address == 0x88) {
+			return getEECON1();
+		} else if (address == 0x89) {
+			return getEECON2();
+		} else if (address <= 0xFF && address >= 0x00) {
+			return bank[address];
+		}
+		return 0x00;
+	}
+	
+	/**
+	 * gets value from entire ram range
+	 * @param address address in bank
+	 * @return value from specified address
+	 */
+	public static int getRegisterfull(int address) {
+		
 		if (address == 0x01) {
 			return getTMR0();
 		} else if (address == 0x02 || address == 0x82) {
@@ -957,13 +1027,64 @@ public class RAM {
 	 */
 	public static void setRegisterContent(int fContent, int address) {
 		if (address <= 0x7F) {
-			if (getIRP() == 1) { // access bank 1
+			int RPO=getRP0();
+			if (RPO == 1) { // access bank 1
 				address += 0x80;
 			}
 			if(globalthings.changeStatus) {
 				fContent=checkCarry(fContent);
 				checkZ(fContent);
 			}
+			
+			if (address == 0x01) {
+				setTMR0(fContent);
+			} else if (address == 0x02 || address == 0x82) {
+				setPCL(fContent);
+			} else if (address == 0x03 || address == 0x83) {
+				setSTATUS(fContent);
+			} else if (address == 0x04 || address == 0x84) {
+				setFSR(fContent);
+			} else if (address == 0x05) {
+				setPORTA(fContent);
+			} else if (address == 0x06) {
+				setPORTB(fContent);
+			} else if (address == 0x08) {
+				setEEDATA(fContent);
+			} else if (address == 0x09) {
+				setEEADR(fContent);
+			} else if (address == 0x0A || address == 0x8A) {
+				setPCLATH(fContent);
+			} else if (address == 0x0B || address == 0x8B) {
+				setINTCON(fContent);
+			} else if (address == 0x81) {
+				setOPTION(fContent);
+			} else if (address == 0x85) {
+				setTRISA(fContent);
+			} else if (address == 0x86) {
+				setTRISB(fContent);
+			} else if (address == 0x88) {
+				setEECON1(fContent);
+			} else if (address == 0x89) {
+				setEECON2(fContent);
+			} else if (address <= 0xFF && address >= 0x00) {
+				bank[address] = fContent;
+			}else {
+				System.out.println("setRegisterContent falsch");
+			}
+		} else {
+			System.out.println("setRegisterContent falsch");
+		}
+	}
+	
+	/**
+	 * sets value in bank absolute
+	 * @param fContent to be inserted
+	 * @param address address in bank
+	 */
+	public static void setRegisterContentAbs(int fContent, int address) {
+		if (address <= 0x7F) {
+			
+			
 			
 			if (address == 0x01) {
 				setTMR0(fContent);

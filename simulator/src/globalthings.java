@@ -20,5 +20,6 @@ public class globalthings {
 	public static boolean callPerformed;
 	public static int pcact;
 	public static int prescaler;
+	public static int timerstop=0;
 	
 }

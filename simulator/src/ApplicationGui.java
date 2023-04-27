@@ -62,6 +62,10 @@ public class ApplicationGui {
 	private JButton freqbutton;
 	private static JTextField timepassed;
 	private JButton refreshBtn;
+	private static JCheckBox RP0_Flag;
+	private static JCheckBox RP1_Flag;
+	private static JCheckBox IRP_Flag;
+	private static JTextField watchfield;
 	
 	
 
@@ -309,6 +313,11 @@ public class ApplicationGui {
 								JPanel panel_4 = new JPanel();
 								
 								JPanel panel_5 = new JPanel();
+								
+								watchfield = new JTextField();
+								watchfield.setForeground(new Color(0, 0, 0));
+								watchfield.setEnabled(false);
+								watchfield.setColumns(10);
 								GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 								groupLayout.setHorizontalGroup(
 									groupLayout.createParallelGroup(Alignment.LEADING)
@@ -340,12 +349,12 @@ public class ApplicationGui {
 															.addPreferredGap(ComponentPlacement.RELATED)
 															.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 																.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 303, GroupLayout.PREFERRED_SIZE)
-																.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)))
+																.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)))
 														.addGroup(groupLayout.createSequentialGroup()
-															.addComponent(lblNewLabel_2_1, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+															.addComponent(lblNewLabel_2_1, GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
 															.addGap(553))
 														.addGroup(groupLayout.createSequentialGroup()
-															.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+															.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
 															.addGap(553))
 														.addGroup(groupLayout.createSequentialGroup()
 															.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -355,7 +364,9 @@ public class ApplicationGui {
 															.addComponent(DEBUGradio, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
 															.addPreferredGap(ComponentPlacement.RELATED)
 															.addComponent(refreshBtn)
-															.addPreferredGap(ComponentPlacement.RELATED)))))
+															.addPreferredGap(ComponentPlacement.UNRELATED)
+															.addComponent(watchfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+															.addGap(384)))))
 											.addGap(256))
 								);
 								groupLayout.setVerticalGroup(
@@ -366,7 +377,8 @@ public class ApplicationGui {
 													.addGap(12)
 													.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 														.addComponent(DEBUGradio)
-														.addComponent(refreshBtn)))
+														.addComponent(refreshBtn)
+														.addComponent(watchfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 												.addGroup(groupLayout.createSequentialGroup()
 													.addGap(7)
 													.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
@@ -402,7 +414,7 @@ public class ApplicationGui {
 											.addContainerGap(183, Short.MAX_VALUE))
 								);
 								
-								JLabel lblNewLabel_5 = new JLabel("Time passed in ms:");
+								JLabel lblNewLabel_5 = new JLabel("Time passed in µs:");
 								panel_5.add(lblNewLabel_5);
 								
 								timepassed = new JTextField();
@@ -410,6 +422,18 @@ public class ApplicationGui {
 								timepassed.setEditable(false);
 								panel_5.add(timepassed);
 								timepassed.setColumns(10);
+								
+								IRP_Flag = new JCheckBox("IRP");
+								IRP_Flag.setEnabled(false);
+								panel_4.add(IRP_Flag);
+								
+								RP1_Flag = new JCheckBox("RP1");
+								RP1_Flag.setEnabled(false);
+								panel_4.add(RP1_Flag);
+								
+								RP0_Flag = new JCheckBox("RP0");
+								RP0_Flag.setEnabled(false);
+								panel_4.add(RP0_Flag);
 								
 								TO_Flag = new JCheckBox("TO");
 								TO_Flag.setEnabled(false);
@@ -434,6 +458,7 @@ public class ApplicationGui {
 								frequen = new JComboBox();
 
 								frequen.setModel(new DefaultComboBoxModel(new String[] {"32 khz", "100 khz", "500 khz", "1 Mhz", "2  Mhz", "4 Mhz", "8 Mhz", "12 Mhz", "16 Mhz", "20 Mhz"}));
+								frequen.setSelectedIndex(8);
 								panel_3.add(frequen);
 								
 								freqbutton = new JButton("Apply freq");
@@ -684,7 +709,7 @@ public class ApplicationGui {
 										{"PC hex", null},
 										{"STATUS", null},
 										{"FSR", null},
-										
+										{"OPTION", null},
 									},
 									new String[] {
 										"SFR+W", ""
@@ -711,7 +736,7 @@ public class ApplicationGui {
 	
 	public void debugRadio() {
 		globalthings.debugMode=DEBUGradio.isSelected();
-		
+		watchfield.setVisible(globalthings.debugMode);
 		System.out.println("Debugmode="+globalthings.debugMode);
 		for (int i = 0; i < ((DefaultTableModel) table_1.getModel()).getRowCount()-1; i++) {
 			((DefaultTableModel) table_1.getModel()).setValueAt(globalthings.debugMode, i, 0);
@@ -767,7 +792,7 @@ public class ApplicationGui {
 					System.out.println("Wrong input for ram");
 				}
 			}else {
-				RAM.setRegisterContent(ramvalI, ramposI);
+				RAM.setRegisterContentAbs(ramvalI, ramposI);
 				//bank[ramposI]=ramvalI;
 				textField_1.setText("");
 				textField.setText("");
@@ -840,7 +865,7 @@ public class ApplicationGui {
 		//time passed
 		timepassed.setText(Double.toString(globalthings.timePassed));
 		//stackanzeige
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 8; i++) {
 			table_2.getModel().setValueAt(null, i, 1);
 		}
 		for (int i = 0; i <globalthings.stack8.size(); i++) {
@@ -850,7 +875,7 @@ public class ApplicationGui {
 		int pos=0;
 		for (int i = 0; i < 32; i++) {
 			for (int j = 1; j < 9; j++) {
-				String temp=Integer.toHexString(RAM.getRegisterContent(pos));
+				String temp=Integer.toHexString(RAM.getRegisterfull(pos));
 				table.getModel().setValueAt(temp, i, j);
 
 				//System.out.println(pos+"  "+RAM.getRegisterContent(pos));
@@ -867,12 +892,16 @@ public class ApplicationGui {
 			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.PC), 4, 1);
 			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.getSTATUS())).replace(' ', '0'), 5, 1);
 			table_3.getModel().setValueAt("0x"+Integer.toHexString(RAM.getFSR()), 6, 1);
+			table_3.getModel().setValueAt("0b"+String.format("%8s", Integer.toBinaryString(RAM.getOPTION())).replace(' ', '0'), 7, 1);
 		//status
 			C_Flag.setSelected(RAM.getC()>0);
 			DC_Flag.setSelected(RAM.getDC()>0);
 			Zero_Flag.setSelected(RAM.getZ()>0);
 			PD_Flag.setSelected(RAM.getPD()>0);
 			TO_Flag.setSelected(RAM.getTO()>0);
+			IRP_Flag.setSelected(RAM.getIRP()>0);
+			RP0_Flag.setSelected(RAM.getRP0()>0);
+			RP1_Flag.setSelected(RAM.getRP1()>0);
 		}
 		//PIN A0-4
 		chckbxNewCheckBox_A0.setSelected(RAM.getRA0()>0);
@@ -890,6 +919,10 @@ public class ApplicationGui {
 		chckbxNewCheckBox_B5.setSelected(RAM.getRB5()>0);
 		chckbxNewCheckBox_B6.setSelected(RAM.getRB6()>0);
 		chckbxNewCheckBox_B7.setSelected(RAM.getRB7()>0);
+		
+		//debug
+		watchfield.setText(""+globalthings.prescaler);
+		watchfield.setVisible(globalthings.debugMode);
 		
 			changeselectedRow(globalthings.pcact);
 		
@@ -952,6 +985,7 @@ public class ApplicationGui {
 					startButton.setEnabled(true);
 					resetButton.setEnabled(true);
 					fileMenu.setEnabled(false);
+					refresh();
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
@@ -963,5 +997,4 @@ public class ApplicationGui {
 			}
 		}
 	}
-	
 }

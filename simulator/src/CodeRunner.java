@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class CodeRunner extends Thread {
 	private ArrayList<String> codeString;
+	private int totalCyclesInst=1;
 	
 	CodeRunner(ArrayList<String> codeString){
 		this.codeString=codeString;
@@ -35,6 +36,7 @@ public class CodeRunner extends Thread {
         	//fetch pc
         	globalthings.pcact=RAM.PC;
         	
+        	if(RAM.getTMR0()<4||RAM.getTMR0()>=250||!globalthings.debugMode) {
         	//check for breakpoint
         	if ((boolean) ApplicationGui.table_1.getModel().getValueAt(globalthings.pcact, 0) ) {
         		//System.out.println("breakpoint");
@@ -43,17 +45,28 @@ public class CodeRunner extends Thread {
 				this.suspend();
 				ApplicationGui.resumeButton.setEnabled(false);
 			}
+        	}
 
+        	int cycleBeforeInst=globalthings.cycle;
+        	
         	//do instruction
         	decoder.DecodeStr(codeString.get(globalthings.pcact));
+        	ApplicationGui.refresh();
         	
         	//+1 cyclus standard
     		globalthings.cycle++;
-    		globalthings.timePassed=((double)globalthings.cycle/(double)globalthings.freqInt)/1000;
+    		globalthings.timePassed=(double)globalthings.cycle*(4000000/(double)globalthings.freqInt);
+    		totalCyclesInst=(globalthings.cycle-cycleBeforeInst);
     		
     		//inc timer0
-    		RAM.inctimmer();
-
+    		int TOCS=RAM.getT0CS();
+			if(TOCS==0) {//timer mode internal takt
+    			for (int i = 0; i < totalCyclesInst ; i++) {
+    				RAM.inctimmer(); //increment for every cycle done
+				}
+    		}else if(TOCS==1) {//counter mode with rise/fall of RA4 dependent TOSE
+    			
+    		}
     		
     		//inc PC
         	if(!globalthings.callPerformed&&!globalthings.GOTOPerformed) {
