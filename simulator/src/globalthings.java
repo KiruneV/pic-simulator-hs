@@ -1,7 +1,7 @@
 
 /**
  * 
- * @author johannes
+ * @author jkraemer
  *
  */
 public class globalthings {

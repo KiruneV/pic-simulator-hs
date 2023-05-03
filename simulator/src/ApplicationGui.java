@@ -21,7 +21,11 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
+/**
+ * 
+ * @author jkraemer
+ *
+ */
 public class ApplicationGui {
 	private JFrame frame;
 	private final Action action = new SwingAction();
@@ -30,7 +34,7 @@ public class ApplicationGui {
 	public fileReader fileread;
 	private static JTable table_2;
 	private static JTable table_3;
-	private JRadioButton DEBUGradio;
+	private static JRadioButton DEBUGradio;
 	private static JCheckBox chckbxNewCheckBox_B0;
 	private static JCheckBox chckbxNewCheckBox_B1;
 	private static JCheckBox chckbxNewCheckBox_B2;
@@ -298,7 +302,6 @@ public class ApplicationGui {
 								JPanel panel_1_1 = new JPanel();
 								
 								DEBUGradio = new JRadioButton("Debug");
-								DEBUGradio.setSelected(true);
 								DEBUGradio.addMouseListener(new MouseAdapter() {
 									@Override
 									public void mouseClicked(MouseEvent e) {
@@ -737,7 +740,9 @@ public class ApplicationGui {
 	public void debugRadio() {
 		globalthings.debugMode=DEBUGradio.isSelected();
 		watchfield.setVisible(globalthings.debugMode);
-		System.out.println("Debugmode="+globalthings.debugMode);
+		if(globalthings.debugMode) {
+			System.out.println("Debugmode="+globalthings.debugMode);
+		}
 		for (int i = 0; i < ((DefaultTableModel) table_1.getModel()).getRowCount()-1; i++) {
 			((DefaultTableModel) table_1.getModel()).setValueAt(globalthings.debugMode, i, 0);
 		}
@@ -781,6 +786,7 @@ public class ApplicationGui {
 			System.out.println(globalthings.freqInt);
 		}
 	}
+	
 	public void overwriteRAM() {
 		if (!textField_1.getText().equals("")&&!textField.getText().equals("")){
 			
@@ -804,15 +810,6 @@ public class ApplicationGui {
 	
 	@SuppressWarnings("unchecked")
 	public void startbutton() {
-//		ArrayList<Boolean> breakpointlist=new ArrayList<Boolean>();
-//		for (int i = 0; i < table_1.getModel().getRowCount(); i++) {
-//			//System.out.println(table_1.getModel().getValueAt(i, 1));
-//			if((boolean) table_1.getModel().getValueAt(i, 0)) {
-//				breakpointlist.add(true);
-//			}else {
-//				breakpointlist.add(false);
-//			}
-//		}
 		changeselectedRow(0);
 		codeRunner=new CodeRunner(fileReader.linesCodeLineswithcodeCodestring[3]);
 		pauseButton.setEnabled(true);
@@ -921,10 +918,11 @@ public class ApplicationGui {
 		chckbxNewCheckBox_B7.setSelected(RAM.getRB7()>0);
 		
 		//debug
+		DEBUGradio.setVisible(false);
 		watchfield.setText(""+globalthings.prescaler);
 		watchfield.setVisible(globalthings.debugMode);
 		
-			changeselectedRow(globalthings.pcact);
+		changeselectedRow(globalthings.pcact);
 		
 		
 	}

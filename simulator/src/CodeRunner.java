@@ -5,7 +5,7 @@ import java.util.ArrayList;
  */
 
 /**
- * @author johannes kraemer
+ * @author jkraemer
  *
  */
 public class CodeRunner extends Thread {
@@ -65,7 +65,7 @@ public class CodeRunner extends Thread {
     				RAM.inctimmer(); //increment for every cycle done
 				}
     		}else if(TOCS==1) {//counter mode with rise/fall of RA4 dependent TOSE
-    			
+    			//TODO implement counter mode (propably directly in gui)
     		}
     		
     		//inc PC

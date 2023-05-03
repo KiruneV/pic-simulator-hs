@@ -1,7 +1,7 @@
 /***
  * 
  * @author Moritz
- *
+ * @author jkraemer
  */
 public class BitOrientedOperations { // operations that start with 01
 	static int[] bitmask = { 0x7F, 0x380 };
@@ -74,12 +74,7 @@ public class BitOrientedOperations { // operations that start with 01
 		if ((result & mask) != 0) {
 			RAM.PC=(RAM.PC+1);
 			globalthings.cycle++;
-			// dont do the next operation
 		}
 	}
 
-	// status affected: none
-	public static void NOP() {
-		// TODO Auto-generated method stub
-	}
 }

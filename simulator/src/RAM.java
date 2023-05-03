@@ -1,8 +1,8 @@
 /***
  * main:
  * @author Moritz
- * implementaion of fixes related to the coderunner:
- * @author johannes
+ * implementaion of fixes related to the coderunner/pc:
+ * @author jkraemer
  * 
  */
 public class RAM {
@@ -19,7 +19,7 @@ public class RAM {
 			bank[i] = 0;
 		}
 		w=0;
-		//TODO pc
+		
 		PC=0;
 		// bank 0 (00h - 7Fh)
 		bank[TMR0] = 0b00000000;
@@ -164,15 +164,6 @@ public class RAM {
 		int temppcLback=temp&0b11111111;
 		bank[PCL] = temppcLback;
 		RAM.PC=temppcLback|((RAM.getPCLATH()& 0b00011111) << 8);
-//		if(temp>255) {
-//			int temppcfront=temp&~(0b11111111);
-//			bank[PCLATH]=temppcfront;
-//			PCIntern=pCL;
-//		}else {
-//			//PCIntern=PCIntern&~(0b11111111);
-//			//PCIntern=PCIntern|temppcLback;
-//			PCIntern=temppcLback;
-//		}
 		
 	}
 
@@ -188,7 +179,6 @@ public class RAM {
 		return (getSTATUS() & 0b10000000) >>> 7;
 	}
 
-	// STATUS
 	public static void setIRP(int iRP) {
 		int newSTATUS = getSTATUS();
 		if (iRP == 0) {
@@ -270,7 +260,6 @@ public class RAM {
 		setSTATUS(newSTATUS);
 	}
 
-	// check zero flag
 	public static void checkZ(int i) {
 		if (i == 0) {
 			setZ(1);
@@ -500,7 +489,6 @@ public class RAM {
 		setPORTB(newPORTB);
 	}
 
-	// or getINT
 	public static int getRB0() {
 		return getPORTB() & 0b00000001;
 	}
@@ -532,15 +520,10 @@ public class RAM {
 	}
 
 	public static int getPCLATH() {
-		//return PCIntern&~(0b11111111);
 		return bank[PCLATH];
 	}
 
 	public static void setPCLATH(int pCLATH) {
-//		int temppcInt=PCIntern&(0b11111111);
-//		temppcInt=PCIntern|(pCLATH<<8);
-//		PCIntern=temppcInt;
-		//RAM.PC=RAM.getPCL()|(RAM.getPCLATH()<<8);
 		bank[PCLATH] = pCLATH;
 	}
 

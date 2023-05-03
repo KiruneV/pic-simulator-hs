@@ -184,16 +184,11 @@ public class ByteOrientedOperations { // operations that start with 00
 		} else {
 			result++;
 		}
-//		result += 1;
-//		if(result > 0xFF) {
-//			result = 0;
-//		}
+		
 		RAM.setRegister(d, result, f);
 		if (result == 0) {
 			RAM.PC=(RAM.PC + 1);
-		} // else {
-			// execute the next instruction
-			// }
+		} 
 	}
 
 	// inclusive or w with f
@@ -208,8 +203,6 @@ public class ByteOrientedOperations { // operations that start with 00
 		wContent = RAM.getW();
 		// or'ing w with f
 		result = wContent | result;
-//		// set zero flag when f == 0
-//		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 	}
 
@@ -222,8 +215,6 @@ public class ByteOrientedOperations { // operations that start with 00
 			f = RAM.getFSR();
 		}
 		result = RAM.getRegisterContent(f);
-//		// set zero flag when f == 0
-//		RAM.checkZ(result);
 		RAM.setRegister(d, result, f);
 		// d = 1 is useful to test a file register since status flag z is affected
 	}
@@ -260,14 +251,11 @@ public class ByteOrientedOperations { // operations that start with 00
 			result = result | 0x01;
 			RAM.setC(0);
 		}
-//		if (result > 0xFF) {
-//			RAM.setC(1);
-//			result = result & 0xFF;
-//		}
+		
 		RAM.setRegister(d, result, f);
 	}
 
-	// TODO
+	// TODO PC?
 	// rotate right f through carry
 	// status affected: c
 	public static void RRF(int hexInt) {
@@ -277,7 +265,7 @@ public class ByteOrientedOperations { // operations that start with 00
 			f = RAM.getFSR();
 		}
 		result = RAM.getRegisterContent(f);
-		// int temp = result & 0b1;
+		
 		int c;
 		if ((result & 0x01) != 0) {
 			c = 1;
@@ -310,11 +298,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		} else {
 			RAM.setDC(0);
 		}
-//		if (0xF < (fContent & 0xF) + ((~w + 1) & 0x0F)) {
-//			RAM.setDC(1);
-//		} else {
-//			RAM.setDC(0);
-//		}
+		
 		// subtracting fContent with w
 		result -= wContent;
 		// check if fContent is negative
@@ -324,19 +308,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		} else {
 			RAM.setC(1); // when fContent is positive
 		}
-//		if ((result & 0x80) != 0) {
-//			RAM.setC(0); // when result is negative
-//		} else {
-//			RAM.setC(1); // when result is positive
-//		}
-		// check digit carry
-//		if ((fContent & 0x10) != 0) {
-//			RAM.setDC(1);
-//		} else {
-//			RAM.setDC(0);
-//		}
-		// set zero flag when fContent == 0
-//		RAM.checkZ(result);
+		
 		RAM.setRegister(d, result, f);
 	}
 
@@ -377,7 +349,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	// status affected: !to, !pd
 	public static void CLRWDT() {
 		// WDT (watchdog timer) = 00h
-		// WDT prescaler = 0
+		// WDT prescaler = 0 if assigned
 		// !TO = 1
 		RAM.setTO(1);
 		// !PD = 1
@@ -385,7 +357,6 @@ public class ByteOrientedOperations { // operations that start with 00
 	}
 
 	
-	// TODO return from interrupt
 	// status affected: none
 	public static void RETFIE() {
 		globalthings.changeStatus=false;
@@ -396,7 +367,7 @@ public class ByteOrientedOperations { // operations that start with 00
 		RAM.setGIE(1);
 
 	}
-	//TODO PC stuff
+	
 	// return from subroutine
 	// status affected: none
 	public static void RETURN() {
@@ -420,7 +391,7 @@ public class ByteOrientedOperations { // operations that start with 00
 	public static void SLEEP() {
 		CLRWDT();
 		// WDT (watchdog timer) = 00h
-		// WDT prescaler = 0
+		// WDT prescaler = 0 if assigned
 		// already done in CLRWDT !TO = 1
 		// !PD = 0
 		RAM.setPD(0);

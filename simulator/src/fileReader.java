@@ -6,10 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * 
- */
-
-/**
  * @author jkraemer
  *
  */
@@ -19,11 +15,10 @@ public class fileReader {
 	@SuppressWarnings("rawtypes")
 	public static ArrayList[] linesCodeLineswithcodeCodestring;
 	/**
-	 * @param args
+	 * method for testing
 	 */
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
-		//  Auto-generated method stub
 		
 			ArrayList[] temp;
 			
