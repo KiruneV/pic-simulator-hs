@@ -869,7 +869,7 @@ public class ApplicationGui {
 			table_2.getModel().setValueAt(null, i, 1);
 		}
 		for (int i = 0; i <globalthings.stack8.size(); i++) {
-			((DefaultTableModel) table_2.getModel()).setValueAt(Integer.toHexString(globalthings.stack8.elementAt(i)), i, 1);
+			((DefaultTableModel) table_2.getModel()).setValueAt(Integer.toHexString(globalthings.stack8.elementAt(i)+1), i, 1);
 		}
 		//RAManzeige
 		int pos=0;

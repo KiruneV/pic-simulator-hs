@@ -1,10 +1,5 @@
 import java.util.Stack;
-/**
- * 
- * @author https://stackoverflow.com/users/1348839/calvin
- *
- * @param <T>
- */
+
 @SuppressWarnings("serial")
 public class Stack8<T> extends Stack<T> {
 	private int maxSize;
