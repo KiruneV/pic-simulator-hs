@@ -14,30 +14,7 @@ public class fileReader {
 	
 	@SuppressWarnings("rawtypes")
 	public static ArrayList[] linesCodeLineswithcodeCodestring;
-	/**
-	 * method for testing
-	 */
-	@SuppressWarnings("rawtypes")
-	public static void main(String[] args) {
-		
-			ArrayList[] temp;
-			
-				fileReader reader=new fileReader();
-				try {
-					temp = reader.readFileLines("C:\\Users\\johan\\Documents\\SS2022\\Rechnerarchitektur\\TestProg_PicSim_20210420\\TPicSim1.LST");
-					System.out.println(temp[0]);
-					System.out.println(temp[1]);
-					System.out.println(temp[2]);
-					System.out.println(temp[3]);
-				} catch (FileNotFoundException e) {
-					// Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					//  Auto-generated catch block
-					e.printStackTrace();
-				}
-		
-	}
+	
 
 	/**
 	 * 
