@@ -2,7 +2,7 @@
  * main:
  * @author Moritz
  * implementaion of fixes related to the coderunner/pc:
- * @author jkraemer
+ * @author kkraemer
  * 
  */
 public class RAM {

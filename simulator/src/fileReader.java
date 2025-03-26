@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * @author jkraemer
+ * @author kkraemer
  *
  */
 public class fileReader {

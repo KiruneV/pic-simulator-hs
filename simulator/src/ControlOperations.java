@@ -1,7 +1,7 @@
 /***
  * 
  * @author Moritz
- * @author jkraemer
+ * @author kkraemer
  *
  */
 public class ControlOperations { // operations that start with 10

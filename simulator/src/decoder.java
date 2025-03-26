@@ -3,7 +3,7 @@
  */
 
 /**
- * @author jkraemer
+ * @author kkraemer
  *
  */
 public class decoder {

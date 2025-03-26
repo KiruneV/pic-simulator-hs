@@ -1,7 +1,7 @@
 /***
  * 
  * @author Moritz
- * @author jkraemer
+ * @author kkraemer
  */
 public class BitOrientedOperations { // operations that start with 01
 	static int[] bitmask = { 0x7F, 0x380 };

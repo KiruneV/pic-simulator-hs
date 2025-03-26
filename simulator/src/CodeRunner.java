@@ -5,7 +5,7 @@ import java.util.ArrayList;
  */
 
 /**
- * @author jkraemer
+ * @author kkraemer
  *
  */
 public class CodeRunner extends Thread {

@@ -23,7 +23,7 @@ import java.awt.event.MouseEvent;
 
 /**
  * 
- * @author jkraemer
+ * @author kkraemer
  *
  */
 public class ApplicationGui {
