@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JPanel;
 import java.awt.Font;
 
-import org.apache.commons.lang3.time.StopWatch;
+//import org.apache.commons.lang3.time.StopWatch;
 import javax.swing.border.LineBorder;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -819,7 +819,7 @@ public class ApplicationGui {
 		
 	}
 	
-	@SuppressWarnings("removal")
+	//@SuppressWarnings("removal")
 	public void pausebutton() {
 		codeRunner.interrupt();
 	}
@@ -849,7 +849,7 @@ public class ApplicationGui {
 		
 	}
 	
-	@SuppressWarnings("removal")
+	//@SuppressWarnings("removal")
 	public void resumebutton() {
 		codeRunner.resume();
 	}
@@ -955,7 +955,7 @@ public class ApplicationGui {
 		}
 	}
 
-	@SuppressWarnings("serial")
+	//@SuppressWarnings("serial")
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "Load File");

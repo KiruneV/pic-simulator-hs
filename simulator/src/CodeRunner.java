@@ -16,7 +16,7 @@ public class CodeRunner extends Thread {
 		this.codeString=codeString;
 //		System.out.println(codeString);
 	}
-	@SuppressWarnings("removal")
+	//@SuppressWarnings("removal")
 	public void run() {
 		globalthings.RunnerIsInterruped=false;
         while(!Thread.currentThread().isInterrupted()) {
